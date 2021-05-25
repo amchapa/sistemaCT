@@ -1,0 +1,1017 @@
+<style>
+
+#calendar {
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.popper,
+.tooltip {
+  position: absolute;
+  z-index: 9999;
+  background: #FFC107;
+  color: black;
+  width: 150px;
+  border-radius: 3px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  padding: 10px;
+  text-align: center;
+}
+.style5 .tooltip {
+  background: #1E252B;
+  color: #FFFFFF;
+  max-width: 200px;
+  width: auto;
+  font-size: .8rem;
+  padding: .5em 1em;
+}
+.popper .popper__arrow,
+.tooltip .tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  margin: 5px;
+}
+
+.tooltip .tooltip-arrow,
+.popper .popper__arrow {
+  border-color: #FFC107;
+}
+.style5 .tooltip .tooltip-arrow {
+  border-color: #1E252B;
+}
+.popper[x-placement^="top"],
+.tooltip[x-placement^="top"] {
+  margin-bottom: 5px;
+}
+.popper[x-placement^="top"] .popper__arrow,
+.tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.popper[x-placement^="bottom"],
+.tooltip[x-placement^="bottom"] {
+  margin-top: 5px;
+}
+.tooltip[x-placement^="bottom"] .tooltip-arrow,
+.popper[x-placement^="bottom"] .popper__arrow {
+  border-width: 0 5px 5px 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  top: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.tooltip[x-placement^="right"],
+.popper[x-placement^="right"] {
+  margin-left: 5px;
+}
+.popper[x-placement^="right"] .popper__arrow,
+.tooltip[x-placement^="right"] .tooltip-arrow {
+  border-width: 5px 5px 5px 0;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  left: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+.popper[x-placement^="left"],
+.tooltip[x-placement^="left"] {
+  margin-right: 5px;
+}
+.popper[x-placement^="left"] .popper__arrow,
+.tooltip[x-placement^="left"] .tooltip-arrow {
+  border-width: 5px 0 5px 5px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  right: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+span.fc-title {
+    font-size: x-large;
+    color: white;
+}
+    
+</style>
+<!--OPCIONES GENERALES DE LA VISTA-->
+<section id="menuSeguimiento-Principal " class="menu"> 
+    <div class="w-responsive mx-auto my-3">
+
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion"><h4>SEGUIMIENTO ORDEN</h4></div>
+
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION NUEVO PERSONAL-->
+        <div class="col"><button id="btnOrden" class="btn btn-lg btnGeneral"><i class="far fa-clipboard fa-4x"></i><br>Orden</button></div>
+
+        <!--OPCION ACTUALIZAR PERSONAL-->
+        <div class="col"><button id="btnCliente"  class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#listadoCliente"><i class="fas fa-user-tie fa-4x"></i><br>Cliente</button></div>
+
+        <!--OPCION PERSONAL DE BAJA-->
+        <div class="col"><button id="btnEjecutiva" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#listadoEjecutiva"><i class="fas fa-handshake fa-4x"></i><br>Ejecutiva</button></div>
+
+        <!--OPCION LISTAR TODO EL PERSONAL-->
+        <div class="col"><button id="btnFecha" class="btn btn-lg btnGeneral"><i class="fas fa-calendar-alt fa-4x"></i><br>Fecha</button></div>
+
+      </div>
+
+    </div>
+  </section>
+  
+<!--VISTA DE ORDEN-->  
+<div id="vistaOrden" style="display: none">
+<form>
+
+    <div class="text-center form-card  form-group">
+        <div class="form-inline h5-responsive font-weight-bold" style= "margin: 40px 0px; margin-left: 30%; margin-right: 10%">
+        <select class="form-control text-left font-weight-bold mdb-select md-form" style="margin-left: 35%; margin-right: 5%" id="orProduccion"><option value="0">-</option></select>
+        <button id="mostrar"class="text-right btn btn-titulo enfasis3"  onclick="inicioOrdenProduccion();return false">Mostrar</button>
+        </div> 
+    </div> 
+  
+    <div id="ListadoPrincipal" class="my-4 d-none" style="margin-left: 2.5%;margin-right: 2.5%; width: 100%">
+
+  <div id="info" class="text-left" style="margin: 30px 0px" ></div>
+
+  <div class="form-inline" style="margin-right: 2.5%;">
+    <div id="abierta" class='mx-3 d-none'>
+      <img class="d-none" src="Modulos/ModOrden/seguimiento/orderpaper.gif" width="150" height="150" alt="Funny image">
+      <!--<img id="paperjpg" src="Modulos/ModOrden/seguimiento/orderpaper.jpg" width="150" height="150" alt="Funny image">-->
+      <label class="font-weight-bold">ABIERTA</label>
+    </div>
+    <div id="prefacturada" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/orderpaper.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">PREFACTURADA</label>
+    </div>
+    <div id="reemplazada" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/delivery.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">REEMPLAZADA</label>
+    </div>
+    <div id="entregada" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/print.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">ENTREGADA</label>
+    </div>
+    <div id="facturada" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/orderpaper.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">FACTURADA</label>
+    </div>
+    <div id="boleta" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/packet.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">BOLETA</label>
+    </div>
+    <div id="cancelada" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/orderpaper.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">CANCELADA</label>
+    </div>
+    <div id="letra" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/delivery.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">LETRA</label>
+    </div>
+    <div id="anulada" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/packet.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">ANULADA</label>
+    </div>
+    <div id="stand by" class='mx-3 d-none'>
+      <img  class="d-none" src="Modulos/ModOrden/seguimiento/orderpaper.gif" width="150" height="150" alt="Funny image">
+      <label  class="font-weight-bold">STAND BY</label>
+    </div>
+  </div>
+  
+  <div id="progreso" style="margin-right: 2.5%;">
+    <div class="progress md-progress" >
+    <div id="barraProgreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  </div>
+
+  
+  <div class="my-4" style="margin-right: 2.5%;">
+    <table id="principal" width="100%">
+      <thead id="cabezal"  class="red white-text h4 font-weight-bold text-center" ></thead>
+      <tbody id="seguimiento">
+      </tbody>
+      
+    </table>
+  </div>
+  
+</div>
+
+
+  <div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+</form>
+
+
+</div>
+
+<!--VISTA DE CLIENTE--> 
+<div id="nombre" style="width: 75% ; text-align: center; margin:0px 12%" class="font-weight-bold"></div>
+<div id="vistaCliente" class="accordion"  style="width: 75% ; text-align: center; margin:0px 12%"></div>
+
+<!-- MODAL LISTAR CLIENTE -->
+<div class="modal fade" id="listadoCliente" tabindex="-1" role="dialog" aria-labelledby="listadoClienteTitulo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+    <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Cliente</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+    <div>
+        <select name="cliente" id="cliente" class="w-responsive"></select>
+        <button id="opCliente" data-dismiss="modal">Buscar</button>
+    </div>
+    <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="md-form">
+        <input type="text" id="fInicialCliente" class="form-control datepicker">
+        <label for="fInicialCliente">Fecha Inicio</label>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="md-form">
+        <input type="text" id="fFinalCliente" class="form-control datepicker">
+        <label for="fFinalCliente">Fecha Final</label>
+      </div>
+    </div>
+  </div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<!--VISTA DE EJECUTIVA--> 
+<div id="vistaEjecutiva" class="accordion"  style="width: 75% ; text-align: center; margin:0px 12%"></div>
+
+<!-- MODAL LISTAR EJECUTIVA -->
+<div class="modal fade" id="listadoEjecutiva" tabindex="-1" role="dialog" aria-labelledby="listadoejecutivaTitulo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+    <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Ejecutiva</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+    <div>
+        <select name="ejecutiva" id="ejecutiva" class="w-responsive">
+            <option value="0">Seleccionar Ejecutiva</option>
+            <option value="35">Fabiola Morales</option>
+            <option value="39">Yrma Paucar</option>
+            <option value="54">Milagros Salinas</option>
+            <option value="28">Liz Guerrero</option>
+            <option value="49">Jose Ramos Ledesma</option>
+            <option value="74">Alan Lavanda</option>
+        </select>
+        <button id="opEjecutiva" data-dismiss="modal">Buscar</button>
+    </div>
+    <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="md-form">
+        <input type="text" id="fInicialEjecutiva" class="form-control datepicker">
+        <label for="fInicialEjecutiva">Fecha Inicio</label>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="md-form">
+        <input type="text" id="fFinalEjecutiva" class="form-control datepicker">
+        <label for="fFinalEjecutiva">Fecha Final</label>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<div id="vistaFecha" style="width: 75% ; text-align: center; margin:0px 12%; display: none" class="form-inline">
+   <div class="row w-100">
+    <div class="col-md-6 mb-4 w-50">
+      <div class="md-form">
+        <input type="text" id="fInicial" class="form-control datepicker">
+        <label for="fInicial">Fecha Inicio</label>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4 w-50">
+      <div class="md-form">
+        <input type="text" id="fFinal" class="form-control datepicker">
+        <label for="fFinal">Fecha Final</label>
+        <button onclick="mostrarCalendar();">Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="calendar" class="px-3"></div>
+
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+
+<script type="text/javascript" src="Modulos/ModOrden/VistaPrincipal.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="Bootstrap/js/moment.min.js"></script>
+<script type="text/javascript" src="Bootstrap/js/calendar.min.js"></script>
+<script type="text/javascript" src="Bootstrap/js/picker.js"></script>
+<script type="text/javascript" src="Bootstrap/js/picker.date.js"></script>
+<link rel="stylesheet" href="Bootstrap/css/fullcalendar.css">
+<link rel="stylesheet" href="Bootstrap/js/pickadate.js-3.6.2/lib/themes/classic.css">
+<link rel="stylesheet" href="Bootstrap/js/pickadate.js-3.6.2/lib/themes/classic.date.css">
+<link rel="stylesheet" href="Bootstrap/js/pickadate.js-3.6.2/lib/themes/classic.time.css">
+
+<script>
+  
+/*OPCIONES DEL DATEPICKER (INPUT TYPE='DATE')*/
+$('.datepicker').pickadate({
+format: 'dd mmm, yyyy',
+formatSubmit: 'yyyy/mm/dd',
+weekdaysShort: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+showMonthsShort: true,
+monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre','Noviembre', 'Diciembre'],
+monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic']
+});
+    
+/*FUNCION PARA HABILITAR EL DATAPICKER Y SUS RESTRICCIONES*/    
+function iniciador(start,end){
+    
+      // Get the elements
+  var from_input = $('#'+start).pickadate(),
+    from_picker = from_input.pickadate('picker')
+  var to_input = $('#'+end).pickadate(),
+    to_picker = to_input.pickadate('picker')
+
+  // Check if there’s a “from” or “to” date to start with and if so, set their appropriate properties.
+  if (from_picker.get('value')) {
+    to_picker.set('min', from_picker.get('select'))
+  }
+  if (to_picker.get('value')) {
+    from_picker.set('max', to_picker.get('select'))
+  }
+
+  // Apply event listeners in case of setting new “from” / “to” limits to have them update on the other end. If ‘clear’ button is pressed, reset the value.
+  from_picker.on('set', function (event) {
+    if (event.select) {
+      to_picker.set('min', from_picker.get('select'))
+    } else if ('clear' in event) {
+      to_picker.set('min', false)
+    }
+  })
+  to_picker.on('set', function (event) {
+    if (event.select) {
+      from_picker.set('max', to_picker.get('select'))
+    } else if ('clear' in event) {
+      from_picker.set('max', false)
+    }
+  })
+    
+}
+
+jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('#orProduccion').select2();
+    }); 
+});    
+    
+/*FUNCIONES ONCLICK*/    
+$(document).ready(function(){
+    
+   $("#btnOrden").click(function(){
+       $("#calendar").fullCalendar('destroy');
+       $("#resultado").addClass("d-none");
+       habilitarVista('vistaOrden');
+       slider2.mostrarOrdProduccion();
+   });
+    
+   $("#btnCliente").click(function(){
+       $("#calendar").fullCalendar('destroy');
+       $("#vistaCliente").html("");
+       $("#ListadoPrincipal").addClass("d-none")
+       iniciador('fInicialCliente','fFinalCliente');
+       document.getElementById("fInicialCliente").value="";
+       document.getElementById("fFinalCliente").value="";
+       habilitarVista('vistaCliente');
+       mostrarCliente("../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarClientesItemOP.php"); 
+   }); 
+    
+   $("#btnEjecutiva").click(function(){
+       $("#calendar").fullCalendar('destroy');
+       $("#vistaEjecutiva").html("");
+       $("#ListadoPrincipal").addClass("d-none")
+       iniciador('fInicialEjecutiva','fFinalEjecutiva');
+       document.getElementById("ejecutiva").value=0;
+       habilitarVista('vistaEjecutiva');
+   }); 
+    
+   $("#btnFecha").click(function(){
+       $("#resultado").addClass("d-none");
+       $("#ListadoPrincipal").addClass("d-none")
+       habilitarVista('vistaFecha');
+       iniciador('fInicial','fFinal');
+       document.getElementById("fInicial").value="";
+       document.getElementById("fFinal").value="";
+   }); 
+    
+});    
+
+/*FUNCION MOSTRAR CLIENTES CON OT*/    
+function mostrarCliente(url){
+    
+    var boxCliente="";
+    
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxCliente+="<option value='0' selected>Elegir Cliente</option>";
+            $("#cliente").html(boxCliente);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxCliente+="<option value='' selected>Elegir Cliente</option>";
+                $("#cliente").html(boxCliente);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxCliente+="<option value='0' selected>Elegir Cliente</option>";
+                    }
+                    boxCliente+="<option value='"+datos[i].CLIENCODIGO+"'>"+datos[i].CLIENNOMBRE_CORTO+"</option>";
+                }
+                $("#cliente").html(boxCliente);
+            }
+        }
+    });
+}
+
+/*MODAL DE CLIENTE*/    
+$("#listadoCliente").on('hidden.bs.modal', function(){
+    if (opCliente != 0 && $("#cliente option:selected").text() != "Elegir Cliente"){
+        collapse($("#cliente").val(),"Cliente")
+    }
+});
+    
+/*MODAL DE EJECUTIVA*/    
+$("#listadoEjecutiva").on('hidden.bs.modal', function(){
+    if (opEjecutiva != 0 && $("#ejecutiva option:selected").text() != "Elegir Ejecutiva"){
+        collapse($("#ejecutiva").val(),"Ejecutiva")
+    }
+}); 
+    
+/*FUNCION DE DATA A CONSULTAR PARA MOSTRAR*/    
+function collapse(codigo,opcion){
+    var finicial = convertirAFecha(document.getElementById("fInicial"+opcion).value);
+    var ffinal = convertirAFecha(document.getElementById("fFinal"+opcion).value);
+    if(finicial!="" && ffinal!=""){
+        finicial=parseInt((finicial.split("-")[0]).substr(2,2)+finicial.split("-")[1]+finicial.split("-")[2]+"000");
+        ffinal=parseInt(ffinal.split("-")[0].substr(2,2)+ffinal.split("-")[1]+ffinal.split("-")[2]+"999");
+    }else if(finicial!="" && ffinal==""){
+        finicial=parseInt((finicial.split("-")[0]).substr(2,2)+finicial.split("-")[1]+finicial.split("-")[2]+"000");
+        ffinal="999999999";
+    }else if(finicial=="" && ffinal!=""){
+        finicial="000000001";
+        ffinal=parseInt(ffinal.split("-")[0].substr(2,2)+ffinal.split("-")[1]+ffinal.split("-")[2]+"999");;
+    }else{
+        finicial="000000001";
+        ffinal="999999999";
+    }
+    var url = "",selected = "";
+    var $datos = {'_dato': codigo}
+  
+  if(opcion=="Cliente"){
+      selected = document.getElementById("cliente").options[document.getElementById("cliente").selectedIndex].text;
+      url = "../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenesXCliente.php";
+  }else{
+      selected = document.getElementById("ejecutiva").options[document.getElementById("ejecutiva").selectedIndex].text;
+      url = "../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenesXVendedor.php";
+  }
+    
+  $("#nombre").html(selected);
+  
+   $.ajax({
+        url: url,
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BÚSQUEDA");
+                $("#resultado").removeClass("d-none")
+            }else{
+                llenarTablaDetalle(datos,opcion,finicial,ffinal);  
+                $("#resultado").addClass("d-none")
+            }
+        }
+    });
+    
+}
+    
+/*FUNCION DE CONVERTIR DIA DE LA SEMANA EN LETRAS A FORMATO FECHA(DATE)*/    
+function convertirAFecha(fecha){
+    if(fecha!=""){
+        var arrayMes = ["Ene","01","Feb","02","Mar","03","Abr","04","May","05","Jun","06","Jul","07","Ago","08","Set","09","Oct","10","Nov","11","Dic","12"];
+        var mes = "" ;
+        for (var i=0; i<arrayMes.length; i+=2){
+            if(fecha.substr(3,3)==arrayMes[i]){
+                mes= arrayMes[i+1];
+            }
+        }
+        fecha = fecha.substr(8,4)+"-"+mes+"-"+fecha.substr(0,2);
+    }else{
+        fecha="";
+    }
+    
+    return fecha
+}
+
+/*FUNCION PARA LLENAR Y MOSTRAR TABLA CON LOS DATOS ENVIADOS*/    
+function llenarTablaDetalle(datos,opcion,finicial,ffinal){
+    var a=0
+    var mostrarDatos="";
+    mostrarDatos="<div class='accordion' id='vista"+opcion+"' style='width: 75% ; text-align: center; margin:0px 12%'>\
+                    <div class='accordion md-accordion' id='accordionEx' role='tablist' aria-multiselectable='true'>"
+    for( var i=0;i<datos.length;i++){
+        if(finicial<=datos[i].OPCODIGO && ffinal>=datos[i].OPCODIGO){
+            if(a==0){
+            mostrarDatos+="<div class='card'>\
+                            <div class='card-header' role='tab' id='heading"+(i+1)+"'>\
+                                <a data-toggle='collapse' data-parent='#accordionEx' href='#collapse"+(i+1)+"' aria-expanded='true' aria-controls='collapse"+(i+1)+"'>\
+                                    <div class='form-inline w-100'>\
+                                        <div class='w-75'>\
+                                            <h5 class='mb-0'>Número de Orden de Producción: "+datos[i].OPCODIGO+"</h5>\
+                                        </div>\
+                                        <div class='w-25'>\
+                                            <h5 class='mb-0'>Estado: "+abreviaturas(datos[i].ESTDESCRIPCION)+"</h5>\
+                                        </div>\
+                                    </div>\
+                                </a>\
+                            </div>\
+                            <div id='collapse"+(i+1)+"' class='collapse show' role='tabpanel' aria-labelledby='heading"+(i+1)+"'\
+                              data-parent='#accordionEx'>\
+                              <div class='card-body'>"+creacionDetalle(datos[i].OPCODIGO) +"</div>\
+                            </div></div>";
+                a=a+1;
+        }else{
+            mostrarDatos+="<div class='card'>\
+                            <div class='card-header' role='tab' id='heading"+(i+1)+"'>\
+                                <a class='collapsed' data-toggle='collapse' data-parent='#accordionEx' href='#collapse"+(i+1)+"' aria-expanded='false' aria-controls='collapse"+(i+1)+"'>\
+                                    <div class='form-inline w-100'>\
+                                        <div class='w-75'>\
+                                            <h5 class='mb-0'>Número de Orden de Producción: "+datos[i].OPCODIGO+"</h5>\
+                                        </div>\
+                                        <div class='w-25'>\
+                                            <h5 class='mb-0'>Estado: "+abreviaturas(datos[i].ESTDESCRIPCION)+"</h5>\
+                                        </div>\
+                                    </div>\
+                                </a>\
+                            </div>\
+                            <div id='collapse"+(i+1)+"' class='collapse' role='tabpanel' aria-labelledby='heading"+(i+1)+"'\
+                              data-parent='#accordionEx'>\
+                              <div class='card-body'>"+creacionDetalle(datos[i].OPCODIGO) +"</div>\
+                            </div></div>";
+        }
+        }
+    }
+    mostrarDatos+="</div></div>";
+    $("#vista"+opcion).html(mostrarDatos);
+}  
+        
+/*FUNCION PARA LA CREACION DEL DETALLE PARA CADA OP*/    
+function creacionDetalle(codOp){
+    var extra = "";
+    var tablaDetalle="";
+    var $codigo = {'_dato': codOp,}
+    var $datos={'_codigo':codOp,'_opcion': "datos"};
+    
+    for(var i=0;i<2;i++){
+        if(i==0){
+            $.ajax({
+                url: "../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenXCodigo.php",
+                type: 'POST',
+                data: $codigo,
+                async: false,
+                dataType: 'json',
+                error: function(error){
+                    if(error.status == 401){
+                        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                    }
+                    else{
+                        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                    }
+                },
+                success: function(datos){
+                    if(datos.response=="0"){
+                        console.log("error",'ERROR: '+datos.message);
+                    }else{
+                        
+                        tablaDetalle+="<table width='100%'>"
+                        tablaDetalle+="<tr style='height: 30px' class='red white-text h4 font-weight-bold'>\
+                                        <td class='font-weight-bold w-50'>OBSERVACIONES</td>\
+                                        <td class='font-weight-bold text-center' >DETALLES</td>\
+                                      </tr>\
+                                      <tr style='height: 50px'>\
+                                        <td class='font-weight-bold w-50'>PRESUPUESTO " + datos[0].PRESUPNUMERO+"</td>\
+                                        <td class='font-weight-bold text-left' >CREACIÓN DEL PRESUPUESTO - "+datos[0].PRESUPFECHA_REGISTRO+"</td>\
+                                      </tr>\
+                                      <tr style='height: 50px'>\
+                                        <td class='font-weight-bold' >ORDEN CREADA : "+datos[0].OPCODIGO+"</td>\
+                                        <td class='font-weight-bold text-left' >PRESUPUESTO APROBADO - "+fechaGenerada(datos)+"</td>\
+                                      </tr>";
+                    }
+                    extra=generarDetalle(datos,"persona");
+                }
+            });
+        }else{
+            $.ajax({
+                url: '../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarItemXOrdProduccion.php',
+                type: 'POST',
+                data: $datos,
+                async: false,
+                dataType: 'json',
+                error: function(error){
+                  if(error.status == 401){
+                    mostrarMensaje("error","Archivos no encontrados");
+                  }
+                  else{
+                    mostrarMensaje("error","Error no identificado");
+                  }
+                },
+                success: function(datos){
+                  if(datos.response=="1"){
+                    mostrarMensaje("exito","DATOS COMPLETOS");
+                  }else{
+                      for( var i=0;i<datos.length;i++){
+                        tablaDetalle+= "<tr style='height: 50px'>\
+                                          <td class='font-weight-bold' >CREACION DE ORDEN DE PAPEL : "+datos[i].ITEMCODIGO+"</td>\
+                                          <td class='font-weight-bold text-left' >"+datos[i].ITEMDESCRIPCION+"</td>\
+                                      </tr>";
+                      }
+                      if(extra!=""){
+                           tablaDetalle=tablaDetalle+extra}
+                      tablaDetalle+="</table>";
+                  }
+                }
+            });
+        }
+    }
+    return tablaDetalle
+}
+
+/*FUNCION PARA HABILITAR  LAS VISTAS DEPENDIENDO DEL BOTON A SELECCIONAR*/    
+function habilitarVista(id){
+    $("#nombre").html("");
+    var array = ['vistaOrden', 'vistaCliente', 'vistaEjecutiva', 'vistaFecha'];
+    for(var i=0; i<array.length; i++){
+        if(id==array[i]){
+            document.getElementById(id).style.display = null;
+        }else{
+            document.getElementById(array[i]).style.display = 'none';
+        }
+    }
+    
+}
+    
+/*FUNCION DE DATA A CONSULTAR PARA MOSTRAR EN EL CALENDARIO*/  
+function mostrarCalendar(){
+    $("#calendar").fullCalendar('destroy');
+    if(document.getElementById("fInicial").value!="" && document.getElementById("fFinal").value!=""){
+        
+        var $datos = {
+            '_fInicial': convertirAFecha(document.getElementById("fInicial").value),
+            '_fFinal': convertirAFecha(document.getElementById("fFinal").value)
+          }
+           $.ajax({
+                url: "../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarSeguimientoxFecha.php",
+                type: 'POST',
+                data: $datos,
+                dataType: 'json',
+                error: function(error){
+                    if(error.status == 401){
+                        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                    }
+                    else{
+                        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                    }
+                },
+                success: function(datos){
+                    llenarCalendario(datos)
+                }
+            });
+    }
+}
+    
+/*FUNCION PARA LLENAR DATOS EN EL CALENDARIO*/    
+function llenarCalendario(datos){
+    var myData = [];
+    var datosCalendar;
+    for(var i=0; i<datos.length;i++){
+        var obj = {
+            title: datos[i].OPCODIGO,
+            start:datos[i].OPFECHAENTREGA,
+            description: datos[i].ESTDESCRIPCION,
+            textShadow:"0 0 black ",
+            backgroundColor: "#85C3F6"
+        }
+        myData.push(obj);
+    }
+    
+    var fecha=new Date();
+    $('#calendar').fullCalendar({
+    defaultView: 'month',
+    defaultDate: fecha.getFullYear()+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate(),
+    eventRender: function (eventObj, $el) {
+        $el.popover({
+            title: eventObj.title,
+            content: eventObj.description,
+            trigger: 'hover',
+            placement: 'top',
+            container: 'body'
+        });
+    },
+    events: myData
+});
+    
+}
+
+/*FUNCION PARA CARGAR EL PROGRESO DE LA OT*/
+function inicioOrdenProduccion(){
+  var estado = ['abierta','prefacturada','entregada','facturada','boleta','cancelada','letra','anulada','stand by','reemplazada'];
+  var estadosPerteneciente = new Array();
+    for(var i=0;i<estado.length;i++){
+        $("#"+estado[i]).addClass("d-none");
+    } 
+  var cabezal=""
+  cabezal+="<tr style='height: 30px'>\
+                  <th class='font-weight-bold h5' style='width:20%'>CLIENTE</th>\
+                  <th class='font-weight-bold h5' style='width:20%'>ORDEN PRODUCCION</th>\
+                  <th class='font-weight-bold h5' style='width:20%'>OBSERVACIONES</th>\
+                  <th class='font-weight-bold h5' style='width:40%'>DETALLES</th>\
+                </tr>";
+  $("#cabezal").html(cabezal)
+  var $datos = {'_dato': $("#orProduccion").val(),}
+   $.ajax({
+        url: "../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenXCodigo.php",
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            mostrarInicioOrdenProduccion(datos)
+            $("#ListadoPrincipal").removeClass("d-none")
+            switch(datos[0].ESTDESCRIPCION){
+                case "ABIERTA":
+                    $("#barraProgreso").css({'width': '17%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','boleta','cancelada',175]
+                break;
+                case "PREFACTURADA":
+                    $("#barraProgreso").css({'width': '34%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','boleta','cancelada',175]
+                break;
+                case "ENTREGADA":
+                    $("#barraProgreso").css({'width': '51%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','boleta','cancelada',175]
+                break;
+                case "FACTURADA":
+                    $("#barraProgreso").css({'width': '68%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','boleta','cancelada',175]
+                break;
+                case "BOLETA":
+                    $("#barraProgreso").css({'width': '85%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','boleta','cancelada',175]
+                break;    
+                case "CANCELADA":
+                    $("#barraProgreso").css({'width': '100%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','boleta','cancelada',175]
+                break;   
+                case "LETRA":
+                    $("#barraProgreso").css({'width': '85%'})
+                    estadosPerteneciente = ['abierta','prefacturada','entregada','facturada','letra','cancelada',175]
+                break;    
+                case "ANULADA":
+                    $("#barraProgreso").css({'width': '100%'})
+                    estadosPerteneciente = ['abierta','prefacturada','anulada',350]
+                break;    
+                case "STAND BY":
+                    $("#barraProgreso").css({'width': '50%'})
+                    estadosPerteneciente = ['abierta','prefacturada','stand by',350]
+                break;
+                case "REEMPLAZADA":
+                    $("#barraProgreso").css({'width': '43%'})
+                    estadosPerteneciente = ['abierta','prefacturada','reemplazada','entregada','facturada','boleta','cancelada',145]
+                break;       
+            }
+            for(var i=0;i<estadosPerteneciente.length-1;i++){
+                    console.log(estadosPerteneciente[i])
+                    $("#"+estadosPerteneciente[i]).removeClass("d-none");
+                    $("#"+estadosPerteneciente[i]).css({'width': estadosPerteneciente[estadosPerteneciente.length-1]+'px'})
+                } 
+        }
+    });
+}
+  
+/*FUNCION PARA MOSTRAR LA DATA DEL PRESUPUESTO DE LA OP SELECCIONADO*/    
+function mostrarInicioOrdenProduccion(datos){
+  var vendedor="";
+  switch(datos[0].PRESUPVENDEDOR){
+      case('49'): vendedor="JOSE RAMOS LEDESMA"; break;
+      case('35'): vendedor="FABIOLA MORALES"; break;
+      case('39'): vendedor="YRMA PAUCAR"; break;
+      case('54'): vendedor="MILAGROS SALINAS"; break;
+      case('28'): vendedor="LIZA GUERRERO"; break;
+      case('74'): vendedor="ALAN LAVANDA";break;
+  }
+  var contenido = "", precio= "", tablainicial = "";
+  if(datos[0].PRESUPTOTAL_DOLARES=="$0"){
+     precio= datos[0].PRESUPTOTAL_SOLES;
+  }else{
+    precio= datos[0].PRESUPTOTAL_DOLARES;
+  }
+  contenido+= "<div class='font-weight-bold red-text h3'>Infomacion de Seguimiento</div>\
+                <div class='font-weight-bold'>Personal Encargado: "+vendedor+" </div>\
+                <div class='font-weight-bold'>Fecha de Inicio: "+datos[0].PRESUPFECHA_REGISTRO+"</div>\
+                <div class='font-weight-bold'>Costo Total: "+precio+"</div>";
+  
+  $("#info").html(contenido); 
+  tablainicial+= "<tr style='height: 50px'>\
+                    <td class='font-weight-bold'>"+datos[0].CLIENRAZON_SOCIAL+"</td>\
+                    <td class='font-weight-bold'>"+datos[0].OPCODIGO+"</td>\
+                    <td class='font-weight-bold'>PRESUPUESTO " + datos[0].PRESUPNUMERO+"</td>\
+                    <td class='font-weight-bold text-left' >CREACIÓN DEL PRESUPUESTO - "+datos[0].PRESUPFECHA_REGISTRO+"</td>\
+                  </tr>\
+                  <tr style='height: 50px'>\
+                    <td class='font-weight-bold'></td>\
+                    <td class='font-weight-bold'></td>\
+                    <td class='font-weight-bold'>ORDEN CREADA : "+datos[0].OPCODIGO+"</td>\
+                    <td class='font-weight-bold text-left' >PRESUPUESTO APROBADO - "+fechaGenerada(datos)+"</td>\
+                  </tr>";
+  seguimientoOrden(tablainicial,generarDetalle(datos,"ORDEN"));
+}
+  
+/*FUNCION PARA CARGAR LOS DATOS DE LA OP SELECCIONADO*/  
+function seguimientoOrden(tablainicial,adicional){
+    var $datos={'_codigo':$("#orProduccion").val(),'_opcion': "datos"};
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarItemXOrdProduccion.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+          if(error.status == 401){
+            mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+            mostrarMensaje("error","Error no identificado");
+          }
+        },
+        success: function(datos){
+          if(datos.response=="1"){
+            mostrarMensaje("exito","DATOS COMPLETOS");
+              if(adicional!=""){tablainicial=tablainicial+adicional}
+              $("#seguimiento").html(tablainicial)
+          }else{
+              mostrarSeguimiento(datos,tablainicial,adicional)
+          }
+        }
+    });
+}
+
+/*FUNCION PARA MOSTRAR LA DATA DE LA OP SELECCIONADO*/    
+function mostrarSeguimiento(datos,tablainicial,adicional){
+  var tablapapel="";
+  for( var i=0;i<datos.length;i++){
+    tablapapel+= "<tr style='height: 50px'>\
+                      <td class='font-weight-bold' ></td>\
+                      <td class='font-weight-bold' ></td>\
+                      <td class='font-weight-bold' >CREACION DE ORDEN DE PAPEL : "+datos[i].ITEMCODIGO+"</td>\
+                      <td class='font-weight-bold text-left' >"+datos[i].ITEMDESCRIPCION+"</td>\
+                  </tr>";
+  }
+    tablainicial=tablainicial+tablapapel;
+    if(adicional!=""){
+       tablainicial=tablainicial+adicional}
+  $("#seguimiento").html(tablainicial);
+}
+
+/*FUNCION PARA CONVERTIR LA FECHA AL NUMERO DE LA ORDEN DE PRODUCCION*/    
+function fechaGenerada(datos){
+  var año = new Date();
+  var year= año.getFullYear().toString().substr(0,2)
+  var fecha_texto = year+datos[0].OPCODIGO.substr(0,2)+"-"+datos[0].OPCODIGO.substr(2,2)+"-"+datos[0].OPCODIGO.substr(4,2);
+  return fecha_texto
+}
+  
+/*FUNCION PARA GENERAR DETALLE DE LA OP*/    
+function generarDetalle(datos,opcion){
+    var estructura= "";
+    if(opcion=="ORDEN"){
+        if(datos[0].PRESUPDETALLE!=""){
+        estructura="<tr style='height: 50px'>\
+                        <td class='font-weight-bold'></td>\
+                        <td class='font-weight-bold'></td>\
+                        <td class='font-weight-bold'>PRESUPUESTO : " + datos[0].PRESUPNUMERO+"</td>\
+                        <td class='font-weight-bold text-left' >"+datos[0].PRESUPDETALLE+"</td>\
+                    </tr>\
+                    <tr style='height: 50px'>\
+                        <td class='font-weight-bold'></td>\
+                        <td class='font-weight-bold'></td>\
+                        <td class='font-weight-bold'>ORDEN : "+datos[0].OPCODIGO+"</td>\
+                        <td class='font-weight-bold text-left' >"+datos[0].OPDETALLE+"</td>\
+                    </tr>";
+        }
+        
+    }else{
+        if(datos[0].PRESUPDETALLE!=""){
+        estructura="<tr style='height: 50px'>\
+                        <td class='font-weight-bold'>PRESUPUESTO : " + datos[0].PRESUPNUMERO+"</td>\
+                        <td class='font-weight-bold text-left' >"+datos[0].PRESUPDETALLE+"</td>\
+                    </tr>\
+                    <tr style='height: 50px'>\
+                        <td class='font-weight-bold'>ORDEN : "+datos[0].OPCODIGO+"</td>\
+                        <td class='font-weight-bold text-left' >"+datos[0].OPDETALLE+"</td>\
+                    </tr>";
+        }
+    }
+    return estructura
+}
+    
+/*FUNCION PARA GENERAR LA ABREVIATURA DE LOS ESTADOS DE LA ORDEN DE PRODUCCION*/    
+function abreviaturas(palabra){
+    var abreviatura="";
+    switch(palabra) {
+            case "ABIERTA":
+        abreviatura="AB"
+        break;
+            case "PREFACTURADA":
+        abreviatura="PF"
+        break;
+            case "ENTREGADA":
+        abreviatura="EN"
+        break;
+            case "FACTURADA":
+        abreviatura="FA"
+        break;
+            case "BOLETA":
+        abreviatura="BO"
+        break;
+            case "CANCELADA":
+        abreviatura="CA"
+        break;
+            case "LETRA":
+        abreviatura="LE"
+        break;
+            case "ANULADA":
+        abreviatura="AN"
+        break;
+            case "STAND BY":
+        abreviatura="SB"
+        break;
+            case "REEMPLAZADA":
+        abreviatura="RE"
+        break;
+    }
+    return abreviatura
+}
+   
+    
+    
+</script>

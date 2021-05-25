@@ -1,0 +1,25 @@
+{
+  "short_name": "SistemaCT",
+  "name": "Sistema Administrativo del Grupo Conputextos S.A.C.",
+  "icons": [
+    {
+      "src": "/CT-FrontEnd/Elementos/CT-Icon-Manifest2.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/CT-FrontEnd/Elementos/CT-Icon-Manifest1.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/CT-FrontEnd/Elementos/CT-Icon-Manifest-Max.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/CT-FrontEnd/?utm_source=homescreen",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#2C6783"
+}

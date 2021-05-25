@@ -1,0 +1,501 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">ACTUALIZAR DATOS DEL USUARIO</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">
+         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          <label class="foto" for="foto">Seleccionar imagen</label>
+          <input type="file" id="foto" name="archivo" hidden accept="image/*">
+          
+        </div>
+        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">
+         
+          <!--CODIGO USUARIO-->
+          <label for="codigo">Código usuario</label>
+          <input required readonly type="text" class="form-control" id="codigo" aria-describedby="codigoHelp">
+          
+        </div>
+
+      </div>
+   
+   
+    </div>
+  </div>
+  
+  
+<!--DATOS PERSONALES-->
+<div class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+        
+        <div class="form-row">
+            
+        <!--APELLIDO PATERNO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="apellidos">Apellidos</label>
+          <input required readonly type="text" class="form-control" id="apellidos" aria-describedby="apellidosHelp" placeholder="Ingresar Apellidos">
+          <small id="apellidosHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+           
+        <!--NOMBRES-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombre">Nombres</label>
+          <input required readonly type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar Nombres">
+          <small id="nombreHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+           
+        <div class="w-100"></div>
+           
+        <!--USUARIO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="usuario">Usuario</label>
+          <input required readonly type="text" class="form-control" id="usuario" aria-describedby="usuarioHelp" placeholder="Ingresar usuario" onchange="verificarExistencia()">
+          <small id="usuarioHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+           
+        <!--CONTRASEÑA-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="contraseña">Contraseña</label>
+          <input required readonly type="text" class="form-control" id="contraseña" aria-describedby="contraseñaHelp" placeholder="Ingresar Contraseña" min="5">
+          <small id="contraseñaHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+            
+            
+        </div>
+    </div>
+    
+</div>
+ 
+ <div class="card" id="permisos">
+    <h5 class="card-header h5">Asignar Permisos</h5>
+    <div class=" card-body">
+        <div class="form-row">
+           
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccliente" style="float: left;float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Clientes </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accservicio" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Servicios </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accempresa" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Empresa </p>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accmaquina" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Maquina </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accbanco" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Banco </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accproveedor" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Proveedor </p>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="personal1" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Personal: Funciones Generales </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="personal2" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Personal: Condicion Laboral </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="personal3" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Personal: Vacaciones </p>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="personal4" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Personal: Control de Horario </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accusuario" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Usuario </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accnuevo_presupuesto" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Nuevo Presupuesto </p>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accactualizar_presupuesto" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Actualizar Presupuesto </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccambiar_estado_presupuesto" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Cambiar Estado Presupuesto </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accbuscar_presupuesto" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Buscar Presupuesto </p>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acclistar_presupuesto" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Listar Presupuesto </p>
+            </div>
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accf1810" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">F1810 </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccrear_orden" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Crear Orden </p>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accactualizar_orden" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Actualizar Orden </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccambiar_estado_orden" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Cambiar Estado Orden </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accbuscar_orden" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Buscar Orden </p>
+            </div>
+            
+            <div class="w-100"></div>
+          
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accreemplazar_orden" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Reemplazar Orden </p>
+            </div>        
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accseguimiento_orden" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Seguimiento Orden </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acclistar_ordenes" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Listar Ordenes </p>
+            </div>
+            
+            <div class="w-100"></div>
+          
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accseguimiento_produccion" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Seguimiento Produccion </p>
+            </div>
+                        
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accprogramar_maquinas" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Programar Maquinas </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccontrol_despachos" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Control Despacho </p>
+            </div>
+            
+            <div class="w-100"></div>
+          
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccontrol_insumos" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Control Insumos </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccostos_maquina" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Costos Maquina </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccostos_acabados" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Costos Acabados </p>
+            </div>
+            
+            <div class="w-100"></div>
+          
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccostos_tinta" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Costos Tinta </p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acclistado_costos" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Listado Costos </p>
+            </div>            
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="acccostos_trabajo" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Costos Trabajo</p>
+            </div>
+          
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accfacturacion" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Facturacion </p>
+            </div>        
+          
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accarqueo" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Arqueo</p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accnota" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Nota </p>
+            </div>
+          
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accletra" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Letra</p>
+            </div>
+          
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accguia" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Guia</p>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accrecibo" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Recibo </p>
+            </div>
+          
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <input type="checkbox" id="accfinanzas" style="float: left;padding: 0; margin: 0; width: 25px; height: 25px;" name="checkboxAnalizar">
+               <p class="mx-4 w-0 h4" style="float: left; padding: 0; margin: 0;">Finanzas </p>
+            </div>
+            
+        </div>
+        
+    </div>
+
+ </div>
+
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" id="guardarPermisos" class="btn btn-guardar">Guardar</button>
+  </div>
+
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaUsuarios/VistaUsuario.js"></script>
+<script type="text/javascript">
+    
+cargarDatos(personal);
+    
+function cargarDatos(personal){
+    var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_MostrarDatosUsuario.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#apellidos").val(datos.PERSAPELLIDO_PATERNO +" "+datos.PERSAPELLIDO_MATERNO);
+                $("#nombre").val(datos.PERSNOMBRE);
+                if(datos.PERSFOTO!=""){
+                  document.getElementById('previewFoto').src = datos.PERSFOTO;
+                } 
+                $("#codigo").val(datos.USUACODIGO);
+                $("#usuario").val(datos.USUAUSUARIO);
+                $("#contraseña").val(datos.USUAPASSWORD);
+                vUsuario.cargarPermisos(personal)
+                mostrarMensaje("exito","DATOS CARGADOS EXITOSAMENTE")
+            }
+        }
+    });
+}
+
+
+$("#guardarPermisos").click(function(){
+    var vistaPersonal=""
+    var arrayPermisos= new Array();
+    var valor,a=0;
+    for(var i=0;i<$("#permisos input").length;i++){
+        valor=document.getElementsByName("checkboxAnalizar")[i].checked;
+        if(i==6 || i==7 || i==8 || i==9){
+            if(valor==true){
+                vistaPersonal=vistaPersonal.concat(1);
+            }else{
+                vistaPersonal=vistaPersonal.concat(0);
+            }
+            
+        }else{
+            if(valor==true){
+                arrayPermisos[a]=1;
+            }else{
+                arrayPermisos[a]=0;
+            }
+            if(a==5){
+                a=a+2;
+            }else{
+                a=a+1;
+            }
+        }
+        arrayPermisos[6]=vistaPersonal
+        
+    }
+    verificarExistencia($("#codigo").val(),arrayPermisos);
+});
+    
+function verificarExistencia(codigoUser,arrayPermisos){
+    var $validar={
+        '_code': codigoUser
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_ValidarPersonalPermisos.php',
+        type: 'POST',
+        data: $validar,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 1){
+                registrarPermisos(arrayPermisos);
+            }
+            else{
+                if(datos.response == 0){
+                  mostrarMensaje("error","REGISTRO INCORRECTO! ERROR: "+datos.message);
+                }
+                else{
+                  actualizarPermisos(codigoUser,arrayPermisos);
+                }
+            }
+        }
+    });
+    
+}
+    
+function registrarPermisos(arrayPermisos){
+    var $acceso = {
+    '_codigoUsuario':$("#codigo").val(),
+    '_accesos':arrayPermisos
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_RegistrarAcceso.php',
+        type: 'POST',
+        data: $acceso,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error","REGISTRO DE PERSONAL INCORRECTO! ERROR: "+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","REGISTRO EXITOSO - Acceso!");
+            }
+        }
+    })
+}
+    
+function actualizarPermisos(codigo,arrayPermisos){
+    
+    var $usuario={
+        '_codigo': codigo,
+        '_array': arrayPermisos
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_ActualizarPermisos.php',
+        type: 'POST',
+        data: $usuario,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                mostrarMensaje("exito",'DATOS TOTALMENTE ACTUALIZADOS');
+            }
+        }
+    });
+    
+}
+    
+
+</script>

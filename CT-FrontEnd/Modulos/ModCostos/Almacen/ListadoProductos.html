@@ -1,0 +1,105 @@
+<form>
+  <div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4"></div>
+  <table id="tablaDatos" class='table table-striped table-bordered text-center' cellspacing='0' >
+    <thead id="cabezal"></thead>
+    <tbody id="cuerpoTabla"></tbody>
+  </table>
+</form>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+<script type="text/javascript">
+
+cargarDatos();  
+function cargarDatos(){
+
+
+var titulos="";
+
+      $("#encabezadoPrincipal").html("LISTADO PRINCIPAL DE LOS PRODUCTOS")
+      var url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarProductos.php';
+
+  titulos+="<tr><th class='th-sm text-center'>#</th>\
+      <th class='th-sm text-center'>CODIGO</th>\
+      <th class='th-sm text-center'>NOMBRE</th>\
+      <th class='th-sm text-center'>UNIDAD</th>\
+      <th class='th-sm text-center'>TIPO DE PRODUCTO</th>\
+      <th class='th-sm text-center'>ESTADO</th></tr>";
+  $("#cabezal").html(titulos)
+  
+  $.ajax({
+      url: url ,
+      type: 'GET',
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error",'ERROR: '+datos.message);
+          }else{
+              mostrarDatos(datos);
+          }
+      }
+  }); 
+}
+  
+/*MOSTRAR DATOS SEGUN EL TIPO*/
+function mostrarDatos(datos){
+  var tablaContenido="";
+  var estcodigo="";
+  
+  for(var i=0; i<datos.length; i++){
+
+    if(datos[i].ESTADOPRODUCTO=='66'){
+      estcodigo="ACTIVO"
+    }else{
+      estcodigo="INACTIVO"
+    }
+
+     tablaContenido+="<tr onclick='ventanaRegistrarProducto("+datos[i].PRONUMERO+")'>\
+                  <td>"+(i+1)+"</td>\
+                  <td>"+datos[i].PROCODIGO+"</td>\
+                  <td>"+datos[i].PRONOMBRE+"</td>\
+                  <td>"+datos[i].PROUNIDAD+"</td>\
+                  <td>"+datos[i].FAMPRONOMBRE+"</td>\
+                    <td>"+estcodigo+"</td>\
+              </tr>";
+  }
+  
+  $("#cuerpoTabla").html(tablaContenido);
+  $('#tablaDatos').DataTable({
+      dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+        ],
+        buttons: [
+            {
+                extend: 'pageLength',
+                text: "VER 10 FILAS"
+            },
+          {
+              extend: 'print',
+              title: 'LISTADO',
+              text: 'IMPRIMIR',
+              className: 'btn boton'
+          },
+          {
+              extend: 'pdfHtml5',
+              download: 'open',
+              title: 'LISTADO',
+              text: 'EXPORTAR PDF',
+              className: 'btn boton'
+          }
+      ]
+  });
+  $('.dataTables_length').addClass('bs-select');
+}
+</script>

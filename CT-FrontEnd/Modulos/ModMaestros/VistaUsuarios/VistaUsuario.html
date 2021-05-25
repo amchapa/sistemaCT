@@ -1,0 +1,120 @@
+<!--ESTILOS DE LA VISTA-->
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--OPCIONES DE LA VISTA-->
+<div class="w-responsive mx-auto my-3">
+  <div class="text-center black b white-text py-1">FUNCIONES GENERALES</div>
+  <div class="row text-center my-3">
+
+    <!--OPCION ACTUALIZAR USUARIO-->
+    <div class="col"><button id="actualizarUsuario" class="btn h btn-lg b secundario" data-toggle="modal" data-target="#listadoPersonal" onclick="mostrarPersonal();return false"><i class="fas fa-user-edit fa-4x"></i><br>Actualizar Usuario</button></div>
+    
+    <!--OPCION ASIGNAR PERMISOS-->
+    <div class="col"><button id="asignarPermisos" class="btn h btn-lg b secundario" data-toggle="modal" data-target="#listadoPersonal" onclick="mostrarPersonal();return false"><i class="fas fa-user-slash fa-4x"></i><br>Asignar permisos</button></div>
+
+  </div>
+</div>
+
+<!-- MODAL LISTAR PERSONAL -->
+<div class="modal fade" id="listadoPersonal" tabindex="-1" role="dialog" aria-labelledby="listadoPersonalTitulo"
+  aria-hidden="true">
+<div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Personal</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select name="personal" id="personal" class="w-responsive"></select>
+        <button id="opPersonal" data-dismiss="modal">Buscar</button>
+      </div>
+
+    </div>
+    
+</div>
+</div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaUsuarios/VistaUsuario.js"></script>
+
+<script>    
+
+/*=============================================
+    CARGAR DATOS DEL PERSONAL
+=============================================*/
+    
+function mostrarPersonal(){
+    var boxPersonal="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxPersonal+="<option value='' selected>Elegir Personal</option>";
+            $("#personal").html(boxPersonal);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                $("#personal").html(boxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                    }
+                    boxPersonal+="<option value='"+datos[i].PERSCODIGO+"'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+" "+datos[i].PERSNOMBRE+"</option>";
+                }
+                $("#personal").html(boxPersonal);
+            }
+        }
+    });  
+    
+}
+    
+/*=============================================
+   BUSCAR X OPCION
+=============================================*/
+    
+var opPersonal=0;
+var buscar="NO";
+var personal,opcion;
+    
+$("#actualizarUsuario").click(function(){
+    opPersonal=1;
+    opcion="actualizarUsuario";
+});
+  
+$("#asignarPermisos").click(function(){
+    opPersonal=1;
+    opcion="asignarPermisos";
+});
+    
+$("#opPersonal").click(function(){
+    buscar="SI";
+    personal=$("#personal").val();
+});      
+    
+$("#listadoPersonal").on('hidden.bs.modal', function(){
+    if (opPersonal != 0 && buscar=="SI"  && $("#personal option:selected").text() != "Elegir Personal"){
+        ControlUsuario(personal,opcion);
+    }
+});     
+    
+</script>

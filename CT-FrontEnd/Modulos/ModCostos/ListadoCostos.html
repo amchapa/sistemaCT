@@ -1,0 +1,161 @@
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">LISTADO COSTOS</div>
+  
+ <div class="w-responsive mx-auto my-5">
+    
+    <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">COSTOS X ORDEN PRODUCCION</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto font-weight-bold pr-2" for="codigo">ORDEN PRODUCCION</label>
+            <input id="codigo" class="w-responsive" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" min="1" maxlength="9">
+           </div>
+           <button id="listarxCodigo" type="submit" onclick="evaluarDatos(this.id)" class="btn principal px-5">LISTAR</button>
+    </div>
+    <div class="formulario text-center my-3  mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">COSTOS X FECHA</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechai">DESDE :</label>
+            <input id="fechai" name="datetime_1" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechaf">HASTA :</label>
+            <input id="fechaf" name="datetime_2" class="w-responsive" type="date">
+           </div>
+           <button id="listarxfecha" type="submit" onclick="evaluarDatos(this.id)" class="btn principal px-5">LISTAR</button>
+    </div>
+    <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">COSTOS X TRABAJADOR</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechait">DESDE :</label>
+            <input id="fechait" name="datetime_3" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechaft">HASTA :</label>
+            <input id="fechaft" name="datetime_4" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="personal">PERSONAL :</label>
+            <select name="personal" id="personal" style="width: 70%"></select>
+           </div>
+           <button id="listarxTrabajador" type="submit" onclick="evaluarDatos(this.id)" class="btn principal px-5">LISTAR</button>
+    </div>
+    <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">COSTOS X PROCESOS</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechaip">DESDE :</label>
+            <input id="fechaip" name="datetime_5" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechafp">HASTA :</label>
+            <input id="fechafp" name="datetime_6" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="acabados">PROCESOS :</label>
+            <select name="acabados" id="acabados" style="width: 70%"></select>
+           </div>
+           <button id="listarxProcesos" type="submit" onclick="evaluarDatos(this.id)" class="btn principal px-5">LISTAR</button>
+    </div>
+    <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">COSTOS TOTAL</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechaiT">DESDE :</label>
+            <input id="fechaiT" name="datetime_7" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="fechafT">HASTA :</label>
+            <input id="fechafT" name="datetime_8" class="w-responsive" type="date">
+            <label class="mr-auto pr-2 font-weight-bold" for="Tipo">TIPOS :</label>
+            <select name="Tipo" id="Tipo" style="width: 70%">
+              <option value="999999999">TODO</option>
+              <option value="111111111">LIMPIEZA</option>
+              <option value="222222222">MANTENIMIENTO</option>
+              <option value="333333333">SIN O/T</option>
+              <option value="444444444">ADMINISTRATIVO</option>
+              <option value="555555555">MAQUINA MALOGRADA</option>
+            </select>
+           </div>
+           <button id="listarxTipos" type="submit" onclick="evaluarDatos(this.id)" class="btn principal px-5">LISTAR</button>
+    </div>    
+</div>
+
+
+ <!-- MENSAJE -->
+<div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModCostos/VistaCostos.js"></script>
+ <script type="text/javascript">
+  
+cargarHora();
+mostrarPersonal();
+mostrarAcabados();
+  
+$("#codigo").on('keydown', function(e) {
+      if (e.which == 13) {
+        $("#listarxCodigo").trigger('click');
+        return false;    
+      }
+});
+  
+function cargarHora(){
+  var Hoy = new Date();
+  var Hora= Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+  $("#fechai").val(Hora);
+  $("#fechaf").val(Hora);
+  $("#fechait").val(Hora);
+  $("#fechaft").val(Hora);
+  $("#fechaip").val(Hora);
+  $("#fechafp").val(Hora);
+  $("#fechaiT").val(Hora);
+  $("#fechafT").val(Hora);
+}
+function evaluarDatos(tipoListado){
+  var codigo;
+  switch(tipoListado){
+      case("listarxCodigo"):
+        codigo= $("#codigo").val(); break;
+      case("listarxTrabajador"):
+        codigo=$("#personal").val(); break;
+      case("listarxProcesos"):
+        codigo=$("#acabados").val(); break;
+      case("listarxTipos"):
+        codigo= $("#Tipo").val(); break;
+  }
+  
+  if(tipoListado=="listarxfecha"){
+      ListarCostos(tipoListado);
+  }
+  else{
+    if(codigo == "0" || codigo.length == 0 || /^\s+$/.test(codigo)){
+      mostrarMensaje("error","NO HAY INFORMACIÓN, SELECCIONAR O INGRESAR OPCIÓN");
+      switch(tipoListado){
+        case("listarxCodigo"):
+          $("#codigo").focus(); break;
+        case("listarxTrabajador"):
+          $("#personal").focus(); break;
+        case("listarxProcesos"):
+          $("#acabados").focus(); break;
+        case("listarxTipos"):
+          $("#Tipo").focus(); break;
+      }
+    }
+    else{
+      ListarCostos(tipoListado)
+    }
+  }
+}
+function ListarCostos(tipoListado){
+  var $datos;
+  var codigo,fechainicio,fechafin;
+  switch(tipoListado){
+      case("listarxCodigo"):
+        codigo= $("#codigo").val(); break;
+      case("listarxfecha"):
+        fechainicio=$("#fechai").val(); fechafin=$("#fechaf").val(); break;
+      case("listarxTrabajador"):
+        codigo=$("#personal").val(); fechainicio=$("#fechait").val(); fechafin=$("#fechaft").val(); break;
+      case("listarxProcesos"):
+        codigo=$("#acabados").val(); fechainicio=$("#fechaip").val(); fechafin=$("#fechafp").val(); break;
+      case("listarxTipos"):
+        codigo= $("#Tipo").val(); fechainicio=$("#fechaiT").val(); fechafin=$("#fechafT").val(); break;
+  }
+  $datos={
+    '_codigo': codigo,
+    '_fechainicio': fechainicio,
+    '_fechafin': fechafin,
+  }
+  mostrarMensaje("exito","DATOS CARGADOS")
+}
+   
+</script>

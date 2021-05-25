@@ -1,0 +1,70 @@
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--OPCIONES DE LA VISTA-->
+ <div class="w-responsive mx-auto my-5">
+  <div class="row text-center">
+   
+    <!--OPCION NUEVO PROVEEDOR-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="NuevoProveedor();return false">Registrar Nuevo Proveedor</button></div>
+    
+    <!--OPCION LISTADO PROVEEDORES-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="ListadoProveedor();return false">Listado Proveedores</button></div>
+    
+    <!--OPCION NUEVO GASTO-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="NuevoGato();return false">Nuevo Gasto</button></div>
+    
+  </div>
+</div>
+
+<!--LISTADO DE BUSQUEDAS DE LA VISTA-->
+<div class="w-responsive mx-auto my-5">
+   
+   <div class="text-center boton b white-text py-1">LISTADO GASTOS</div>
+    
+    <!--LISTADO DE CLIENTES X NOMBRE-->
+    <div class="formulario text-center mt-4 pb-3">
+        <p class="b subform white-text py-1">LISTAR X FECHA</p>
+        <form action="POST">
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="finicio">Fecha Inicio</label>
+            <input class="w-responsive" id="finicio" type="datetime-local">
+           </div>
+           <div class="w-100"></div>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto"> 
+            <label class="mr-auto pr-2" for="ffinal">Fecha Final</label>
+            <input class="w-responsive" id="ffinal" type="datetime-local">
+           </div>
+           <button type="button" id="listarXFecha" class="px-5">Listar</button>
+        </form>
+        
+    </div>
+    
+</div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaProveedores/VistaProveedores.js"></script>
+
+<script>
+
+/*=============================================
+    ELEGIR OPCION DE LISTADO
+=============================================*/
+
+var fInicio="";
+var fFinal="";
+    
+$("#listarXFecha").click(function(){
+
+    fInicio=$("#finicio").val();
+    fFinal=$("#ffinal").val();
+    ListarFechas(fInicio,fFinal);
+});       
+     
+    
+</script>
+

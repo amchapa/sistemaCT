@@ -1,0 +1,328 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form id="form">
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">Registro de nuevo personal</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">
+         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          <label class="foto" for="foto">Seleccionar imagen</label>
+          <input type="file" id="foto" name="archivo" hidden accept="image/*">
+          
+        </div>
+        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">
+         
+          <!--CODIGO-->
+          <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. INGRESO A LA EMPRESA-->
+          <label for="fIngreso">Fecha de Ingreso</label>
+          <input required type="date" class="form-control" id="fIngreso" aria-describedby="fIngresoHelp">
+          <small id="fIngresoHelp" class="form-text text-muted">Ingresar Fecha de Ingreso al Grupo Computextos.</small>
+          
+          <!--ESTADO-->
+          <label for="estado" style="margin-top: 1rem;">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+          
+        </div>
+
+      </div>
+   
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Personales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--APELLIDO PATERNO-->
+        <div class="col-12 col-md form-group">
+          <label for="aPaterno">Apellido Paterno</label>
+          <input required type="text" class="form-control" id="aPaterno" aria-describedby="aPaternoHelp" placeholder="Ingresar apellido paterno">
+          <small id="aPaternoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--APELLIDO MATERNO-->
+        <div class="col-12 col-md form-group">
+          <label for="aMaterno">Apellido Materno</label>
+          <input required type="text" class="form-control" id="aMaterno" aria-describedby="aMaternoHelp" placeholder="Ingresar apellido materno">
+          <small id="aMaternoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--NOMBRE-->
+        <div class="col-12 col-md form-group">
+          <label for="nombre">Nombres</label>
+          <input required type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar nombres">
+          <small id="nombreHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--IDENTIFICACION-->
+        <div class="col-12 col-md form-group">
+          <label for="tipiden">Identificacion</label>
+          <div class="form-inline">
+            <select required id="tipiden" class="form-control">
+              <option value="RUC">RUC</option>
+              <option value="LE-DNI">LE/DNI</option>
+              <option value="PAS">PAS</option>
+            </select>
+            <input required type="number" class="form-control" id="numIdentificacion" aria-describedby="numIdentificacionHelp" placeholder="Ingresar numero de identificacion" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11">
+          </div>
+          <small id="numIdentificacionHelp" class="form-text text-muted">Segun el tipo de documento, ingresar el numero de identificacion.</small>
+        </div>
+        
+        <!--SEXO-->
+        <div class="col-12 col-md form-group">
+          <label for="sexo">Sexo</label>
+          <select required id="sexo" class="form-control" aria-describedby="sexoHelp">
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+          </select>
+          <small id="sexoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--F. NACIMIENTO-->
+        <div class="col-12 col-md form-group">
+          <label for="fNacimiento">Fecha de Nacimiento</label>
+          <input required type="date" class="form-control" id="fNacimiento" aria-describedby="fNacimientoHelp">
+          <small id="fNacimientoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--TELEFONO 1-->
+        <div class="col-12 col-md form-group">
+          <label for="telefono1">Telefono fijo</label>
+          <input required type="number" min="0" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="telefono1" aria-describedby="telefono1Help" placeholder="Ingresar telefono 1">
+          <small id="telefono1Help" class="form-text text-muted">Recomendacion: Ingresar el telefono fijo del personal.</small>
+        </div>
+        
+        <!--TELEFONO 2-->
+        <div class="col-12 col-md form-group">
+          <label for="telefono2">Telefono opcional</label>
+          <input type="number" min="0" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="telefono2" aria-describedby="telefono2Help" placeholder="Ingresar telefono 2">
+          <small id="telefono2Help" class="form-text text-muted">Recomendacion: Ingresar el telefono auxiliar del personal.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--CORREO 1-->
+        <div class="col-12 col-md form-group">
+          <label for="correo1">Correo personal</label>
+          <input type="email" class="form-control" id="correo1" aria-describedby="correo1Help" placeholder="Ingresar correo personal">
+          <small id="correo1Help" class="form-text text-muted">Recomendacion: Ingresar el correo personal.</small>
+        </div>
+        
+        <!--CORREO 2-->
+        <div class="col-12 col-md form-group">
+          <label for="correo2">Correo corporativo</label>
+          <input type="email" class="form-control" id="correo2" aria-describedby="correo2Help" placeholder="Ingresar correo corporativo">
+          <small id="correo2Help" class="form-text text-muted">Recomendacion: Ingresar el correo del personal en la empresa.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--PROVINCIA-->
+        <div class="col-12 col-md form-group">
+          <label for="prov">Provincia</label>
+          <select required id="prov" class="form-control" aria-describedby="provHelp"></select>
+          <small id="provHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--DISTRITO-->
+        <div class="col-12 col-md form-group">
+          <label for="distrito">Distrito</label>
+          <select required id="distrito" class="form-control" aria-describedby="distritoHelp"></select>
+          <small id="distritoHelp" class="form-text text-muted">Las opciones de distrito se generaran en base a la provincia elegida.</small>
+        </div>
+        
+        <!--DIRECCION-->
+        <div class="col-12 col-md form-group">
+          <label for="domicilio">Direccion</label>
+          <input type="text" class="form-control" id="domicilio" aria-describedby="domicilioHelp" placeholder="Ingresar direccion (calle, dpto, mzna, etc)">
+          <small id="domicilioHelp" class="form-text text-muted">Ejemplo: Calle Los geranios 136 Urb. Pacifico.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS LABORALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Laborales</h5>
+    <div class="card-body">
+
+      <div class="row">
+    
+        <!--EMPRESA ASIGNADA-->
+        <div class="col-12 col-md form-group">
+          <label for="empresa">Empresa</label>
+          <select required id="empresa" class="form-control" aria-describedby="empresaHelp"></select>
+          <small id="empresaHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--AREA-->
+        <div class="col-12 col-md form-group">
+          <label for="area">Area</label>
+          <select required id="area" class="form-control" aria-describedby="areaHelp"></select>
+          <small id="areaHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--ESPECIALIDAD-->
+        <div class="col-12 col-md form-group">
+          <label for="especialidad">Especialidad</label>
+          <input type="text" class="form-control" id="especialidad" aria-describedby="especialidadHelp" placeholder="Ejemplo: Maquinista R700">
+          <small id="especialidadHelp" class="form-text text-muted">Especificar la especialidad del trabajador en caso se requiera.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--TIPO DE HORARIO-->
+        <div class="col-12 col-md form-group">
+          <label for="tHorario">Tipo de horario</label>
+          <select required id="tHorario" class="form-control" aria-describedby="tHorarioHelp" onchange="vPersonal.cambioSelect();">
+              <option value="Fijo">Fijo</option>
+              <option value="Rotativo">Rotativo</option>
+          </select>
+          <small id="tHorarioHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--TURNO O GRUPO-->
+        <div class="col-12 col-md form-group">
+          <label for="turno">Turno o Grupo</label>
+          <select required id="turno" class="form-control" aria-describedby="turnoHelp"></select>
+          <small id="turnoHelp" class="form-text text-muted">Las opciones varian de acuerdo al tipo de horario.</small>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  
+   <!-- MODAL MENSAJE DE RENOVACION -->
+ <div class="modal fade" id="mensajeAsignacion" tabindex="-1" role="dialog" aria-labelledby="mensajeAsignacionTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Mensaje Asignacion Permisos</h5>
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         El usuario del personal creado no cuenta con acceso a ninguna vista. Se debe asignar los permisos manualmente. ¿Desea Continuar?
+         <div class="text-center">
+         <button id="afirmar" data-dismiss="modal">SI</button>
+         <button id="negar"  data-dismiss="modal" aria-label="Close">NO</button>
+          </div>
+        </div>
+      </div>
+
+  </div>
+ </div>
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" id="guardar" class="btn btn-guardar">Guardar</button>
+    <button type="reset" id="reset" class="btn btn-reset">Limpiar</button>
+  </div>
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script type="text/javascript">
+    
+var opcion,enviar,personal;
+ 
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function() {
+    vPersonal.cambioSelect();    
+    vPersonal.fechaActual("fechaXhora");  
+    vPersonal.mostrarEmpresa();
+    vPersonal.mostrarEstado();
+    vPersonal.mostrarAreas();
+    vPersonal.mostrarProvincia("PERU");
+    vPersonal.mostrarDistrito("Elegir Provincia");
+});
+
+//--EVENTO CLICK >> GUARDAR--    
+$("#guardar").click(function(){
+    vPersonal.validarFormulario("REGISTRAR");
+});
+  
+//--EVENTO CLICK >> LIMPIAR--    
+$("#reset").click(function(){
+    document.getElementById("guardar").disabled = false;
+}); 
+
+//--EVENTO CHANGE >> SELECCION DE PROVINCIA--
+$("#prov").change(function() {
+    vPersonal.mostrarDistrito($("#prov option:selected").text());
+});
+
+//--LLAMAR A FUNCION MOSTRAR IMAGEN AL CARGAR IMAGEN--    
+var inputFile = document.getElementById('foto');
+inputFile.addEventListener('change', vPersonal.mostrarImagen, false);  
+    
+$("#afirmar").click(function(){
+    opcion="asignarPermisos";
+    enviar="SI";
+    vPersonal.RegistrarAcceso();
+}); 
+    
+$("#negar").click(function(){
+    vPersonal.RegistrarAcceso();
+    enviar="NO"
+})
+    
+$("#mensajeAsignacion").on('hidden.bs.modal', function(){
+    var mayor=0  
+    if (opcion=="asignarPermisos" && enviar=="SI"){
+        $.ajax({
+            url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonal.php',
+            type: 'GET',
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                }
+                else{
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                }
+            },
+            success: function(datos){
+                for(var i=0;i<datos.length;i++){
+                    mayor=datos[i].PERSCODIGO;
+                }
+                personal=mayor;
+                VistasEspecificas(personal,opcion);
+            }
+       });
+        
+    }
+});
+
+</script>

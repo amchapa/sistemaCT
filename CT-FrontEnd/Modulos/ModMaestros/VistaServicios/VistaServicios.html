@@ -1,0 +1,208 @@
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--OPCIONES DE LA VISTA-->
+ <div class="w-responsive mx-auto my-5">
+  <div class="row text-center">
+   
+    <!--OPCION NUEVO SERVICIO-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="NuevoServicio();return false" >Nuevo Servicio</button></div>
+    
+    <!--OPCION ACTUALIZAR SERVICIO-->
+    <div class="col"><button class="btn h btn-lg b boton"  id="actualizaServicio" data-toggle="modal" data-target="#listadoServicio">Actualizar Servicio</button></div>
+    
+  </div>
+</div>
+
+<!--LISTADO DE BUSQUEDAS DE LA VISTA-->
+<div class="w-responsive mx-auto my-5">
+    <div class="text-center boton b white-text py-1">LISTADO SERVICIOS</div>
+    
+    <!--LISTADO DE SERVICIOS X NOMBRE-->
+    <div class="formulario text-center mt-4 pb-3">
+        <p class="b subform white-text py-1">BUSCAR X NOMBRE</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="nombre">Nombre</label>
+            <input id="nombre" class="w-responsive" id="nombre" type="text">
+           </div>
+           <button id="listarxNombre" type="submit"  class="px-5">Buscar</button>
+
+        
+    </div>
+    
+    <!--LISTADO DE SERVICIOS X FAMILIA-->
+    <div class="formulario text-center mt-4 pb-3">
+        <p class="b subform white-text py-1">LISTAR X FAMILIA</p>
+
+           <div  class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="familia">Familia</label>
+            <select name="familia" class="w-responsive" id="familia"></select>
+           </div>
+           <button id="listarXFamilia" type="submit" class="px-5">Listar</button>
+
+        
+    </div>
+    
+</div>
+
+<!-- MODAL LISTAR SERVICIOS -->
+<div class="modal fade" id="listadoServicio" tabindex="-1" role="dialog" aria-labelledby="listadoServicioTitulo"
+  aria-hidden="true">
+<div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Servicio</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select name="servicio" id="servicio" class="w-responsive"></select>
+        <button id="opServicio" data-dismiss="modal">Buscar</button>
+      </div>
+
+    </div>
+    
+</div>
+</div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaServicios/VistasServicios.js"></script>
+
+<script>
+
+mostrarServicios();     
+mostrarFamilia()    
+    
+/*=============================================
+    CARGAR SERVICIOS
+=============================================*/
+    
+function mostrarServicios(){
+    var boxServicios="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Servicios/Controlador_MostrarTodosServicios.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxServicios+="<option value='' selected>Elegir Servicio</option>";
+            $("#servicio").html(boxServicios);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxServicios+="<option value='' selected>Elegir Servicio</option>";
+                $("#servicio").html(boxServicios);
+
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxServicios+="<option value='' selected>Elegir Servicio</option>";
+                    }
+                    boxServicios+="<option value='"+datos[i].SERVCODIGO+"'>"+datos[i].SERVDESCRIPCION+"</option>";
+                }
+                $("#servicio").html(boxServicios);
+
+            }
+        }
+    });  
+    
+}
+    
+/*=============================================
+    CARGAR FAMILIA
+=============================================*/
+
+//--GENERAR OPCIONES DE FAMILIA--   
+function mostrarFamilia(){
+    var boxFamilia="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Servicios/Controlador_MostrarFamilia.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxFamilia+="<option value='' selected>Elegir Familia</option>";
+            $("#familia").html(boxFamilia);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxFamilia+="<option value='' selected>Elegir Familia</option>";
+                $("#familia").html(boxFamilia);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxFamilia+="<option value='' selected>Elegir Familia</option>";
+                    }
+                    boxFamilia+="<option value='"+datos[i].FAMCODIGO+"'>"+datos[i].FAMDESCRIPCION+"</option>";
+                }
+                $("#familia").html(boxFamilia);
+            }
+        }
+    });  
+}
+
+/*=============================================
+    ELEGIR OPCION DE LISTADO
+=============================================*/
+var opcion="";
+var select=""; 
+    
+$("#listarxNombre").click(function(){
+    opcion="NOMBRE";
+    select=$("#nombre").val();
+    if(select != ""){
+        ListarServicio(opcion,select);
+    }else{mostrarMensaje("advertencia","Escribir Nombre")}
+    
+ });   
+    
+$("#listarXFamilia").click(function(){
+    opcion="FAMILIA";
+    select=$("#familia").val();
+    if(select != ""){
+        ListarServicio(opcion,select);
+    }else{mostrarMensaje("advertencia","Seleccionar Familia")}
+});
+
+/*=============================================
+   BUSCAR X NOMBRE DE LA SERVICIO
+=============================================*/
+    
+var buscar="NO";
+var servicio;
+    
+$("#opServicio").click(function(){
+   buscar="SI";
+   servicio=$("#servicio").val();
+    
+}); 
+    
+$("#listadoServicio").on('hidden.bs.modal', function(){
+    if (buscar=="SI" && $("#servicio option:selected").text() != "Elegir Servicio"){
+        ActualizarServicio(servicio);
+    }else{mostrarMensaje("advertencia","Seleccionar servicio")}
+});
+
+</script>

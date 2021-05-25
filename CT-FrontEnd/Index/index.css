@@ -1,0 +1,35 @@
+{ margin: 0;padding: 0;}
+
+/*=============================================
+LOGIN         
+=============================================*/
+
+/*===CENTRAR DIV EN LA PANTALLA===*/
+.login{
+    max-width: 400px;
+    min-height: 320px;
+    position: absolute;
+	top: 0;
+    bottom: 0;
+	left: 0;
+    right: 0;
+	height: 60%;
+	width: 50%;
+	margin: auto;
+}
+
+/*===ESTILO DE BOTON INICIAR SESION===*/
+.btn{background: white; color: black;}
+.btn:hover{background-color: #5E97C4; color: white}
+
+/*===TAMAÑO DEL LOGO===*/
+img{width: 500px;}
+
+/*===CELULARES====*/
+@media (max-width: 420.98px) { .login{height: 30;width: 70%;} img{display: none}}
+
+/*===CELULARES MIN WIDTH====*/
+@media (min-width: 420px) and (max-width: 575.98px) { .login{height: 30;width: 60%;} img{display: none} }
+
+/*===CELULARES MIN HEIGHT====*/
+@media (max-height: 600px) {img{display: none;}}

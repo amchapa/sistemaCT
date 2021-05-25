@@ -1,0 +1,1482 @@
+<style>
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+</style>
+<!--TITULO-->
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">PROGRAMAR MAQUINAS</div>
+
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="menuMaquinas" class="menu">
+    
+<!--OPCIONES GENERALES DE LA VISTA-->
+<section id="menuMaquinas-Generales">
+   <div class="w-responsive mx-auto my-3">
+
+       <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION NUEVA MAQUINA-->
+        <div class="col"><button id="programarProgramacion" class="btn btn-lg btnGeneral"><i class="fas fa-cog fa-4x"></i><br>Registrar Programación</button></div>
+
+        <!--OPCION ACTUALIZAR MAQUINA-->
+        <div class="col"><button id="agregarProgramacion" class="btn btn-lg btnGeneral"><i class="fas fa-cogs fa-4x"></i><br>Agregar Programación</button></div>
+       
+        <!--OPCION ACTUALIZAR MAQUINA-->
+        <div class="col"><button id="iniciarProgramacion" class="btn btn-lg btnGeneral"><i class="fas fa-cogs fa-4x"></i><br>Iniciar/Finalizar Programación</button></div>
+
+        <!--OPCION LISTAR MAQUINAS-->
+        <div class="col"><button id="listarProgramacion" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#modalLiatar"><i class="fas fa-tools fa-4x"></i><br>Listar Programación</button></div>
+
+      </div>
+
+   </div>
+</section>
+    
+<!--VISTA PROGRAMAR MAQUINA-->    
+<div id="programarProgra" class="card" style="display: none">
+    <!--FORMULARIO DE PROGRAMAR MAQUINA-->
+    <h5 class="card-header h5">FORMULARIO</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+
+        <!--ORDEN DE PRODUCCION-->
+        <div class="col-12 col-md form-group">
+          <label for="orProduccion">Ord. de Producción</label>
+          <select required id="orProduccion" class="form-control"><option value="0">-</option></select>
+        </div>
+
+        <!--ITEM-->
+        <div class="col-12 col-md form-group">
+          <label for="item">Item</label>
+          <select required id="item" class="form-control"><option value="0">Elegir Item</option></select>
+        </div>
+
+        <!--MAQUINA-->
+        <div class="col-12 col-md form-group">
+          <label for="maquina">Máquina</label>
+          <select required id="maquina" class="form-control"><option value="0">Elegir Maquina</option></select>
+        </div>
+
+        <div class="w-100"></div>
+
+        <!--FECHA A REGISTRAR LA PROGRAMACION-->
+        <div class="col-12 col-md form-group">
+          <label for="fechaRegistrar">Fecha Máxima</label>
+          <input required type="text" id="fechaRegistrar" class="form-control datepicker" placeholder="Fecha"> 
+        </div>
+
+        <!--CANTIDAD DE HORAS-->
+        <div class="col-12 col-md form-group">
+          <label for="cantHoras">Cant. de Horas</label>
+          <input required id="cantHoras" type="time" class="form-control">
+        </div>
+
+        <!--PRIORIDAD-->
+        <div class="col-12 col-md form-group">
+          <label for="prioridad">Prioridad</label>
+          <select required id="prioridad" class="form-control">
+              <option value="0">Elegir Prioridad</option>
+              <option value="1">Alta</option>
+              <option value="2">Media</option>
+              <option value="3">Baja</option>
+          </select>
+        </div>
+
+        <!--EJECUTIVA-->
+        <div class="col-12 col-md form-group">
+          <label for="ejecutiva">Ejecutiva</label>
+          <select required id="ejecutiva" class="form-control">
+              <option value="0">Seleccionar Ejecutiva</option>
+              <option value="35">Fabiola Morales</option>
+              <option value="39">Yrma Paucar</option>
+              <option value="54">Milagros Salinas</option>
+              <option value="28">Liz Guerrero</option>
+              <option value="49">Jose Ramos Ledesma</option>
+              <option value="74">Alan Lavanda</option>
+          </select>
+        </div>
+
+        <!--OBSERVACIONES-->
+        <div class="col-12 form-group md-form">
+          <textarea id="observaciones" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+          <label for="observaciones">Observaciones</label>
+        </div>
+
+        <div class="w-100"></div>
+
+        <!--BOTON GUARDAR-->
+        <div id="divGuardar" class="form-inline justify-content-center w-100">
+          <button type="button" id="guardarNuevoProgMaq" class="btn btn-guardar">Guardar</button>
+        </div>
+
+      </div>
+
+    </div>
+</div>
+
+<!--VISTA AGREGAR PROGRAMACION-->
+<div id="agregarProgra" class="card" style="display: none">
+    <!--FORMULARIO AGREGAR PROGRAMACION-->
+    <h5 class="card-header h5">AGREGAR PROGRAMACIÓN</h5>
+    <div class="card-body">
+
+        <div class="form-row">
+
+        <!--SELECT DE ORDEN DE PRODUCCION-->
+        <div class="col-12 col-md form-group">
+            <label for="ordProduccion">Ord. de Producción</label>
+            <select required id="ordProduccion" class="form-control"><option value="0">-</option></select>
+        </div>
+
+        <!--SELECT DE ITEM-->
+        <div class="col-12 col-md form-group">
+            <label for="items">Item</label>
+            <select required id="items" class="form-control"><option value="0">Elegir Item</option></select>
+        </div>
+
+        <!--BOTON BUSCAR-->
+        <div>
+            <button onclick="buscarListar()">Buscar</button>
+        </div>
+
+        <div class="w-100"></div>
+        </div>
+    </div>
+
+    <!--TABLA DE AGREGAR PROGRAMACION -->
+    <div id="agregarPrograTabla" style="display: none">
+
+    <!--CONTENIDO DE LOS MODALES-->
+    <div class="wrapper-editor">
+
+        <div class="row d-flex justify-content-center modalWrapper">
+
+            <!--MODAL DE AGREGAR -->
+            <div class="modal fade addNewInputs" id="modalAdd" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Agregar Nuevo Registro</h4>
+                    <button id="closeModalAdd" type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body mx-3">
+
+                    <!--MAQUINA-->
+                    <div class="form-group">
+                      <label for="maqModal">Maquina</label>
+                      <div>
+                        <select required id="maqModal" class="form-control" style="width: 435px"><option value="0">Elegir Maquina</option></select>
+                      </div>
+                    </div>
+
+                    <!--FECHA MAXIMA-->
+                    <div class="form-group">
+                      <label for="fechaModal">Fecha Máxima</label>
+                      <div>
+                        <input required type="text" id="fechaModal" class="form-control datepicker" placeholder="Fecha">
+                      </div>
+                    </div>
+
+                    <!--CANTIDAD DE HORAAS-->
+                    <div class="form-group">
+                      <label for="cantHorasModal">Cant. Horas</label>
+                      <div>
+                        <input required id="cantHorasModal" type="time" class="form-control">
+                      </div>
+                    </div>
+
+                    <!--PRIORIDAD-->
+                    <div class="form-group">
+                      <label for="priorModal">Prioridad</label>
+                      <div>
+                        <select required id="priorModal" class="form-control">
+                          <option value="0">Elegir Prioridad</option>
+                          <option value="1">Alta</option>
+                          <option value="2">Media</option>
+                          <option value="3">Baja</option>
+                      </select>
+                      </div>
+                    </div>
+
+                    <!--PERSONAL-->
+                    <div class="form-group">
+                      <label for="persModal">Personal</label>
+                      <div>
+                        <select required id="persModal" class="form-control"><option value="0">Elegir Personal</option></select>
+                      </div>
+                    </div>
+
+                    <!--OBSERVACIONES-->
+                    <div class="form-group">
+                      <label for="obserModal">Observaciones</label>
+                      <div>
+                        <textarea id="obserModal" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!--BOTON PARA AGREGAR REGISTRO-->
+                  <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+                    <button id="addModal" class="btn btn-outline-primary btn-block buttonAdd">Agregar Registro<i class="fas fa-paper-plane-o ml-1"></i></button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!--BOTON AGREGAR-->
+            <div class="text-center">
+              <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal" data-target="#modalAdd">Agregar<i class="fas fa-plus-square ml-1"></i></a>
+            </div>
+
+            <!--MODAL DE EDITAR-->
+            <div class="modal fade modalEditClass" id="modalEdit" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <input id="codigoItemMod" type="text" hidden>
+                    <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Editar Registro</h4>
+                    <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body mx-3">
+                    <!--MAQUINA-->
+                    <div class="form-group">
+                      <label for="maqModModal">Maquina</label>
+                      <div>
+                        <select required id="maqModModal" class="form-control" style="width: 435px"><option value="0">Elegir Maquina</option></select>
+                      </div>
+                    </div>
+
+                    <!--FECHA-->
+                    <div class="form-group">
+                      <label for="fechaModModal">Fecha Máxima</label>
+                      <div>
+                        <input required type="text" id="fechaModModal" class="form-control datepicker" placeholder="Fecha">
+                      </div>
+                    </div>
+
+                    <!--CANT. DE HORAS-->
+                    <div class="form-group">
+                      <label for="cantHorasModModal">Cant. Horas</label>
+                      <div>
+                        <input required id="cantHorasModModal" type="time" class="form-control">
+                      </div>
+                    </div>
+
+                    <!--PRIORIDAD-->
+                    <div class="form-group">
+                      <label for="priorModModal">Prioridad</label>
+                      <div>
+                        <select required id="priorModModal" class="form-control">
+                          <option value="0">Elegir Prioridad</option>
+                          <option value="1">Alta</option>
+                          <option value="2">Media</option>
+                          <option value="3">Baja</option>
+                      </select>
+                      </div>
+                    </div>
+
+                    <!--PERSONAL-->
+                    <div class="form-group">
+                      <label for="persModModal">Personal</label>
+                      <div>
+                        <select required id="persModModal" class="form-control"><option value="0">Elegir Personal</option></select>
+                      </div>
+                    </div>
+
+                    <!--OBSERVACIONES-->
+                    <div class="form-group">
+                      <label for="obserModModal">Observaciones</label>
+                      <div>
+                        <textarea id="obserModModal" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!--BOTON PARA EDITAR REGISTRO-->
+                  <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+                    <button id="editBtnModal" class="btn btn-outline-secondary btn-block editInside" data-dismiss="modal">Editar Registrar<i class="fas fa-paper-plane-o ml-1"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--BOTON EDITAR-->
+            <div class="text-center buttonEditWrapper">
+              <button id="btnEditModal" class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal" data-target="#modalEdit" disabled>Editar<i class="fas fa-pencil-square-o ml-1"></i></a>
+            </div>
+
+            <!--MODAL DE ELIMINAR-->
+            <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="modalDelete" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <input id="codigoItemDel" type="text" hidden >
+                    <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Eliminar</h4>
+                    <button id="closeModalEdit" type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <!--MENSAJE-->
+                  <div class="modal-body mx-3">
+                    <p class="text-center h4">¿Está seguro que desea eliminar el registro?</p>
+                  </div>
+
+                  <!--BOTONES-->
+                  <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                    <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal">Si</button>
+                    <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">No</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--BOTON ELIMINAR-->
+            <div class="text-center">
+              <button id="btnDeleteModal" class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" data-target="#modalDelete" disabled>Eliminar<i class="fas fa-times ml-1"></i></a>
+            </div>
+
+        </div>
+
+         <!--TABLA-->
+        <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th class='th-sm'>MAQUINA</th>
+                <th class='th-sm'>TIPO</th>
+                <th class='th-sm'>PRIORIDAD</th>
+                <th class='th-sm'>FECHA PROGRAMADA</th>
+                <th class='th-sm'>DURACION</th>
+                <th class='th-sm'>OBSERVACIONES</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+    </table>
+
+    </div>
+
+</div>
+</div>
+
+<!--VISTA INICIAR/FINALIZAR PROGRAMACION-->
+<div id="iniciarProgra" class="card" style="display: none">
+    <!--FORMULARIO INICIAR/FINALIZAR-->
+    <h5 class="card-header h5">INICIAR/FINALIZAR</h5>
+    <div class="card-body">
+
+        <div class="form-row">
+
+        <!--SELECT DE ORDEN DE PRODUCCION-->
+        <div class="col-12 col-md form-group">
+            <label for="ordProdInicio">Ord. de Producción</label>
+            <select required id="ordProdInicio" class="form-control"><option value="0">-</option></select>
+        </div>
+
+        <!--SELECT DE ITEM-->
+        <div class="col-12 col-md form-group">
+            <label for="itemInicio">Item</label>
+            <select required id="itemInicio" class="form-control"><option value="0">Elegir Item</option></select>
+        </div>
+
+        <!--BOTON BUSCAR-->
+        <div>
+            <button onclick="mostrarInicioXProd()" >Buscar</button>
+        </div>
+
+        </div>
+
+    </div>
+    
+    <!--TABLA DE INICIAR PROGRAMACION -->
+    <div id="iniciarPrograTabla" style="display: none">
+        <!--BOTON GUARDAR-->
+        <div class="text-center">
+          <button href="" class="btn btn-info btn-rounded btn-sm" onclick="update_status_program_machine()">Guardar<i class="far fa-save ml-1"></i></button>
+        </div>
+
+        <!--TABLA DE INICIAR/FINZALIZAR-->
+        <table id="tablaXInicio" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th class='th-sm'>MAQUINA</th>
+                    <th class='th-sm'>TIPO</th>
+                    <th class='th-sm'>PRIORIDAD</th>
+                    <th class='th-sm'>FECHA PROGRAMADA</th>
+                    <th class='th-sm'>DURACION</th>
+                    <th class='th-sm'>OBSERVACIONES</th>
+                    <th class='th-sm'>INICIAR/FINALIZAR</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaXInicio"></tbody>
+        </table>
+    </div>
+</div>
+
+<!--VISTA LISTAR PROGRAMACION-->
+<div id="listadoProgra" style="display: none" class="text-center form-card  form-group">
+
+    <div class="modal fade" id="modalLiatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Seleccionar Opcion</h4>
+                    <button id="modalListado" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body row text-center">
+                      <!--OPCION LISTAR POR MAQUINA-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="selectListaXMaquina">Listar por Máquina</button></div>
+                    <!--OPCION LISTAR POR ORDEN DE PRODUCCION-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="selectListaXOrden">Listar por Orden de Produccion</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--SELECT DE MAQUINA-->   
+    <div id="selectDeMaquinas" class="form-inline h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 30%; margin-right: 10%; display: none">
+          <label for="maquinas">Máquina: </label>
+          <select required id="maquinas" class="form-control"><option value="0">Elegir Maquina</option></select>
+          <button id="btnListarxMaq">BUSCAR</button>
+    </div>
+
+    <!--TABLA DEL SELECT MAQUINA-->
+    <table id="tablaXMaq" class='table my-3' style="display: none">
+    <thead>
+        <tr>
+            <th class='th-sm'>#</th>
+            <th class='th-sm'>ORD. PRODUCCION</th>
+            <th class='th-sm'>ITEM</th>
+            <th class='th-sm'>ENCARGADO</th>
+            <th class='th-sm'>FECHA PROGRAMADA</th>
+            <th class='th-sm'>CANT. HORAS</th>
+            <th class='th-sm'>PRIORIDAD</th>
+        </tr>
+    </thead>
+    <tbody id="cuerpoTablaXMaq"></tbody>
+    </table>
+
+    <!--SELECT DE ORDEN DE PRODUCCION-->
+    <div id="selectDeOrden" class="form-inline h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 30%; margin-right: 10%; display: none">
+          <label for="ordListar">Ord. Produccion: </label>
+          <select required id="ordListar" class="form-control"><option value="0">Elegir Orden de Produccion</option></select>
+          <button id="btnListarxOrdProd">BUSCAR</button>
+    </div>
+    
+    <section id="tablaXOrdProd">
+    </section>
+
+</div>
+
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center d-none"></div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<!--ARCHIVOS JS SELECT/INPUT -->
+<script src="Bootstrap/js/jquery-3.3.1.js"></script>
+<script src="Bootstrap/js/jquery-3.3.1.min.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="Bootstrap/js/picker.js"></script>
+<script type="text/javascript" src="Bootstrap/js/picker.date.js"></script>
+<link rel="stylesheet" href="Bootstrap/css/calendar_classic.css">
+<script type="text/javascript" src="Bootstrap/js/toast.js"></script>
+<link rel="stylesheet" href="Bootstrap/css/toast.css">
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script>
+    
+/*OPCIONES DEL DATEPICKER (INPUT TYPE='DATE')*/
+$('.datepicker').pickadate({
+    format: 'dd mmm, yyyy',
+    formatSubmit: 'yyyy/mm/dd',
+    weekdaysShort: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+    showMonthsShort: true,
+    monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre','Noviembre', 'Diciembre'],
+    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic']
+});
+    
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function() {
+    cargarMaquinas('maqModModal');
+    mostrarPersonal('persModModal');
+});
+
+/* BUSCAR Y MOSTRAR LOS ITEMS DE EL PRESUPUESTO - SELECT*/
+$("#orProduccion").change(function(){
+   mostrarItemXOrProduccion($("#orProduccion").val(),'item');
+});
+    
+$("#ordProduccion").change(function(){
+   mostrarItemXOrProduccion($("#ordProduccion").val(),'items');
+});    
+    
+$("#ordProdInicio").change(function(){
+   mostrarItemXOrProduccion($("#ordProdInicio").val(),'itemInicio');
+});
+    
+/*FUNCIONES ONCLICK*/    
+$(document).ready(function(){
+    
+   $("#programarProgramacion").click(function(){
+       habilitarVista('programarProgra');
+       cargarOrdenProduccion('orProduccion');
+       cargarMaquinas('maquina');
+       $('select').val('0');
+       $('input').val("")
+       $('textarea').val("")
+   });
+    
+   $("#agregarProgramacion").click(function(){
+      habilitarVista('agregarProgra');
+      cargarOrdenProduccion('ordProduccion');
+      cargarMaquinas('maqModal');
+      mostrarPersonal('persModal');
+      $('select').val('0');
+   }); 
+    
+   $("#iniciarProgramacion").click(function(){
+       habilitarVista('iniciarProgra');
+       cargarOrdenProduccion('ordProdInicio');
+       document.getElementById('iniciarPrograTabla').style.display = "none";
+   }); 
+    
+   $("#guardarNuevoProgMaq").click(function(){
+       var R1 = document.getElementById("item").value;
+       var R2 = document.getElementById("maquina").value;
+       var R3 = document.getElementById("fechaRegistrar").value;
+       var R4 = document.getElementById("cantHoras").value;
+       var R5 = document.getElementById("prioridad").value;
+       var R6 = document.getElementById("ejecutiva").value;
+       var R7 = document.getElementById("observaciones").value;
+       if(validarCampos(R1,R2,R3,R4,R5,R6,"item","maquina","fechaRegistrar","cantHoras","prioridad","ejecutiva")==true){
+           validarRegistro(R1,R2,R3,R4,R5,R6,R7,false);
+       }
+   });
+    
+   $("#addModal").click(function(){
+       var R1 = document.getElementById("items").value;
+       var R2 = document.getElementById("maqModal").value;
+       var R3 = document.getElementById("fechaModal").value;
+       var R4 = document.getElementById("cantHorasModal").value;
+       var R5 = document.getElementById("priorModal").value;
+       var R6 = document.getElementById("persModal").value;
+       var R7 = document.getElementById("obserModal").value;
+       if(validarCampos(R1,R2,R3,R4,R5,R6,"items","maqModal","fechaModal","cantHorasModal","priorModal","persModal")== true){
+           validarRegistro(R1,R2,R3,R4,R5,R6,R7,true);
+           clear_modal_add(["maqModal","select","fechaModal","input","cantHorasModal","input","priorModal","select","persModal","select","obserModal","textarea"]);
+           $("#closeModalAdd").click();
+       }
+   });
+    
+   $("#editBtnModal").click(function(){
+      update_data_modal(document.getElementById("codigoItemMod").value); 
+   });
+    
+   $("#btnYes").click(function(){
+       delete_register(document.getElementById("codigoItemDel").value);
+   })
+    
+   $("#listarProgramacion").click(function(){
+       habilitarVista('listadoProgra');
+       document.getElementById('tablaXMaq').style.display = 'none';
+       document.getElementById('tablaXOrdProd').style.display = 'none';
+       document.getElementById('selectDeMaquinas').style.display = 'none';
+       document.getElementById('selectDeOrden').style.display = 'none';
+   }); 
+    
+   $("#selectListaXMaquina").click(function(){
+       $("#modalListado").click();
+       document.getElementById('selectDeMaquinas').style.display = null;
+       document.getElementById('selectDeOrden').style.display = "none";
+       cargarMaquinas('maquinas');
+   });
+    
+   $("#btnListarxMaq").click(function(){
+       listarXMaquina(document.getElementById("maquinas").value);
+   });
+    
+   $("#selectListaXOrden").click(function(){
+       $("#modalListado").click();
+       document.getElementById('selectDeOrden').style.display = null;
+       document.getElementById('selectDeMaquinas').style.display = "none";
+       cargarOrdenProduccion('ordListar');
+   });
+    
+   $("#btnListarxOrdProd").click(function(){
+       listarXOrdProd(document.getElementById("ordListar").value);
+   });
+});  
+    
+/*FUNCION PARA HABILITAR  LAS VISTAS DEPENDIENDO DEL BOTON A SELECCIONAR*/    
+function habilitarVista(id){
+    $("#resultado").text("");
+    var array = ['programarProgra', 'iniciarProgra', 'agregarProgra', 'listadoProgra'];
+    for(var i=0; i<array.length; i++){
+        if(id==array[i]){
+            document.getElementById(id).style.display = null;
+        }else{
+            document.getElementById(array[i]).style.display = 'none';
+        }
+    }
+}      
+
+var array_status = new Array();    
+    
+/*FUNCION PARA CARGAR LA(S) ORDEN(ES) DE PRODUCCION*/
+function cargarOrdenProduccion(id){
+  var boxOrProduccion="";
+  $.ajax({
+    url: '../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOpItem.php',
+    type:'GET',
+    dataType: 'json',
+   error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxOrProduccion+="<option value='0' selected>Elegir Orden de Produccion</option>";
+            $("#"+id).html(boxOrProduccion);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxOrProduccion+="<option value='0' selected>Elegir Orden de Produccion</option>";
+                $("#"+id).html(boxOrProduccion);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxOrProduccion+="<option value='0' selected>Elegir Orden de Produccion</option>";
+                    }
+                    boxOrProduccion+="<option value='"+datos[i].OPCODIGO+"'>"+datos[i].OPCODIGO+"</option>";
+                }
+                $("#"+id).html(boxOrProduccion);
+                $('#'+id).select2();
+            }
+        }
+  });
+} 
+    
+/*BUSCAR LOS ITEMS DE LA ORDEN DE PRODUCCION SELECCIONADO*/
+function mostrarItemXOrProduccion(opcion,id){
+    var boxItem="";
+    var $codigo={
+        '_codigo': opcion,
+        '_opcion': 'datos'
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarItemXOrdProduccion.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+              mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+              mostrarMensaje("error","Error no identificado");
+            }
+            boxItem+="<option value='0' selected>Elegir Item</option>";
+            $("#"+id).html(boxItem);
+        },
+        success: function(datos){
+          if(datos.response=="1"){
+              boxItem+="<option value='0' selected>Elegir Item</option>";
+              $("#"+id).html(boxItem);
+          }else{
+             for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxItem+="<option value='0' selected>Elegir Item</option>";
+                    }
+                    boxItem+="<option value='"+datos[i].ITEMNUMERO+"'>"+datos[i].ITEMNOMBRE+"</option>";
+                }
+                $("#"+id).html(boxItem);
+          }
+        }
+    });
+  }     
+    
+/*FUNCION PARA CARGAR LA(S) MAQUINA(S)*/
+function cargarMaquinas(id){
+    var boxMaquina = "";
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Maquinas/Controlador_MostrarTodosMaquinas.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+               mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+               mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxMaquina+="<option value='0' selected>Elegir Maquina</option>";
+                    }
+                    boxMaquina+="<option value='"+datos[i].MAQUICODIGO+"'>"+datos[i].MAQUINOMBRE+"</option>";
+                }
+                $("#"+id).html(boxMaquina);
+                $('#'+id).select2();
+            }
+        }
+    }); 
+}
+   
+/*FUNCION PARA CARGAR AL PERSONAL DE TRABAJO*/    
+function mostrarPersonal(id){
+    var boxPersonal="";
+    boxPersonal+="<option value='0' selected>Elegir Personal</option>";
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            $("#"+id).html(boxPersonal);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                $("#"+id).html(boxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(datos[i].AREACODIGO=='A1' || datos[i].AREACODIGO=='A3' || datos[i].AREACODIGO=='A4' || datos[i].AREACODIGO=='A5' || datos[i].AREACODIGO=='A7'){
+                        boxPersonal+="<option value='"+datos[i].PERSCODIGO+"'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+" "+datos[i].PERSNOMBRE+"</option>";
+                    }
+                }
+                $("#"+id).html(boxPersonal);
+            }
+        }
+    });  
+}
+   
+/*FUNCION PARA HABILITAR O DESHABILITAR BOTONES DE AGREGAR O EDITAR*/
+function disabled_or_enabled_inputs(id){
+    $("#persModModal option[value="+document.getElementById("persModModal").value+"]").attr("selected", false);
+    $("#priorModModal option[value="+document.getElementById("priorModModal").value+"]").attr("selected", false);
+    if(id!="" && id!=undefined){
+        document.getElementById("btnEditModal").disabled = false;
+        document.getElementById("btnDeleteModal").disabled = false;
+    }else{
+        document.getElementById("btnEditModal").disabled = true;
+        document.getElementById("btnDeleteModal").disabled = true;
+    }
+}
+    
+/*FUNCION PARA VALIDAR QUE LOS CAMPOS ESTEN COMPLETOS Y LLENADOS*/
+function validarCampos(R1,R2,R3,R4,R5,R6,id1,id2,id3,id4,id5,id6){
+    
+    if(R1 == null || R1 == "0" || R1.length == 0 || /^\s+$/.test(R1)){
+       mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#"+id1).focus();
+    }
+    else if(R2 == null || R2 == "0" || R2.length == 0 || /^\s+$/.test(R2)){
+       mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#"+id2).focus();
+    }
+    else if(R3 == null || R3 == "0" || R3.length == 0 || /^\s+$/.test(R3)){
+       mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#"+id3).focus();
+    }
+    else if(R4 == null || R4 == "0" || R4.length == 0 || /^\s+$/.test(R4)){
+       mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#"+id4).focus();
+    }
+    else if(R5 == null || R5 == "0" || R5.length == 0 || /^\s+$/.test(R5)){
+       mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#"+id5).focus();
+    }
+    else if(R6 == null || R6 == "0" || R6.length == 0 || /^\s+$/.test(R6)){
+       mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#"+id6).focus();
+    }else{
+        return true
+    }
+}
+    
+/*FUNCION PARA VALIDAR SI EL ITEM YA TIENE ALGUN REGISTRO EN LA BD*/   
+function validarRegistro(codItem,codMaq,fechaRegistrar,cantHoras,prioridad,ejecutiva,observaciones,valor){
+    var $validar={
+        '_codigo': codItem
+    }
+      
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_ValidarRegistro.php',
+        type: 'POST',
+        data: $validar,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 1){
+                registrarPrograMaq(codItem,codMaq,fechaRegistrar,cantHoras,prioridad,ejecutiva,observaciones);
+            }
+            else{
+                if(datos.response == 0){
+                  mostrarMensaje("error","REGISTRO INCORRECTO! ERROR: "+datos.message);
+                }else{
+                    if(valor==true){
+                        registrarPrograMaq(codItem,codMaq,fechaRegistrar,cantHoras,prioridad,ejecutiva,observaciones);
+                        $("#resultado").text("");
+                    }else{
+                        mostrarMensaje("error","REGISTRO INCORRECTO! Item ya programado.");
+                        $("#resultado").text("ITEM YA INICIALIZADO SU PROGRAMACION CON MAQUINAS");
+                    }
+                }
+            }
+        }
+    });
+}
+   
+/*FUNCION PARA INSERTAR NUEVO REGISTRO A LA BD*/    
+function registrarPrograMaq(codItem,codMaq,fechaRegistrar,cantHoras,prioridad,ejecutiva,observaciones){
+    
+    var fecha = vProduccion.convertirAFecha(fechaRegistrar)
+    
+    var Hoy = new Date();
+    var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+    
+    var fechaProgramar = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() +" 00:00:00";
+    
+    var $datos={
+        '_fecha' : fecha,
+        '_cantHoras' : cantHoras,
+        '_fechaRegistro' : fecharegistro,
+        '_codigoitem': codItem,
+        '_codmaquina' : codMaq,
+        '_ejecutiva' : ejecutiva,
+        '_prioridad' : prioridad,
+        '_observacion' : observaciones,
+        '_usuario': USUACODIGO,
+        '_fechaPredet': fechaProgramar,
+        '_estado': ""
+    }
+
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_RegistrarPrograMaq.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error","REGISTRO DE PERSONAL INCORRECTO! ERROR: "+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","REGISTRO EXITOSO - Acceso!");
+                buscarListar();
+            }
+        }
+    })
+    
+}  
+    
+/*FUNCION PARA TRAER DATA A LA TABLA AL AGREGAR O EDITAR NUEVO REGISTRO*/
+function buscarListar(){ 
+    if(document.getElementById('ordProduccion').value!="0" && document.getElementById('items').value!="0"){
+        disabled_or_enabled_inputs("");
+        var codigo = document.getElementById("items").value;
+        var $data={'_codigo': codigo}
+        $.ajax({
+            url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarProgresoOrdProd.php',
+            type: 'POST',
+            data: $data,
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                }
+                else{
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                }
+            },
+            success: function(datos){
+                if(datos.response=="0"){
+                    mostrarMensaje("error",'ITEM SIN REGISTROS DE PROGRAMACIÓN');
+                    document.getElementById('agregarPrograTabla').style.display = 'none';
+                }else{
+                    dataTableComplete(datos);
+                    $("#resultado").text("");
+                }
+            }
+        }); 
+    }
+}
+  
+/*FUNCION PARA COMPLETAR/RECARGAR TABLA AL AGREGAR O EDITAR NUEVO REGISTRO*/ 
+function dataTableComplete(datos){
+    document.getElementById('agregarPrograTabla').style.display = null;
+    
+    $("#cuerpoTabla").html("");
+    var tablaProgreso = "";
+    for(var i=0; i<datos.length; i++){
+        if(datos[i].USUAREGISTRO == USUACODIGO){
+            tablaProgreso+="<tr id="+datos[i].PROMACODIGO+" onclick='disabled_or_enabled_inputs(this.id),modificarRegistro(this.id),cambiar_color_over(this.id),find_main_code(this)'>"
+        }else{
+            tablaProgreso+="<tr id="+datos[i].PROMACODIGO+" onclick='disabled_or_enabled_inputs(),cambiar_color_over(this.id)'>"
+        }
+        
+        tablaProgreso+="<td>"+datos[i].MAQUINOMBRE+"</td>\
+                        <td>"+datos[i].AREAMAQDESCRIPCION+"</td>\
+                        <td>"+change_number_to_text_level(datos[i].PROMAPRIORIDAD)+"</td>\
+                        <td>"+change_date_to_text(datos[i].PROMAFECHA_PROGRA)+"</td>\
+                        <td>"+datos[i].PROMACANTIDAD_HORAS+"</td>\
+                        <td>"+datos[i].PROMAOBSERVACION+"</td>\
+                    </tr>"
+    }
+    $("#cuerpoTabla").append(tablaProgreso);
+}
+    
+/*FUNCION PARA LIMPIAR CAMPOS DEL MODAL AGREGAR LUEGO DE GUARDAR REGISTRO*/
+function clear_modal_add(array){
+    for (var i=0; i<array.length;i+=2){
+        if(array[i+1]=="select"){$("#"+array[i]).val("0");}else{$("#"+array[i]).val("");}
+    }
+    cargarMaquinas("maqModal");
+}
+    
+/*FUNCION PARA ACTUALIZAR INFORMACION DE REGISTRO SELECCIONADO*/
+function update_data_modal(id){
+    var codigo = id;
+    var maq = document.getElementById("maqModModal").value;
+    var date = vProduccion.convertirAFecha(document.getElementById("fechaModModal").value);
+    var hours = document.getElementById("cantHorasModModal").value;
+    var prio = document.getElementById("priorModModal").value;
+    var pers = document.getElementById("persModModal").value;
+    var obs = document.getElementById("obserModModal").value;
+    
+    if(validarCampos(codigo,maq,date,hours,prio,pers,"items","maqModModal","fechaModModal","cantHorasModModal","priorModModal","persModModal") == true){
+        
+        var $data={
+            '_codigo': codigo,
+            '_maq': maq,
+            '_date': date,
+            '_hours': hours,
+            '_prio': prio,
+            '_pers': pers,
+            '_obs':obs
+        }
+
+        $.ajax({
+            url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_ActualizarRegistroPrograMaq.php',
+            type: 'POST',
+            data: $data,
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                }
+                else{
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                }
+            },
+            success: function(datos){
+                if(datos.response=="0"){
+                    mostrarMensaje("error",'ERROR: '+datos.message);
+                }else{
+                    $("#closeModalEdit").click();
+                    buscarListar()
+                }              
+            }
+        });
+       }
+}
+    
+/*FUNCION PARA ELIMINAR REGISTRO SELECCIONADO*/
+function delete_register(codigo){
+    
+    var $codigo = {'_codigo':codigo}
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_EliminarRegistroPrograMaq.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                buscarListar()
+            }
+        }
+    });
+    
+}    
+    
+/*FUNCION PARA TRAER DATA POR MAQUINA*/
+function listarXMaquina(codigo){
+    var $codigo={'_codigo': codigo}    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarDataXMaq.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'MAQUINA SIN REGISTROS');
+                document.getElementById('tablaXMaq').style.display = 'none';
+            }else{
+                document.getElementById('tablaXMaq').style.display = null;
+                llenarTablaXMaq(datos);
+            }              
+        }
+    });
+}
+   
+/*FUNCION PARA LLENAR TABLA CON LA MAQUINA SELECCIONADA*/    
+function llenarTablaXMaq(datos){
+    
+    var tablaDataXMaq = "";
+    for(var i=0; i<datos.length; i++){
+        
+        tablaDataXMaq+="<tr>\
+                            <td>"+(i+1)+"</td>\
+                            <td>"+datos[i].OPCODIGO+"</td>\
+                            <td>"+datos[i].ITEMNOMBRE+"</td>\
+                            <td>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_MATERNO+"</td>\
+                            <td>"+change_date_to_text(datos[i].PROMAFECHA_PROGRA)+"</td>\
+                            <td>"+datos[i].PROMACANTIDAD_HORAS+"</td>\
+                            <td>"+change_number_to_text_level(datos[i].PROMAPRIORIDAD)+"</td>\
+                        </tr>";
+    }
+    
+    $("#cuerpoTablaXMaq").html(tablaDataXMaq);
+}
+    
+/*FUNCION PARA TRAER DATA POR ORDEN DE PRODUCCION*/
+function listarXOrdProd(codigo){
+    console.log(codigo)
+    var $codigo={'_codigo': codigo}    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarDataXOrdProd.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                document.getElementById('tablaXOrdProd').style.display = "none";
+            }else{
+                document.getElementById('tablaXOrdProd').style.display = null;
+                llenarTablaXOrdProd(datos);
+            }       
+        }
+    });
+}
+    
+/*FUNCION PARA LLENAR TABLA CON LA ORDEN DE PRODUCCION SELECCIONADA*/   
+function llenarTablaXOrdProd(datos){
+    
+    var arrayItems = [datos[0].ITEMNOMBRE];
+    var titulo="";
+    var cuerpo="";var c=1;
+    var estado= "";
+    
+    
+    for(var i=0; i<datos.length; i++){
+        if(datos[0].ITEMNOMBRE!=datos[i].ITEMNOMBRE){
+            for(var j=0;j<arrayItems.length;j++){
+                if(datos[i].ITEMNOMBRE!=arrayItems[j]){
+                    arrayItems.push(datos[i].ITEMNOMBRE)
+                }
+            }
+        }
+    }
+    
+    for (var i=0;i<arrayItems.length;i++){
+        titulo+="<div class='principal white-text font-weight-bold'>"+arrayItems[i]+"</div><table class='table my-3'><thead><tr>\
+                    <th>#</th>\
+                    <th>MAQUINA</th>\
+                    <th>ENCARGADO</th>\
+                    <th>FECHA PROGRAMADA</th>\
+                    <th>CANT. HORAS</th>\
+                    <th>PRIORIDAD</th>\
+                    <th>ESTADO</th>\
+                <tr></thead><tbody id="+i+"></tbody></table>";
+    }
+    
+    $("#tablaXOrdProd").html(titulo);
+    for (var j=0;j<arrayItems.length;j++){ 
+        for (var i=0;i<datos.length;i++){
+            if (arrayItems[j]==datos[i].ITEMNOMBRE){            
+                if(datos[i].PROMA_ESTADO!=""){
+                    estado=datos[i].PROMA_ESTADO.toUpperCase();
+                }else{
+                    estado="NO INICIADO";
+                }
+            cuerpo +="<tr>\
+                        <td class='text-center'>"+c+"</td>\
+                        <td class='text-center'>"+datos[i].MAQUINOMBRE+"</td>\
+                        <td class='text-center'>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_MATERNO+"</td>\
+                        <td class='text-center'>"+change_date_to_text(datos[i].PROMAFECHA_PROGRA)+"</td>\
+                        <td class='text-center'>"+datos[i].PROMACANTIDAD_HORAS+"</td>\
+                        <td>"+change_number_to_text_level(datos[j].PROMAPRIORIDAD)+"</td>\
+                        <td class='text-center'>"+estado+"</td>\
+                       </tr>"
+                c=c+1;
+
+            }   
+        } $("#"+j+"").html(cuerpo); cuerpo="";c=1;
+    }
+} 
+
+/*FUNCION PARA ENCONTRAR EL CODIGO PRINCIAL AL SELECCION UN REGISTRO - AGREGAR PROGRAMACION*/    
+function find_main_code(celda){
+    codCelda = $(celda).attr("id");
+}
+    
+/*FUNCION PARA COLOCAR LOS DATOS EN EL FORMULARIO DEL MODAL EDITAR*/
+function modificarRegistro(codigo){
+    var $data={'_codigo': codigo}
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarDatosItem.php',
+        type: 'POST',
+        data: $data,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                document.querySelector("#codigoItemMod").setAttribute("value",datos.PROMACODIGO);
+                document.querySelector("#codigoItemDel").setAttribute("value",datos.PROMACODIGO);
+                $('#maqModModal').val(datos.MAQUICODIGO).trigger('change.select2');
+                document.getElementById('fechaModModal').value=change_date_to_text(datos.PROMAFECHA_PROGRA);;
+                document.getElementById("cantHorasModModal").value = datos.PROMACANTIDAD_HORAS 
+                $("#priorModModal option[value="+datos.PROMAPRIORIDAD+"]").attr("selected",true); 
+                $("#persModModal option[value="+datos.PERSCODIGO+"]").attr("selected",true); 
+                $("#obserModModal").val(datos.PROMAOBSERVACION);
+            }              
+        }
+    });
+}
+
+/*FUNCION PARA CAMBIAR EL DIA DE FORMATO NUMERO A TEXTO*/    
+function change_date_to_text(date){
+    var day = date.split("-")[2];
+    var month = date.split("-")[1];
+    var year = date.split("-")[0];
+    var arrayMes = ["Ene","01","Feb","02","Mar","03","Abr","04","May","05","Jun","06","Jul","07","Ago","08","Set","09","Oct","10","Nov","11","Dic","12"];
+    var mes = "" ;
+    for (var i=1; i<arrayMes.length; i+=2){
+        if(month==arrayMes[i]){
+            mes= arrayMes[i-1];
+        }
+    }
+    var text = day + " "+ mes +" , "+year;
+    return text
+}
+    
+/*FUNCION PARA CAMBIAR DE COLOR EL REGISTRO QUE SE SELECCIONE - AGREGAR PROGRAMACION*/
+function cambiar_color_over(id){
+    
+    var idTr = new Array();
+    
+    $("#cuerpoTabla").find("tr").each(function() {
+        idTr.push($(this).attr("id"));
+    });
+    
+    for (var i=0; i<idTr.length;i++){
+        if(idTr[i] == ""){
+            idTr.splice(i,1);
+        }
+    }
+    
+    for (var i=0; i<idTr.length;i++){
+        if(id == idTr[i]){
+            document.getElementById(idTr[i]).style.backgroundColor="#248EE5";
+        }else{
+            document.getElementById(idTr[i]).style.backgroundColor="#ffffff";
+        }
+    }
+}
+  
+/*FUNCION PARA CARGAR DATOS EN LA TABLA DE INICIAR/FINALIZAR PROGRAMACION*/    
+function mostrarInicioXProd(){
+    var codigo = document.getElementById("itemInicio").value;
+    var $data={'_codigo': codigo}
+        $.ajax({
+            url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarProgresoOrdProd.php',
+            type: 'POST',
+            data: $data,
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                }
+                else{
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                }
+            },
+            success: function(datos){
+                if(datos.response=="0"){
+                    mostrarMensaje("error","ITEM SIN REGISTROS DE PROGRAMACIÓN");
+                    document.getElementById('iniciarPrograTabla').style.display = "none";
+                }else{
+                    document.getElementById('iniciarPrograTabla').style.display = null;
+                    llenarTablaInicio(datos)
+                }
+            }
+        });
+}
+    
+/*FUNCION PARA LLENAR LA TABLA DE INICIAR/FINALIZAR PROGRAMACION*/    
+function llenarTablaInicio(datos){
+    var status_now="";
+    $("#cuerpoTablaXInicio").html("");
+    var tablaDataXInicio = "";
+    for(var i=0; i<datos.length; i++){
+        tablaDataXInicio+="<tr>\
+                            <td>"+datos[i].MAQUINOMBRE+"</td>\
+                            <td>"+datos[i].AREAMAQDESCRIPCION+"</td>\
+                            <td>"+change_number_to_text_level(datos[i].PROMAPRIORIDAD)+"</td>\
+                            <td>"+change_date_to_text(datos[i].PROMAFECHA_PROGRA)+"</td>\
+                            <td>"+datos[i].PROMACANTIDAD_HORAS+"</td>\
+                            <td>"+datos[i].PROMAOBSERVACION+"</td>";
+        
+        if(datos[i].PROMA_ESTADO=="finalizado"){
+            tablaDataXInicio+="<td>FINALIZADO<label id="+datos[i].PROMACODIGO+" class='switch'  style='display:none;'>\
+                                  <input id='checkbox-"+datos[i].PROMACODIGO+"' type='checkbox'>\
+                                  <span class='slider round'></span>\
+                                </label></td>\
+                                </tr>";
+        }else{
+            tablaDataXInicio+="<td><label id="+datos[i].PROMACODIGO+" class='switch'>\
+                                  <input id='checkbox-"+datos[i].PROMACODIGO+"' type='checkbox'>\
+                                  <span class='slider round'></span>\
+                                </label></td>\
+                            </tr>"
+        }
+    }
+    
+    $("#cuerpoTablaXInicio").append(tablaDataXInicio);
+    
+    for(var j=0; j<datos.length;j++){
+        if(datos[j].PROMA_ESTADO==""){
+             status_now="vacio";
+             array_status.push(status_now);
+             document.getElementById('checkbox-'+datos[j].PROMACODIGO).removeAttribute('checked');
+        }else if(datos[j].PROMA_ESTADO=="iniciado"){
+             status_now="iniciado";
+             array_status.push(status_now);
+             document.getElementById('checkbox-'+datos[j].PROMACODIGO).setAttribute('checked','checked');
+        }else{
+             status_now="finalizado";
+             array_status.push(status_now);
+        }  
+    }
+}
+    
+/*FUNCION CAPTAR EL ESTADO DE LA PROGRAMACION DE LA MAQUINA - INICIALIZADO O FINALIZADO */
+function update_status_program_machine(){
+
+    var arrayDatos = new Array();
+    var Hoy = new Date();
+    var now = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+    
+    $("#cuerpoTablaXInicio").find("tr").find("td").find("label").find("input").each(function() {
+        arrayDatos.push($(this).attr("id").split("-")[1]);
+        if($(this).prop('checked')){
+            arrayDatos.push("true");
+        }else{
+            arrayDatos.push("false");
+        }
+    });
+    
+    for(var i=0; i<arrayDatos.length; i+=2){
+        if(i==0){
+            if(arrayDatos[i+1]=="true" && array_status[i]=="vacio"){
+                update_register_program_machine(arrayDatos[i],"iniciado",now,"cambiar_iniciado");
+            }else if(arrayDatos[i+1]=="false" && array_status[i]=="iniciado"){
+                update_register_program_machine(arrayDatos[i],"finalizado",now,"cambiar_finalizado");
+            }
+        }else{
+            if(arrayDatos[i+1]=="true" && array_status[i/2]=="vacio"){
+                update_register_program_machine(arrayDatos[i],"iniciado",now,"cambiar_iniciado");
+            }else if(arrayDatos[i+1]=="false" && array_status[i/2]=="iniciado"){
+                update_register_program_machine(arrayDatos[i],"finalizado",now,"cambiar_finalizado");
+            }
+        }
+    }
+}
+    
+/*FUNCION PARA ACTUALIZAR EL ESTADO DE LA PROGRAMACION DE LA MAQUINA - INICIALIZADO O FINALIZADO*/   
+function update_register_program_machine(codigo,estado,fecha,palabra_reservada){
+    
+    var $data={
+        '_codigo' : codigo,
+        '_estado' : estado,
+        '_fecha' : fecha,
+        '_palabra' : palabra_reservada
+    }
+    
+    $.ajax({
+            url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_ActualizarEstadoProgMaq.php',
+            type: 'POST',
+            data: $data,
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+                }
+                else{
+                    mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+                }
+            },
+            success: function(datos){
+                if(datos.response=="0"){
+                    mostrarMensaje("error",'ERROR: '+datos.message);
+                }else{ 
+                    mostrarMensaje("exito","DATOS ACTUALIZADOS");
+                    mostrarInicioXProd()
+                } 
+            }
+        });
+    
+}
+    
+/*FUNCION PARA CAMBIAR EL ESTADO DE LA MAQUINA DE SU CODIGO A TEXTO*/
+function change_number_to_text_level(dato){
+    var prioridad = "";
+    switch(dato) {
+          case "1":
+            prioridad="ALTA";
+            break;
+          case "2":
+            prioridad="MEDIA"
+            break;
+          case "3":
+            prioridad="BAJA"
+            break;
+    }
+    return prioridad
+}
+
+</script>

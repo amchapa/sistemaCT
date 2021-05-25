@@ -1,0 +1,919 @@
+<!--ENCABEZADO DE LA HOJA-->
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">CONTROL DE DESPACHO</div>
+
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="menuDespacho" class="menu">
+    
+<!--OPCIONES GENERALES DE LA VISTA-->
+<section id="menuDespacho-Generales">
+   <div class="w-responsive mx-auto my-3">
+
+       <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION PROGRAMAR DESPACHO-->
+        <div class="col"><button id="prograDespacho" class="btn btn-lg btnGeneral"><i class="fas fa-box-open fa-4x"></i><br>Programar Despacho</button></div>
+        
+        <!--OPCION ACTUALIZAR DESPACHO-->
+        <div class="col"><button id="actualizarDespacho" class="btn btn-lg btnGeneral"><i class="fas fa-toolbox fa-4x"></i><br>Actualizar Despacho</button></div>
+
+        <!--OPCION LISTAR DESPACHO-->
+        <div class="col"><button id="listarDespacho" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#modalListarDespacho"><i class="fas fa-boxes fa-4x"></i><br>Listar Despacho</button></div>
+        
+        <!--OPCION PADRON TERCERO-->
+        <div class="col"><button id="padronTercero" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#modalListarPadron"><i class="fas fa-street-view fa-4x"></i><br>Padron a Terceros</button></div>
+
+      </div>
+
+   </div>
+</section>
+
+<!--DIV PARA PROGRAMAR DESPACHO-->
+<div id="programarDespacho" style="text-align:center; display: none;">
+    <div class="card" style="width: 50%;margin: 0px auto">
+
+        <h5 class="card-header h5">Programar Mensajeria</h5>
+        <div class="card-body">
+            <div class="form-row">
+                <!--O/T-->
+                <div class="col-12 col-md form-group">
+                    <label for="ot">N° O/T</label>
+                    <select required id="ot" class="form-control"></select>
+                </div>
+                <!--SIN O/T-->
+                <div class="col-12 col-md form-group">
+                    <label for="tipo">SIN O/T: CODIGO</label>
+                    <select required id="tipo" class="form-control">
+                      <option value="0">Seleccione</option>
+                      <option value="transporte">Transporte</option>
+                      <option value="caja">Caja</option>
+                      <option value="contabilidad">Contabilidad</option>
+                      <option value="gerencia">Gerencia</option>
+                      <option value="preprensa">PrePrensa</option>
+                      <option value="gestion">Gestión</option>
+                      <option value="tpi">TPI</option>
+                  </select>
+                </div>
+
+                <div class="w-100"></div>
+                <!--AREA-->
+                <div class="col-12 col-md form-group">
+                    <label for="area">Area</label>
+                    <select required id="area" class="form-control"></select>
+                </div>
+                <!--SELECCIONE-->
+                <div class="col-12 col-md form-group">
+                    <label for="personal">Seleccione</label>
+                    <select required id="personal" class="form-control"></select>
+                </div>
+            </div>
+            <!--BOTONES-->
+            <div class="form-inline justify-content-center">
+                <button id="newMessage" type="button" class="btn btn-info">MENSAJERIA NUEVA</button>
+                <button id="similarMessage" type="button" class="btn btn-info">MENSAJERIA SIMILARES</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--DIV PARA ACTUALIZAR DESPACHO-->
+<div id="updateDespacho" class="card" style="text-align:center;display: none;width: 50%;margin: 0px auto">
+    <h5 class="card-header h5">ACTUALIZAR DESPACHO</h5>
+    <div class="card-body">
+
+        <div class="form-row">
+
+        <!--SELECT DE ORDEN DE PRODUCCION-->
+        <div class="col-12 col-md form-group">
+            <label for="ordProduccion">Ord. de Producción</label>
+            <select required id="ordProduccion" class="form-control"><option value="0">-</option></select>
+        </div>
+
+        <!--SELECT DE ITEM-->
+        <div class="col-12 col-md form-group">
+            <label for="tipoDespacho">Tipo</label>
+            <select required id="tipoDespacho" class="form-control"><option value="0">Elegir Despacho</option></select>
+        </div>
+
+        <!--BOTON BUSCAR-->
+        <div>
+            <button onclick="updateInfoXOrdProd()">Buscar</button>
+        </div>
+
+        <div class="w-100"></div>
+        </div>
+    </div>
+</div>
+
+<!--DIV PARA LISTAR DESPACHO-->
+<div id="listaDespacho" style="display: none;">
+
+    <div class="modal fade" id="modalListarDespacho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Seleccionar Opcion</h4>
+                    <button id="modalListadoDespacho" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body row text-center">
+                    <!--OPCION LISTAR POR ORDEN DE PRODUCCION-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="selectListaXOT">Listar por Ord. Produccion</button></div>
+                    <!--OPCION LISTAR POR Razon Social-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="selectListaXCliente">Listar por Razon Social</button></div>
+                    <!--OPCION LISTAR POR TURNO-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="selectListaXTurno">Listar por Turno</button></div>
+                    <!--OPCION LISTAR POR SOLICITANTE-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="selectListaXSolicitante">Listar por Solicitante</button></div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <!--SELECT DE OT-->   
+    <div id="selectOTDiv" class="form-inline h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 30%; margin-right: 10%; display: none">
+          <label for="selectOT">N° O/T</label>
+          <select required id="selectOT" class="form-control"></select>
+          <button id="btnListarxOT">BUSCAR</button>
+    </div>
+    
+    <!--SELECT DE CLIENTE-->   
+    <div id="selectClienteDiv" class="form-inline h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 30%; margin-right: 10%; display: none">
+          <label for="selectCliente">Cliente:</label>
+          <select required id="selectCliente" class="form-control" style="width: 300px;"></select>
+          <button id="btnListarxCliente">BUSCAR</button>
+    </div>
+    
+    <!--SELECT DE TURNO-->   
+    <div id="selectTurnoDiv" class="form h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 15%; margin-right: 10%; display: none">
+         <div class="row justify-content-center">
+              <label for="selectTurno">Turno:</label>
+              <select required id="selectTurno" class="form-control" style="width: 300px;">
+                  <option value="0" >Seleccionar Turno</option>
+                  <option value="turno">Todos</option>
+                  <option value="dia">Durante el Dia</option>
+                  <option value="mañana" >En la Mañana</option>
+                  <option value="tarde" >En la Tarde</option>
+                  <option value="noche" >En la Noche</option>
+                  <option value="madrugada" >En la Madrugada</option>
+                  <option value="entrega" >Plazo Entrega</option>
+              </select>
+              <button id="btnListarxTurno">BUSCAR</button>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-4 w-50">
+              <div class="md-form">
+                <input type="text" id="fInicialT" class="form-control datepicker">
+                <label for="fInicialT">Fecha Inicio</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4 w-50">
+              <div class="md-form">
+                <input type="text" id="fFinalT" class="form-control datepicker">
+                <label for="fFinalT">Fecha Final</label>
+              </div>
+            </div>
+          </div>
+    </div>
+    
+    <!--SELECT DE SOLICITANTE-->   
+    <div id="selectSolicitanteDiv" class="form h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 15%; margin-right: 10%; display: none">
+         <div class="row justify-content-center">
+              <label for="selectSolicitante">Solicitante:</label>
+              <select required id="selectSolicitante" class="form-control" style="width: 300px;">
+              </select>
+              <button id="btnListarxSolicitante">BUSCAR</button>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-4 w-50">
+              <div class="md-form">
+                <input type="text" id="fInicialS" class="form-control datepicker">
+                <label for="fInicialS">Fecha Inicio</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4 w-50">
+              <div class="md-form">
+                <input type="text" id="fFinalS" class="form-control datepicker">
+                <label for="fFinalS">Fecha Final</label>
+              </div>
+            </div>
+          </div>
+    </div>
+    
+</div>
+
+<!--DIV PARA PADRON TERCERO-->
+<div id="PadronTercero" style="display: none">
+   
+    <div class="modal fade" id="modalListarPadron" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Seleccionar Opcion</h4>
+                    <button id="modalListadoPadron" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body row text-center">
+                    <!--OPCION REGISTRAR PADRON TERCERO-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="divRegistrarPadron">Registrar</button></div>
+                    <!--OPCION LISTAR PADRON TERCERO-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="divListarPadron">Listar</button></div>
+                    <!--OPCION ACTUALIZAR PADRON TERCERO-->
+                    <div class="col"><button class="btn h btn-lg b boton" id="divActualizarEstadoPadron">Actualizar Estado</button></div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    <div id="divRegistrar" style="display: none">
+        <div class="card" style="width: 50%;margin: 0px auto">
+
+            <h5 class="card-header h5">PADRON DESPACHO A TERCEROS</h5>
+            <div class="card-body">
+                <div class="form-row">
+                    <!--PROVEEDOR-->
+                    <div class="col-12 col-md-6 form-group">
+                        <label for="proveedor">Proveedor</label>
+                        <select required id="proveedor" class="form-control"></select>
+                    </div>
+                    <!--O/T-->
+                    <div class="col-12 col-md-6 form-group">
+                        <label for="otPadron">O/T:</label>
+                        <select required id="otPadron" class="form-control"></select>
+                    </div>
+
+                    <div class="w-100"></div>
+                    <!--CANTIDAD-->
+                    <div class="col-12 col-md-6 form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input id="cantidad" type="text" class="form-control" value="0">
+                    </div>
+                    <!--FECHA TRANSPORTE-->
+                    <div class="col-12 col-md-6 form-group">
+                        <label for="fTransporte">Fecha Transporte</label>
+                        <input id="fTransporte" type="datetime-local" class="form-control">
+                    </div>
+                    
+                    <div class="w-100"></div>
+                    <!--MEDIDA PLIEGO-->
+                    <div class="col-12 col-md-6 form-group">
+                        <label for="mPliego">Medida Pliego:</label>
+                        <input id="mPliego" type="text" class="form-control">
+                    </div>
+                    
+                    <!--PUNTO ENTREGA-->
+                    <div class="col-12 col-md-6 form-group">
+                        <label for="pEntrega">Punto Entrega:</label>
+                        <input id="pEntrega" type="text" class="form-control">
+                    </div>
+                    
+                    <div class="w-100"></div>
+                    <!--DESCRIPCION-->
+                    <div class="col-12 col-md form-group">
+                        <label for="descripcion">Descripcion:</label>
+                        <textarea class="form-control rounded-0 h3-responsive font-weight-bold" id="descripcion" ></textarea>
+                    </div>
+                </div>
+                <!--BOTONES-->
+                <div class="form-inline justify-content-center">
+                    <button id="btnPadronGrabar" type="button" class="btn btn-info">GRABAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="selectListarPadron" class="form h5-responsive font-weight-bold" style="margin: 40px 0px; margin-left: 15%; margin-right: 10%; display: none">
+        <div class="row justify-content-center">
+              <label for="selectEstadoDespacho">Estado:</label>
+              <select required id="selectEstadoDespacho" class="form-control" style="width: 300px;">
+                  <option value="0" selected>Seleccionar Estado</option>
+                  <option value="padron">Todos</option>
+                  <option value="72">Creados</option>
+                  <option value="73">Entregados</option>
+                  <option value="74">Recepcionados</option>
+                  <option value="75">Anuladas</option>
+              </select>
+              <button id="btnPadron">BUSCAR</button>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-4 w-50">
+              <div class="md-form">
+                <input type="text" id="fInicialP" class="form-control datepicker">
+                <label for="fInicialP">Fecha Inicio</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4 w-50">
+              <div class="md-form">
+                <input type="text" id="fFinalP" class="form-control datepicker">
+                <label for="fFinalP">Fecha Final</label>
+              </div>
+            </div>
+          </div>
+    </div>
+    
+    <div id="divActualizar" style="display: none">
+        <div class="card" style="width: 50%;margin: 0px auto">
+
+            <h5 class="card-header h5">ACTUALIZAR ESTADO DE PADRON TERCERO</h5>
+            <div class="card-body">
+                <div class="form-row">
+                   <!--PROVEEDOR-->
+                    <div class="col-12 col-md form-group">
+                        <label for="otInputKey">Escribir O/T</label>
+                        <input id="otInputKey" type="text" class="form-control" >
+                    </div>
+                </div>
+                <!--BOTONES-->
+                <div class="form-inline justify-content-center">
+                    <button id="btnActualizarPadron" type="button" class="btn btn-info">ACTUALIZAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="Bootstrap/js/moment.min.js"></script>
+<script type="text/javascript" src="Bootstrap/js/calendar.min.js"></script>
+<script type="text/javascript" src="Bootstrap/js/picker.js"></script>
+<script type="text/javascript" src="Bootstrap/js/picker.date.js"></script>
+<link rel="stylesheet" href="Bootstrap/css/fullcalendar.css">
+<link rel="stylesheet" href="Bootstrap/js/pickadate.js-3.6.2/lib/themes/classic.css">
+<link rel="stylesheet" href="Bootstrap/js/pickadate.js-3.6.2/lib/themes/classic.date.css">
+<link rel="stylesheet" href="Bootstrap/js/pickadate.js-3.6.2/lib/themes/classic.time.css">
+
+<script type="text/javascript">
+    
+/*OPCIONES DEL DATEPICKER (INPUT TYPE='DATE')*/
+$('.datepicker').pickadate({
+    format: 'dd mmm, yyyy',
+    formatSubmit: 'yyyy/mm/dd',
+    weekdaysShort: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+    showMonthsShort: true,
+    monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre','Noviembre', 'Diciembre'],
+    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic']
+});
+
+var opcion,personal,tipo,opcionArea,opcionPersonal ="";
+    
+$(document).ready(function(){
+    mostrarArea();
+    cargarOrdProd("ot");
+    cargarOrdProd("ordProduccion");
+    cargarOrdProd("otPadron");
+    opcionPersonal = "Elegir Personal";
+    mostrarPersonalxArea(opcionPersonal);
+    mostrarProveedor();
+});    
+    
+/*FUNCIONES ONCLICK*/    
+$(document).ready(function(){
+    
+   $("#prograDespacho").click(function(){
+       habilitarVista('programarDespacho');
+   });
+    
+   $("#actualizarDespacho").click(function(){
+       habilitarVista('updateDespacho'); 
+   });
+    
+   $("#listarDespacho").click(function(){
+       habilitarVista('listaDespacho');
+       $('#selectOT').select2();
+       $('#selectCliente').select2();
+       $('#selectSolicitante').select2();
+       document.getElementById('selectClienteDiv').style.display = "none";
+       document.getElementById('selectOTDiv').style.display = "none";
+       document.getElementById('selectTurnoDiv').style.display = "none";
+       iniciador('fInicialT','fFinalT');
+       iniciador('fInicialS','fFinalS');
+   }); 
+    
+   $("#padronTercero").click(function(){
+       habilitarVista('PadronTercero');
+       document.getElementById('divRegistrar').style.display = "none";
+       document.getElementById('selectListarPadron').style.display = "none";
+   });
+    
+   $("#selectListaXOT").click(function(){
+      $("#modalListadoDespacho").click();
+       document.getElementById('selectOTDiv').style.display = null;
+       document.getElementById('selectClienteDiv').style.display = "none";
+       document.getElementById('selectTurnoDiv').style.display = "none";
+       document.getElementById('selectSolicitanteDiv').style.display = "none";
+       cargarOrdProd('selectOT');
+   });
+    
+   $("#btnListarxOT").click(function(){
+       opcion=document.getElementById("selectOT").value;
+       tipo="OT";
+       ListarDespacho(opcion,tipo);
+   });
+    
+   $("#selectListaXCliente").click(function(){
+       $("#modalListadoDespacho").click();
+       document.getElementById('selectClienteDiv').style.display = null;
+       document.getElementById('selectOTDiv').style.display = "none";
+       document.getElementById('selectTurnoDiv').style.display = "none";
+       document.getElementById('selectSolicitanteDiv').style.display = "none";
+       mostrarClientes('selectCliente');
+   });
+    
+   $("#btnListarxCliente").click(function(){
+      opcion=document.getElementById("selectCliente").value;
+      tipo="Cliente";
+      ListarDespacho(opcion,tipo);
+   });
+    
+   $("#selectListaXTurno").click(function(){
+       $("#modalListadoDespacho").click();
+       document.getElementById('selectTurnoDiv').style.display = null;
+       document.getElementById('selectOTDiv').style.display = "none";
+       document.getElementById('selectClienteDiv').style.display = "none";
+       document.getElementById('selectSolicitanteDiv').style.display = "none";
+       //document.querySelector("#fInicialT").valueAsDate = new Date();
+       //document.querySelector("#fFinalT").valueAsDate = new Date();
+   });
+    
+   $("#btnListarxTurno").click(function(){
+       opcion=[document.getElementById("selectTurno").value,document.getElementById("fInicialT").value,document.getElementById("fFinalT").value]
+       tipo="Turno";
+       ListarDespacho(opcion,tipo);
+   });
+    
+   $("#selectListaXSolicitante").click(function(){
+      $("#modalListadoDespacho").click();
+      document.getElementById('selectSolicitanteDiv').style.display = null;
+      document.getElementById('selectTurnoDiv').style.display = "none";
+      document.getElementById('selectOTDiv').style.display = "none";
+      document.getElementById('selectClienteDiv').style.display = "none";
+      mostrarPersonal('selectSolicitante');
+   });
+    
+   $("#btnListarxSolicitante").click(function(){
+      opcion=[document.getElementById("selectSolicitante").value,document.getElementById("fInicialS").value,document.getElementById("fFinalS").value]
+      tipo="Solicitante";
+      ListarDespacho(opcion,tipo);
+   });
+    
+   $("#divRegistrarPadron").click(function(){
+       var Hoy = new Date();
+       var fecharegistroTotal
+       if(Hoy.getSeconds()>=0 && Hoy.getSeconds()<10){
+           fecharegistroTotal = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + "T" + Hoy.getHours() + ":" + Hoy.getMinutes() + ":0" +  Hoy.getSeconds();
+       }else{
+           fecharegistroTotal = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + "T" + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+       }       
+       $("#modalListadoPadron").click();
+       document.getElementById('divRegistrar').style.display = null;
+       document.getElementById('selectListarPadron').style.display = "none";
+       document.getElementById('divActualizar').style.display = "none";
+       $('#proveedor').select2();
+       document.getElementById('fTransporte').value = fecharegistroTotal
+   });
+     
+   $("#divListarPadron").click(function(){
+      $("#modalListadoPadron").click();
+      document.getElementById('selectListarPadron').style.display = null;
+      document.getElementById('divRegistrar').style.display = "none";
+      document.getElementById('divActualizar').style.display = "none";
+      iniciador('fInicialP','fFinalP');
+   });
+    
+   $("#divActualizarEstadoPadron").click(function(){
+      $("#modalListadoPadron").click();
+      document.getElementById('divActualizar').style.display = null;
+      document.getElementById('selectListarPadron').style.display = "none";
+      document.getElementById('divRegistrar').style.display = "none";
+   });
+    
+   $("#newMessage").click(function(){
+        tipo="nuevo"
+        if(document.getElementById("personal").value!="0"){
+            if(document.getElementById("ot").value=="0" && document.getElementById("tipo").value=="0"){
+                mostrarMensaje("advertencia","La O/T NO EXISTE");
+            }else if(document.getElementById("ot").value!="0" && document.getElementById("tipo").value=="0"){
+                opcion=document.getElementById("ot").value;
+                personal=document.getElementById("personal").value;
+                MensajeriaNueva(opcion,personal,tipo);
+            }else if(document.getElementById("ot").value=="0" && document.getElementById("tipo").value!="0"){
+                opcion="";
+                personal=document.getElementById("personal").value;
+                MensajeriaNueva(opcion,personal,tipo);
+            }else{
+                opcion=document.getElementById("ot").value;
+                personal=document.getElementById("personal").value;
+                MensajeriaNueva(opcion,personal,tipo);
+            }
+        }else{
+            mostrarMensaje("advertencia","Seleccionar Personal encargado del Registro");
+        }
+    });
+    
+   $("#similarMessage").click(function(){
+    if(document.getElementById("personal").value!="0"){
+        if(document.getElementById("ot").value=="0" && document.getElementById("tipo").value=="0"){
+            mostrarMensaje("advertencia","La O/T NO EXISTE");
+        }else if(document.getElementById("ot").value!="0" && document.getElementById("tipo").value=="0"){
+            opcion=document.getElementById("ot").value;
+            personal=document.getElementById("personal").value;
+            MensajeriaSimilar(opcion,personal);
+        }else if(document.getElementById("ot").value=="0" && document.getElementById("tipo").value!="0"){
+            opcion="";
+            personal=document.getElementById("personal").value;
+            MensajeriaSimilar(opcion,personal);
+        }else{
+            opcion=document.getElementById("ot").value;
+            personal=document.getElementById("personal").value;
+            MensajeriaSimilar(opcion,personal);
+        }
+    }else{
+        mostrarMensaje("advertencia","Seleccionar Personal encargado del Registro");
+    }
+
+});
+    
+   $("#area").change(function() {
+       opcionArea = document.getElementById("area").value;
+       mostrarPersonalxArea(opcionArea);
+   });
+
+   $("#ordProduccion").change(function() {
+       opcionOrdProd = document.getElementById("ordProduccion").value;
+       mostrarDespachoXOrdProd(opcionOrdProd);
+   });
+    
+   $("#btnPadronGrabar").click(function() {
+       registrarPadronTercero();
+   });
+    
+   $("#btnPadron").click(function(){
+       opcion=[document.getElementById("selectEstadoDespacho").value,document.getElementById("fInicialP").value,document.getElementById("fFinalP").value]
+       tipo="Padron";
+       ListarDespacho(opcion,tipo);
+   });
+    
+   $("#btnActualizarPadron").click(function(){
+      opcion=document.getElementById("otInputKey").value;
+      tipo="Estado";
+      ListarDespacho(opcion,tipo);
+   });
+
+}); 
+    
+/*FUNCION PARA CARGAR LOS PROVEEDORES*/
+function mostrarProveedor(){
+    var boxProveedor="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Proveedor/Controlador_MostrarTodosProveedores.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                console.log("Archivos no encontrados");
+            }
+            else{
+                console.log("Error no identificado");
+            }
+            boxProveedor+="<option value='0' selected>Elegir Proveedor</option>";
+            $("#proveedor").html(boxProveedor);
+        },
+        success: function(datos){
+            
+            if(datos.response=="0"){
+                boxProveedor+="<option value='0' selected>Elegir Proveedor</option>";
+                $("#proveedor").html(boxProveedor);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxProveedor+="<option value='0' selected>Elegir Proveedor</option>";
+                    }
+                    boxProveedor+="<option value='"+datos[i].PROVEEDCODIGO+"'>"+datos[i].PROVEEDRAZON_SOCIAL+"</option>";
+                }
+                $("#proveedor").html(boxProveedor);
+            }
+        }
+    }); 
+}    
+    
+/*FUNCION PARA HABILITAR  LAS VISTAS DEPENDIENDO DEL BOTON A SELECCIONAR*/    
+function habilitarVista(id){
+    var array = ['programarDespacho','updateDespacho','listaDespacho','PadronTercero'];
+    for(var i=0; i<array.length; i++){
+        if(id==array[i]){
+            document.getElementById(id).style.display = null;
+        }else{
+            document.getElementById(array[i]).style.display = 'none';
+        }
+    }
+} 
+
+/*FUNCION PARA CARGAR LOS ORD. PRODUCCION*/
+function cargarOrdProd(id){
+    var boxOrProduccion="";
+  $.ajax({
+    url: '../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOpItem.php',
+    type:'GET',
+    dataType: 'json',
+   error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxOrProduccion+="<option value='0' selected>Elegir Orden de Produccion</option>";
+            $("#ot").html(boxOrProduccion);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxOrProduccion+="<option value='0' selected>Elegir Orden de Produccion</option>";
+                $("#ot").html(boxOrProduccion);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxOrProduccion+="<option value='0' selected>Elegir Orden de Produccion</option>";
+                    }
+                    boxOrProduccion+="<option value='"+datos[i].OPCODIGO+"'>"+datos[i].OPCODIGO+"</option>";
+                }
+                $("#"+id).html(boxOrProduccion);
+            }
+        }
+  });
+}  
+
+/*FUNCION PARA MOSTRAR TODOS LOS CLIENTES*/
+function mostrarClientes(id){
+    var boxCliente="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarTodosClientes.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxCliente+="<option value='0' selected>Elegir Cliente</option>";
+            $("#"+id).html(boxCliente);
+        },
+        success: function(datos){
+            cliente=datos;
+            if(datos.response=="0"){
+                boxCliente+="<option value='0' selected>Elegir Cliente</option>";
+                $("#"+id).html(boxCliente);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxCliente+="<option value='0' selected>Elegir Cliente</option>";
+                    }
+                    boxCliente+="<option value='"+datos[i].CLIENCODIGO+"'>"+datos[i].CLIENNOMBRE_CORTO+"</option>";
+                }
+                $("#"+id).html(boxCliente);
+            }
+        }
+    });
+}
+
+/*FUNCION PARA CARGAR LAS AREAS*/
+function mostrarArea(){
+    var boxAreas="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarAreasPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxAreas+="<option value='0' selected>Elegir Area</option>";
+            $("#area").html(boxAreas);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxAreas+="<option value='0' selected>Elegir Area</option>";
+                $("#area").html(boxAreas);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxAreas+="<option value='0' selected>Elegir Area</option>";
+                    }
+                    boxAreas+="<option value='"+datos[i].AREACODIGO+"'>"+datos[i].AREADESCRIPCION+"</option>";
+                }
+                $("#area").html(boxAreas);
+            }
+        }
+    });
+    
+}
+    
+/*FUNCION PARA MOSTRAR LOS REGISTROS DE DESPACHO POR ORD. PRODUCCION*/
+function mostrarDespachoXOrdProd(codigo){
+    
+    var boxDespacho = "<option value='0' selected>Elegir Despacho</option>";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarTodoTipoMensajeria.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                $("#tipoDespacho").html(boxDespacho);
+            }else{
+                for(var i=0; i<datos.length; i++){
+                    if(datos[i].OPCODIGO==codigo){
+                        boxDespacho+="<option value='"+datos[i].PRODESCODIGO+"'>"+datos[i].PRODESTIPO_MENSAJERIA+ "</option>"
+                    }
+                }
+                $("#tipoDespacho").html(boxDespacho);
+            }
+        }
+    });
+}
+    
+/*FUNCION PARA MOSTRAR LOS REGISTROS DE DESPACHO POR PERSONAL/AREA*/
+function mostrarPersonalxArea(codigo){
+    var boxPersonal="";
+    
+    var $codigo={'_codigo':codigo}
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarPersonalxArea.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+            boxPersonal+="<option value='0' selected>Elegir Personal</option>";
+            $("#personal").html(boxPersonal);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxPersonal+="<option value='0' selected>Elegir Personal</option>";
+                $("#personal").html(boxPersonal);
+            }else{ 
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPersonal+="<option value='0' selected>Elegir Personal</option>";
+                    }
+                    if(datos[i].PERSNOMBRE.split(" ").length==2){
+                        boxPersonal+="<option value='"+datos[i].PERSCODIGO +"'>"+datos[i].PERSNOMBRE.split(" ")[0] + " "+datos[i].PERSAPELLIDO_PATERNO + "</option>";
+                    }else{
+                        boxPersonal+="<option value='"+datos[i].PERSCODIGO +"'>"+datos[i].PERSNOMBRE + " "+datos[i].PERSAPELLIDO_PATERNO + "</option>";
+                    }
+                    
+                }
+                $("#personal").html(boxPersonal);
+            } 
+        }
+    });
+}
+    
+/*FUNCION PARA ACTUALIZAR LOS REGISTROS DE DESPACHO POR ORD. PRODUCCION*/
+function updateInfoXOrdProd(){
+    tipo="actualizar"
+    opcion = document.getElementById("tipoDespacho").value;
+    MensajeriaNueva(opcion,personal,tipo);
+}
+  
+/*FUNCION PARA CARGAR PERSONAL*/
+function mostrarPersonal(id){
+    var boxPersonal="";
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxPersonal+="<option value='0' selected>Elegir Personal</option>";
+            $("#"+id).html(boxPersonal);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxPersonal+="<option value='0' selected>Elegir Personal</option>";
+                $("#"+id).html(boxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPersonal+="<option value='0' selected>Elegir Personal</option><option value='solicitante'>Todos</option>";
+                    }
+                    boxPersonal+="<option value='"+datos[i].PERSCODIGO+"'>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO+"</option>";
+                }
+                $("#"+id).html(boxPersonal);
+            }
+        }
+    });  
+}
+    
+/*FUNCION PARA HABILITAR EL DATAPICKER Y SUS RESTRICCIONES*/    
+function iniciador(start,end){
+    
+      // Get the elements
+  var from_input = $('#'+start).pickadate(),
+    from_picker = from_input.pickadate('picker')
+  var to_input = $('#'+end).pickadate(),
+    to_picker = to_input.pickadate('picker')
+
+  // Check if there’s a “from” or “to” date to start with and if so, set their appropriate properties.
+  if (from_picker.get('value')) {
+    to_picker.set('min', from_picker.get('select'))
+  }
+  if (to_picker.get('value')) {
+    from_picker.set('max', to_picker.get('select'))
+  }
+
+  // Apply event listeners in case of setting new “from” / “to” limits to have them update on the other end. If ‘clear’ button is pressed, reset the value.
+  from_picker.on('set', function (event) {
+    if (event.select) {
+      to_picker.set('min', from_picker.get('select'))
+    } else if ('clear' in event) {
+      to_picker.set('min', false)
+    }
+  })
+  to_picker.on('set', function (event) {
+    if (event.select) {
+      from_picker.set('max', to_picker.get('select'))
+    } else if ('clear' in event) {
+      from_picker.set('max', false)
+    }
+  })
+    
+}
+
+/*FUNCION PARA REGISTRAR PADRON TERCERO*/
+function registrarPadronTercero(){
+    var Hoy = new Date();
+   var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+    
+    var $datos = {
+        '_proveedor': document.getElementById("proveedor").value,
+        '_ot': document.getElementById("otPadron").value,
+        '_mPliego': document.getElementById("mPliego").value,
+        '_cantidad': document.getElementById("cantidad").value,
+        '_descripcion': document.getElementById("descripcion").value,
+        '_pEntrega': document.getElementById("pEntrega").value,
+        '_estado': 72,
+        '_fTransporte': document.getElementById("fTransporte").value,
+        '_fRegistro': fecharegistro,
+        '_usuario': USUACODIGO
+        
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_RegistrarPadronTercero.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error","REGISTRO DE PERSONAL INCORRECTO! ERROR: "+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","REGISTRO EXITOSO - Acceso!");
+            }
+        }
+    });
+    
+    
+
+
+}
+
+
+</script>

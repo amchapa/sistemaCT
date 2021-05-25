@@ -1,0 +1,69 @@
+<style>
+
+.drop-placeholder {
+background-color: lightgray;
+height: 3.5em;
+padding-top: 12px;
+padding-bottom: 12px;
+line-height: 1.2em;
+}
+
+</style>
+
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">SEGUIMIENTO PRODUCCION</div>
+
+<ul id="sortable" class="list-group">
+  <li class="list-group-item active">Item 1</li>
+  <li class="list-group-item">Item 2</li>
+  <li class="list-group-item">Item 3</li>
+  <li class="list-group-item">Item 4</li>
+  <li class="list-group-item">Item 5</li>
+  <li class="list-group-item">Item 6</li>
+  <li class="list-group-item">Item 7</li>
+  <li class="list-group-item">Item 8</li>
+</ul>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<script src="Bootstrap/js/sortable.js"></script>
+<script type="text/javascript">
+    
+$(document).ready(function(){
+    cargarDatos()
+    $("#sortable").sortable();
+});
+ 
+/*FUNCION PARA CARGAR DATOS POR MAQUINA*/
+function cargarDatos(){
+    var cuerpo = "";
+    var codigo = 'MQ15'
+    var $codigo={'_codigo': codigo}    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarDataXMaq.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'MAQUINA SIN REGISTROS');
+            }else{
+                for(var i=0; i<datos.length; i++){
+                    if(i==0){
+                        cuerpo+="<li class='list-group-item active'>"+datos[i].OPCODIGO+"</li>";
+                    }else{
+                        cuerpo+="<li class='list-group-item'>"+datos[i].OPCODIGO+"</li>"
+                    }
+                }
+                $("#sortable").append(cuerpo);
+            }              
+        }
+    });
+}
+</script>

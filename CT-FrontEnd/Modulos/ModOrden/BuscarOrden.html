@@ -1,0 +1,1145 @@
+<div id="encabezadoPrincipal" class="container font-weight-bold h2-responsive principal-text text-center my-4">BUSCAR ORDEN DE PRODUCCION</div>
+<div class="w-responsive mx-auto my-2">
+  <div class="row text-center">
+   
+    <!--ORDEN DE PRODUCCION-->
+    <div class="h5-responsive font-weight-bold">
+    <label for="orden">Codigo de Ord. de Produccion:</label>
+     <select id="ordProduccion" class="js-example-basic-single" name="state" style="width:150px"></select>
+    </div>
+    
+    <!--ITEM-->
+    <div class="col h5-responsive font-weight-bold">Item: <select name="items" id="items"><option value='0' selected>Elegir Item</option></select></div>
+    
+    <!--BOTONES-->
+    <div><button class="btn enfasis3" style="padding: 3px 10px; margin: 0; float: center;" id="btnImprimir" onclick="slider6.imprimirContenido('divTabla');return false;">IMPRIMIR</button></div>
+
+  </div>
+</div>
+<div id="divTabla" style="display: none">
+   <form id="form">
+    <table id="tablaPDF" style="width: 100%;">
+        <tbody>
+
+        <!--TABLA SUPERIOR ORDEN DE PAPEL-->
+        <tr><td colspan="2">
+
+          <table border="1" class="table my-3" id="tablaSuperior" style="width: 100%">
+              <thead id="nuevaOrden" style="background-color: black; color: white; text-align: left;">
+                  <tr>
+                   <th class="d-none" id="codigoNumero"></th>
+                    <th colspan="7" style="padding: 10px;">NUEVA ORDEN DE PRODUCCION</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="7" class="font-weight-bold py-0 h4-responsive">
+                    <div class="d-flex">
+                        <div style="font-weight: bold;margin-right: auto; padding: 3px;">ORDEN DE PAPEL</div>
+                        <input class="btn btn-sm py-0 btn-default" style="padding: 3px 20px;" type="button" id="agregar" value="+">
+                        <input class="btn btn-sm py-0 btn-danger" style="padding: 3px 20px;" type="button" id="eliminar" value="-">
+                    </div>
+                </td></tr>
+                <tr>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">MATERIAL :</td>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">GRS :</td>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">H/R :</td>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">MEDIDA RESMA :</td>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">MEDIDA CORTE :</td>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">PLIEGOS X HOJA :</td>
+                    <td class="formulario py-0" style="text-align: center; vertical-align: middle;">PANNEAU DE :</td>
+                </tr>
+                <tr>
+                    <td class="numero"  style="padding: 0; text-align: center; margin: 0;">
+                      <select id="material1" style="min-width: 200px;" class="h4 m-0 p-0" required>
+                        <option value="couche" selected>Couche</option>
+                        <option value="coucheM-B">Couche M-B</option>
+                        <option value="coucheM">Couche Mate</option>
+                        <option value="coucheBrillo">Couche Brillo</option>
+                        <option value="bond">Bond</option>
+                        <option value="bondChambril">Bond Chambril</option>
+                        <option value="folkote">Folkote</option>
+                        <option value="duplex">Duplex</option>
+                        <option value="copy">Copy</option>
+                        <option value="periodico">Periodico</option>
+                        <option value="adhesivo">Adhesivo</option>
+                        <option value="lyner">Lyner</option>        
+                      </select>
+                    </td>
+                    <td style="padding: 0; text-align: center; margin: 0;"><input class="h4 m-0 p-0" type="number" style="width:100%;"  min="0" id="grs1"  required></td>
+                    <td style="padding: 0; text-align: center; margin: 0;"><input class="h4 m-0 p-0" type="text" style="width:100%;"  min="0" id="hr1" onkeyup="fAgrega()" required></td>
+                    <td style="padding: 0; text-align: center; margin: 0;"><input class="h4 m-0 p-0" type="text" style="width:100%;"  min="0" id="medidaResma1"  required></td>
+                    <td style="padding: 0; text-align: center; margin: 0;"><input class="h4 m-0 p-0" type="text" style="width:100%;"  min="0" id="medidaCorte1" onkeyup="fAgrega();" required ></td>
+                    <td style="padding: 0; text-align: center; margin: 0;"><input class="h4 m-0 p-0" type="number" style="width:100%;"  min="0" id="pliegosHoja1" required></td>
+                    <td style="padding: 0; text-align: center; margin: 0;"><input class="h4 m-0 p-0" type="text" style="width:100%;"  min="0" id="panneau1" required></td>
+                </tr>
+              </tbody>
+          </table>
+
+        </td></tr>
+
+        <!--TABLA CENTRAL CONTENIDO GENERAL-->
+        <tr>
+
+          <!--CONTENIDO LATERAL IZQUIERDO-->
+          <td class="pr-1" width="50%" style="vertical-align: top; min-width: 500px;">
+
+            <!--DETALLE DE PAPEL, MAQUINA Y TIPO DE IMPRESION-->
+            <table class="table table-bordered" style="width: 100%;">
+              <tbody>
+
+                <!--DETALLE-->
+                <tr>
+                  <td class="formulario py-0 h5-responsive" style="vertical-align: middle; text-align: center;">DETALLE DE PAPEL :</td>
+                  <td style=" padding: 0; vertical-align: middle;"><input style="width: 100%; text-align: center;" type="text" id="detallePapel" class="h4 m-0"></td>
+                </tr>
+
+                <!--MAQUINA-->
+                <tr>
+                  <td class="formulario py-0 h5-responsive" style="vertical-align: middle; text-align: center;">MAQUINAS :</td>
+                  <td style=" padding: 0; vertical-align: middle; text-align: center;"><select name="maquinas" id="maquinas" class="h4 m-0" style="width: 100%;" onChange="slider0.pasarValorMaquina();"></select></td>
+                </tr>
+
+                <!--TIPO DE IMPRESION-->
+                <tr>
+                  <td class="formulario py-0 h5-responsive" style="vertical-align: middle; text-align: center;">TIPO DE IMPRESION :</td>
+                  <td style=" padding: 0; vertical-align: middle; text-align: center;" id="agregarInput">
+                      <div><input type="text" id="tipoImpresion" value="" style="width: 100%;" class="h4 m-0" readonly></div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table> 
+
+            <!--DETALLES DEL PLIEGO-->
+            <table border id="tablaAgregar" style="width: 100%;">
+              <tbody>
+                <!--DESCRIPCION TITULO-->
+                <tr>
+                    <td class="p-0 pl-1 m-0 formulario">
+                      <div class="d-flex justify-content-end">
+                          <div class="pt-1" style="margin-right: auto; float: left;">DESCRIPCION</div>
+                          <input class="btn px-2 py-0 btn-default" style="float: right" type="button" id="añadir" value="+">
+                          <input class="btn px-2 py-0 btn-danger" style="float: right" type="button" id="desaparecer" value="-" >
+                      </div>
+                    </td>
+                    <td class="descripcion"><input style="width: 100%; text-align: center;" type="text" id="cuadroa0" value="OTROS" class="m-0" required></td>
+                </tr>
+
+                <!--MEDIDA DEL P/M-->
+                <tr>
+                    <td class="p-0 pl-1 m-0 formulario">MEDIDA DE P/M</td>
+                    <td class="descripcion"><input class="w-100 h5 m-0" type="text" id="cuadroa1" required></td>
+                </tr>
+
+                <!--CANTIDAD EN P/M-->
+                <tr>
+                    <td class="p-0 pl-1 m-0 formulario">CANTIDAD EN P/M</td>
+                    <td class="descripcion"><input class="w-100 cantidad1 h5 m-0" type="text" onkeyup="slider0.sumaTablaDescripcion();" id="cuadroa2" required></td>
+                </tr>
+
+                <!--DEMASIA EN P/M-->
+                <tr>
+                    <td class="p-0 pl-1 m-0 formulario">DEMASIA EN P/M</td>
+                    <td class="descripcion"><input class="w-100 cantidad1 h5 m-0" type="text" onkeyup="slider0.sumaTablaDescripcion();" id="cuadroa3" required></td>
+                </tr>
+
+                <!--TOTAL DE PAPEL ENTREGADO-->
+                <tr>
+                    <td class="p-0 pl-1 m-0 formulario">TOTAL DE PAPEL ENTREGADO</td>
+                    <td class="descripcion"><input class="w-100 h5 m-0" type="text" id="cuadroa4" readonly></td>
+                </tr>
+
+                <!--TOTAL HOJAS RESMA-->
+                <tr>
+                    <td class="p-0 pl-1 m-0 formulario">TOTAL HOJAS RESMAS</td>
+                    <td class="descripcion"><input class="w-100 h5 m-0" type="text" id="cuadroa5" required></td>
+                </tr>
+
+              </tbody>
+            </table>
+
+            <!--COLOR ESPECIAL Y TIPO DE BARNIZ-->
+            <table class="table" id="color" style="width: 100%;">
+              <tbody>
+                <tr>
+                    <td colspan="4" class="p-0">COLOR ESPECIAL :<input type="text" id="colorEspecial" style="width: 80%;" class="h3 ml-2 my-2 m-0"></td>
+                </tr>
+                <tr>
+                    <td class="formulario py-0" colspan="2" width="50%;">Barniz Offset :</td>
+                    <td class="formulario py-0" colspan="2" width="50%;">Barniz Acrilico: </td>
+                </tr>
+                <tr>
+                    <td  class=" p-0 m-0 " align="center" colspan="2">
+                     <select name="barnizOffset" id="barnizOffset" class="w-100 h4 resetar">
+                          <option value="ninguno">-</option>
+                          <option value="OFFB">BRILLANTE</option>
+                          <option value="OFFM">MATE</option>
+                          <option value="OFFB-2C">BRILLANTE 2C</option>
+                          <option value="OFFM-2C">MATE 2C</option>
+                      </select>
+                    </td>
+                    <td  class=" p-0 m-0 " align="center" colspan="2">
+                     <select name="barnizAcrilico" id="barnizAcrilico" class="w-100 h4 resetar">
+                          <option value="ninguno">-</option>
+                          <option value="ACRB">BRILLANTE</option>
+                          <option value="ACRM">MATE</option>
+                          <option value="ACRB-2c">BRILLANTE 2C</option>
+                          <option value="ACRM-2C">MATE 2C</option>
+                      </select>
+                    </td>
+                </tr>
+              </tbody>
+            </table> 
+
+            <!--ENCUADERNACION-->
+            <table class="table" style="width: 100%; border-top: 5px black solid">
+             <thead>
+                <tr><th colspan="7" class="font-weight-bold py-0 h4-responsive">ENCUADERNACION :</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  class="my-0">
+                    <td class="formulario py-1">Doblez :</td>
+                    <td class="formulario py-1">Compaginado:</td>
+                    <td class="formulario py-1">Encolado :</td>
+                </tr>
+                <tr>
+                  <td class=" p-0 m-0 " align="center">
+                   <select name="tipoDoblez" id="tipoDoblez" class="w-100 h4">
+                        <option value="ninguno">-</option>
+                        <option value="revista">REVISTA</option>
+                        <option value="maquina">DIPTICO</option>
+                        <option value="triptico">TRIPTICO</option>
+                        <option value="cuadriptico">CUADRIPTICO</option>
+                        <option value="cruz">CRUZ</option>
+                        <option value="man1">MAN1</option>
+                        <option value="man2">MAN2</option>
+                        <option value="man3">MAN3</option>
+                    </select>
+                  </td>
+                  <td class=" p-0 m-0 " align="center">
+                   <select name="tipoCompaginado" id="tipoCompaginado" class="w-100 h4">
+                       <option value="ninguno">-</option>
+                        <option value="grapas">A 2 GRAPAS</option>
+                        <option value="francesa">A LA FRANCESA</option>
+                    </select>
+                  </td>
+                  <td class=" p-0 m-0 " align="center">
+                   <select name="tipoEncolado" id="tipoEncolado" class="w-100 h4">
+                       <option value="ninguno">-</option>
+                        <option value="alfrio">AL FRIO</option>
+                        <option value="alcalor">AL CALOR</option>
+                        <option value="solapas">SOLAPAS</option>
+                    </select>
+                  </td>
+                </tr> 
+              </tbody>
+            </table> 
+
+            <!--ACABADO BARNIZ PLASTIFICADO-->
+            <table class="table" style="width: 100%; border-top: 5px black solid">
+              <thead>
+                <tr><th colspan="2" class="font-weight-bold py-0 h4-responsive">ACABADO :</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td class="formulario py-1" width="50%;">Barniz :</td>
+                    <td class="formulario py-1" width="50%;">Plastificado: </td>
+                </tr>
+                <tr> 
+                    <td class=" p-0 m-0 " align="center">
+                     <select name="tipoBarniz" id="tipoBarniz" class="w-100 h4">
+                          <option value="ninguno">-</option>
+                          <option value="UV-B">UV Brillante</option>
+                          <option value="UV-M">UV Mate</option>
+                          <option value="UVSB">UV Sectorizado Brillante</option>
+                          <option value="UVSM">UV Sectorizado Mate</option>
+                          <option value="UV-B-2C">UV Brillante 2C</option>
+                          <option value="UV-M-2C">UV Mate 2C</option>
+                          <option value="UVSB-2C">UV Sectorizado Brillante 2C</option>
+                          <option value="UVSM-2C">UV Sectorizado Mate 2C</option>
+                      </select>
+                    </td>
+                    <td class=" p-0 m-0" align="center">
+                       <select name="tipoBarniz" id="tipoPlastificado" class="w-100 h4">
+                          <option value="ninguno">-</option>
+                          <option value="PL-B">Brillante</option>
+                          <option value="PL-M">Mate</option>
+                          <option value="PL-B-2C">Brillante 2C</option>
+                          <option value="PL-M-2C">Mate 2C</option>
+                      </select> 
+                    </td>
+                </tr> 
+              </tbody>
+            </table>
+
+            <!--ACABADO OTROS-->
+            <table class="table" id="otros" style="width: 100%;">
+
+                <tr>
+                    <!--PEGADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Pegado </p>
+                      <input type="checkbox" class="bloquear" id="pegadoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+
+                    <!--PERFORADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Perforado </p>
+                      <input type="checkbox" class="bloquear" id="perforadoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+                </tr>
+                <tr>
+                    <!--CORTE-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Corte Final</p>
+                      <input type="checkbox" class="bloquear" id="corteFinalAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+
+                    <!--FAJILLADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Fajillado </p>
+                      <input type="checkbox" class="bloquear" id="fajilladoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+                </tr>
+                <tr>
+                    <!--REFILADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Refilados </p>
+                      <input type="checkbox" class="bloquear" id="refiladosAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+
+                    <!--ALCE-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Alce </p>
+                      <input type="checkbox" class="bloquear" id="alceAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+                </tr>
+                <tr>
+                    <!--TROQUELADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Troquelado </p>
+                      <input type="checkbox" class="bloquear" id="troqueladoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+
+                    <!--CONTADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Contado </p>
+                      <input type="checkbox" class="bloquear" id="contadoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>                     
+                </tr>
+                <tr>
+                    <!--NUMERADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Numerado </p>
+                      <input type="checkbox" class="bloquear" id="numeradoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>
+
+                    <!--CONTRAPLACADO-->
+                    <td>
+                      <p class="mx-3" style="float: left; padding: 0; margin: 0;">Contraplacado</p>
+                      <input type="checkbox" class="bloquear" id="contraplacadoAcabado" style="float: left; padding: 0; margin: 0;">
+                    </td>                   
+                </tr>
+                <tr>
+                   <!--OTROS-->
+                   <td>
+                     <div class="d-flex">
+                          <p class="pt-1 mr-auto" style="margin: 0; float: left;">Otros 1 </p>
+                          <input class="btn px-2 py-0 btn-default" style="float: right;" type="button" id="añadirOtros" value="+">
+                          <input class="btn px-2 py-0 btn-danger" style="float: right;" type="button" id="eliminarOtros" value="-" >
+                     </div>
+                    </td>
+                   <td>
+                    <div class="form-check form-check-inline">
+                       <input class="mx-2" style="padding: 0; margin: 0;" type="checkbox" class="bloquear" id="otros1" onclick="slider0.habilitarInput(this.id)" >
+                       <input type="text" style="padding: 0; margin: 0;" id="otros1input" class="form-control w-75" readonly>
+                    </div>
+                   </td>                       
+                </tr>       
+
+            </table>    
+
+            <!--OBSERVACIONES-->
+            <table class="table" id="observacion" style="width: 100%; border-top: 5px black solid">
+                <thead><tr><th class="font-weight-bold py-0 h4-responsive">OBSERVACIONES :</th></tr></thead>
+                <tbody><tr><td class="p-0 m-0"><textarea class="form-control rounded-0 h1-responsive" rows="2" id="textarea"></textarea></td></tr></tbody>
+            </table>
+
+          </td>
+
+          <!--CONTENIDO LATERAL DERECHO-->
+          <td class="pl-1" width="50%" style="vertical-align: top; min-width: 500px;">
+
+            <!--DATOS DE LA ORDEN DE PRODUCCION-->
+            <table class="table" style="width: 100%; border-top: 5px black solid">
+              <thead>
+                <tr><th align="left" colspan="7" class="font-weight-bold pb-0 h4-responsive py-0"  >ORDEN DE PRODUCCION</th></tr>
+              </thead>
+              <tbody>
+
+                <!--OP-->
+                <tr>
+                    <td class="formulario py-1">OP :</td>
+                    <td class="py-1" ><input type="text" class="w-100 h3" min="0" id="codigoOP" maxlength="9"></td>
+                </tr>
+
+                <!--CLIENTE-->
+                <tr>
+                    <td class="formulario py-1">CLIENTE :</td>
+                    <td class="py-1"><select class="w-100 h3" name="cliente" id="cliente"></select></td>
+                </tr> 
+
+                <!--ITEM-->
+                <tr>
+                    <td class="formulario py-1">ITEM :</td>
+                    <td class="py-1"><input type="text" class="w-100 h3" min="0" id="nombreitem"></td>
+                </tr> 
+
+                <!--CANTIDAD-->
+                <tr> 
+                    <td class="formulario py-1">CANTIDAD :</td>
+                    <td class="py-1"><input type="number" min="0" class="w-100 h4" id="cantidad" style="max-width: 210px">
+                    <select name="c" id="c" style="max-width: 200px" class="h4" onchange="slider0.cambioUnidad()">
+                        <option value="unidad">UNIDADES</option>
+                        <option value="ciento">CIENTOS</option>
+                        <option value="millar">MILLARES</option>
+                    </select>
+                    </td>
+                </tr>
+
+                <!--DETALLE-->
+                <tr>
+                    <td colspan="2" class="py-3">
+                      <label for="detalle">DETALLE :</label>
+                      <textarea class="form-control rounded-0 h3-responsive font-weight-bold" id="detalle" ></textarea>
+                    </td>
+                </tr>
+
+                <!--CANTIDAD DE ITEMS-->
+                <tr>
+                    <td class="formulario py-1">CANTIDAD DE ITEMS :</td>
+                    <td class="py-1"><input type="text" class="w-100 h3" min="0" id="cantidadPedido" ></td>
+                </tr>
+
+                <!--N° DE ITEM-->
+                <tr>
+                    <td class="formulario py-1">N° DE ITEM :</td>
+                    <td class="py-1"><input type="text" class="w-100 h3" min="0" id="item" maxlength="2" ></td>
+                </tr> 
+
+                <!--CODIGO DEL ITEM-->
+                <tr>
+                    <td class="formulario py-1">CODIGO DEL ITEM :</td>
+                    <td class="py-1"><input type="text" class="w-100 h3" min="0" id="codigoItem" maxlength="12"></td>
+                </tr>
+
+                <!--RECIBIDO POR-->
+                <tr> 
+                    <td class="formulario py-1">RECIBIDO POR :</td>
+                    <td class="py-1">
+                      <select name="multiple[]" id="ejecutiva" class="w-100 h3">
+                        <option value="0" >Seleccionar Ejecutiva</option>
+                        <option value="35">Fabiola Morales</option>
+                        <option value="39">Yrma Paucar</option>
+                        <option value="54">Milagros Salinas</option>
+                        <option value="28">Liz Guerrero</option>
+                        <option value="49">Jose Ramos Ledesma</option>
+                        <option value="74">Alan Lavanda</option>
+                      </select>
+                    </td>
+                </tr>
+
+              </tbody>
+            </table>
+
+            <!--DATOS DE PRE PRENSA-->
+            <table class="table pprensa" style="width: 100%; border-top: 5px black solid">
+               <thead>
+                    <tr><th colspan="6" class="font-weight-bold pb-0 h4-responsive py-0 mx-0">PRE-PRENSA :</th></tr>
+                </thead>
+               <tbody>
+                  <tr>
+                    <th colspan="6"  class="formulario py-1">Se entrega :</th>
+                  </tr>
+                  <tr>
+                    <td class="py-1">Prueba de color : </td>
+                    <td class="py-1"><input type="checkbox" class="bloquear" id="pruebaColor" ></td>
+                    <td class="py-1">Machote </td>
+                    <td class="py-1"><input type="checkbox" class="bloquear" id="machote" ></td>
+                    <td class="py-1">Laser B/N : </td>
+                    <td class="py-1"><input type="checkbox" class="bloquear" id="laserBN" ></td>
+                  </tr>
+                  <tr>
+                    <th colspan="6" class="formulario py-1">Especificaciones del trabajo :</th>
+                  </tr>
+                  <tr>
+                    <td class="py-1">Formato Abierto : </td>
+                    <td class="py-1" colspan="2"><input type="text" id="fAbierto" style="max-width: 180px;"></td>
+                    <td class="py-1">Formato Cerrado : </td>
+                    <td class="py-1" colspan="2"><input type="text" id="fCerrado" style="max-width: 180px;"></td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 px-0 pl-2">Colores : <select name="selectColores" id="selectColores" style="max-width: 40px">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option></select></td>
+                    <td class="py-1" colspan="3"><input type="text" id="colores" style="max-width: 260px;" required></td>
+                    <td class="py-1">LPI : </td>
+                    <td class="py-1"><input type="text" id="lpi" style="max-width: 140px;"></td>
+                  </tr>
+                  <tr>
+                    <td class="py-1" colspan="2" >Tipo de Impresion :</td>
+                    <td class="py-1" colspan="4">
+                      <div class="form-group multiple-form-group">
+                        <div class="form-group input-group my-0">
+                            <select name="multiple[]" class="form-control" id="listadoTipoImpresion" onChange="pasarValorImpresion(listadoTipoImpresion);">
+                              <option value="0" selected>Seleccionar Tipo de Impresion</option>
+                              <option value="1">SOLO TIRA</option>
+                              <option value="3">T/R JUNTA</option>
+                              <option value="2">T/R APARTE</option>
+                              <option value="4">DOBLE PINZA</option>
+                            </select>
+                            <span class="input-group-btn"><button id="añadirImpresion" type="button" class="btn btn-default btn-sm px-2 py-1 btn-add">+
+                            </button></span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-1" colspan="2">Quality Paper</td>
+                    <td class="py-1"><input type="checkbox" class="bloquear" id="qualityPaper" ></td>
+                    <td class="py-1" colspan="2">Contrato Marco para Telefonica</td>
+                    <td class="py-1"><input type="checkbox" class="bloquear" id="contratoMarco" ></td>
+                  </tr>
+               </tbody>
+            </table> 
+
+            <!--DATOS DE EMPAQUETADO-->
+            <table class="table empaq" id="costos" style="width: 100%; border-top: 5px black solid">
+              <thead>
+                  <tr><th colspan="5" class="font-weight-bold h4-responsive py-0">EMPAQUETADO :</th></tr>
+                  <tr>
+                      <td style="margin: 0; padding: 0;" colspan="2">Caja</td>
+                      <td class="py-1"><input type="checkbox" class="bloquear" id="caja"></td>
+                      <td style="margin: 0; padding: 0;">Empaquetado</td>
+                       <td class="py-1"><input type="checkbox" class="bloquear" id="empaque"></td>
+                  </tr>
+                  <tr>
+                    <th colspan="4" class="font-weight-bold py-0 pb-1">DETALLES :</th>
+                    <th colspan="1" class="font-weight-bold py-0" style="text-align: left">
+                        <div class="d-flex">
+                            <p class="m-0 p-0 pt-1">SUB TOTAL :</p>
+                            <input class="btn px-2 py-0 btn-default" type="button" id="añadirCosto" value="+" >
+                            <input class="btn px-2 py-0  btn-danger" type="button" id="eliminarCosto" value="-">
+                        </div>
+                    </th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td style="margin: 0; padding: 0;"><input type="number" min='1' style="max-width: 100px;" id="inputPaquete1" class="monto1" onkeyup="multi();"></td>
+                    <td style="margin: 0; padding: 0;">PAQ. X</td>
+                    <td style="margin: 0; padding: 0;"><input type="number" min='1' style="max-width: 100px;" id="inputUnid1"class="monto1" onkeyup="multi();"></td>
+                    <td style="margin: 0; padding: 0;">UNID.</td>
+                    <td style="margin: 0; padding: 0;" colspan="2"><input type="number" min='1' style="max-width: 150px;" id="subtotal1" readonly></td>    
+                </tr>         
+              </tbody>
+            </table>
+
+            <!--DATOS DE TOTAL EMPAQUETADO-->
+            <table class="table" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="formulario py-0 pr-4" style="width: 75%; padding: 0; margin: 0; text-align: right; font-weight: bold;">TOTAL:</td>
+                        <td class="py-0"><input id="totalFinalDatos" type="number" min='0' readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+
+          </td>
+
+        </tr>
+
+        <!--TABLA INFERIOR MODELO DE IMPRESION-->           
+        <tr><td colspan="2">
+
+          <!--DETALLES DE IMPRESION-->    
+           <table class="table" style="width: 100%; border-top: 5px black solid;">
+              <tbody>
+                <tr>
+                    <td class="formulario p-0 m-0 text-center">MAQUINA :</td>
+                    <td class="p-0 m-0"><input type="text" id="maquinaMostrar" class="w-100 h3 m-0" readonly></td>
+                    <td class="formulario p-0 m-0 text-center">N DE PLIEGOS : </td>
+                    <td class="p-0 m-0"><input type="number" class=" w-100 h3 m-0" min="0" id="nDePliegos" ></td>
+                </tr>
+                <tr>
+                    <td class="formulario p-0 m-0 text-center">PLIEGO :</td>
+                    <td class="p-0 m-0"><input type="text" id="pliego" class="w-100 h3 m-0" readonly></td>
+                    <td class="formulario p-0 m-0 text-center">N DE PLACAS : </td>
+                    <td class="p-0 m-0"><input type="number" class=" w-100 h3 m-0" min="0" id="nDePlacas" ></td>
+                </tr>
+              </tbody>
+           </table>
+
+           <!--MODELO E INDICACIONES DE IMPRESION-->  
+            <table class="table" style="width: 100%;">
+             <tr>
+              <!--MODELO--> 
+              <td class="pr-1" width="100%" style="vertical-align: top; min-width: 500px;">
+
+                <!--CONTENEDOR DEL MODELO--> 
+                <div class="row w-100" id="contenedorModelo" >
+
+                  <!--TIRA--> 
+                    <div class="divcambiar w-50" id="divTira" style="text-align: center;">
+                        <div id="pinzaSuperior1" class="pinza d-none" style="margin:0px auto;">
+                            <input id="pinza1Superior" onkeyup="fAgrega();" type="text" value="PINZA : " class="text-center font-weight-bold">
+                        </div>
+                            <img id="imgfotoTira" class="imageTamano">
+                            <input type="file" id="fotoTira" name="archivo" hidden accept="image/*" onclick="seleccionarImagen(this.id)">
+                        <!--PINZA--> 
+                        <div class="pinza" style="margin:0px auto;">
+                            <input onkeyup="fAgrega();" id="pinza1" type="text" value="PINZA : " class="text-center font-weight-bold">
+                        </div>
+                    </div>
+
+                    <!--RETIRA--> 
+                    <div class="divcambiar w-50" id="divRetira" style="text-align: center;">
+                        <div id="pinzaSuperior2" class="pinza d-none" style="margin:0px auto;">
+                            <input id="pinza2Superior" onkeyup="fAgrega();" type="text" value="PINZA : " class="text-center font-weight-bold">
+                        </div>
+                            <img id="imgfotoRetira" class="imageTamano">
+                            <input type="file" id="fotoRetira" name="archivo" hidden accept="image/*" onclick="seleccionarImagen(this.id)">
+                        <!--PINZA-->  
+                        <div class="pinza" style="margin:0px auto;">
+                            <input onkeyup="fAgrega();" id="pinza2" type="text" value="PINZA : " class="text-center font-weight-bold">
+                        </div>
+                    </div>
+                  </div>
+              </td>            
+            </tr>
+            <tr>
+                <td>
+                    <!--INDICACIONES--> 
+                    <div>
+                          <label for="indicaciones" class="w-100 p-0 m-0 pl-4">INDICACIONES :</label>
+                          <textarea class="form-control rounded-0 h3-responsive font-weight-bold" rows="1" id="indicaciones" style="height: 80px;"></textarea>
+                    </div>
+                </td>
+            </tr>
+           </table>
+
+          <!--BOTONES-->
+
+
+            </td></tr>
+        </tbody>
+    </table>
+    </form>
+</div>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/Modorden/VistaPrincipal.js"></script>
+
+<!--ARCHIVOS JS SELECT/INPUT -->
+<script src="Bootstrap/js/jquery-3.3.1.js"></script>
+<script src="Bootstrap/js/jquery-3.3.1.min.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<script src="Bootstrap/js/filesaver.js"></script>
+<script src="Bootstrap/js/html2canvas.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<link href="Bootstrap/css/estilosTabla.css" rel="stylesheet"/>
+    
+<script>
+slider4.cargarOrdProduccion();
+slider2.mostrarCliente();
+slider2.mostrarMaquina();
+
+jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    }); 
+    
+    $("select[name=state]").change(function(){
+        document.getElementById("divTabla").style.display="none";
+        slider4.cargarItemsXOrProduccion($("#ordProduccion").val());
+        //slider4.restaurarFormulario();
+    });
+    
+    $("select[name=items]").change(function(){
+        document.getElementById("divTabla").style.display=null;
+        slider4.restaurarFormulario();
+        if($("#items").val() != "0"){
+            slider1.cargarDatosEditItem($("#items").val());
+       }else{
+           document.getElementById("divTabla").style.display="none";
+       }
+        setTimeout(slider4.ocultarBotones,1000)
+    });
+});
+    
+/*FUNCIONES CLICK*/        
+$(document).ready(function(){
+        var añadir=1;
+        var pulsar=1;
+        var agregar=1;
+        var acumulador=1;
+    
+    //--AGREGAR FILA DE LA TABLA ORDEN DE PAPEL--
+    $("#agregar").click(function(){
+        var tds=7;
+        var trs=$("#tablaSuperior tr").length;
+        var nuevaFila="<tr>";
+        añadir=añadir+1;
+        if(añadir>=2 && añadir<=3){
+            for(var i=0;i<tds;i++){
+                if(i==2 || i==3 || i==4){
+                    if(i==2){
+                        nuevaFila+="<td style='padding: 0; text-align: center; margin: 0;'><input id='hr"+añadir+"' type='text' class='h4 m-0 p-0' style='width:100%;'></td>";
+                    }else if(i==3){
+                        nuevaFila+="<td style='padding: 0; text-align: center; margin: 0;'><input id='medidaResma"+añadir+"' type='text' class='h4 m-0 p-0' style='width:100%;'></td>";
+                    }else{
+                        nuevaFila+="<td style='padding: 0; text-align: center; margin: 0;'><input id='medidaCorte"+añadir+"' type='text' class='h4 m-0 p-0' style='width:100%;'></td>";
+                    }
+                }else{
+                  if(i==0){
+                    nuevaFila+="<td class='numero' style='padding: 0; text-align: center; margin: 0;'>\
+                  <select id='material"+añadir+"' style='min-width: 200px;' class='h4 m-0 p-0'>\
+                    <option value='couche' selected>Couche</option>\
+                    <option value='coucheM-B'>Couche M-B</option>\
+                    <option value='coucheM'>Couche Mate</option>\
+                    <option value='coucheBrillo'>Couche Brillo</option>\
+                    <option value='bond'>Bond</option>\
+                    <option value='bondChambril'>Bond Chambril</option>\
+                    <option value='folkote'>Folkote</option>\
+                    <option value='duplex'>Duplex</option>\
+                    <option value='copy'>Copy</option>\
+                    <option value='periodico'>Periodico</option>\
+                    <option value='adhesivo'>Adhesivo</option>\
+                    <option value='lyner'>Lyner</option>        \
+                  </select>\
+                </td>";
+                  }else{
+                      if(i==1){
+                          nuevaFila+="<td style='padding: 0; text-align: center; margin: 0;'><input id='grs"+añadir+"' type='number' class='h4 m-0 p-0' style='width:100%;' min='0'></td>";
+                      }else if(i==5){
+                          nuevaFila+="<td style='padding: 0; text-align: center; margin: 0;'><input id='pliegosHoja"+añadir+"' type='number' class='h4 m-0 p-0' style='width:100%;' min='0'></td>";
+                      }else{
+                          nuevaFila+="<td style='padding: 0; text-align: center; margin: 0;'><input id='panneau"+añadir+"' type='number' class='h4 m-0 p-0' style='width:100%;' min='0'></td>";
+                      }
+                  }
+                }
+
+        }
+        nuevaFila+="</tr>";
+        $("#tablaSuperior").append(nuevaFila);
+        }else{
+            añadir=3;
+        }
+    });
+    
+    //--ELIMINAR FILA DE LA TABLA ORDEN DE PAPEL--
+    $("#eliminar").click(function(){
+        añadir=añadir-1;
+        if(añadir>=1){
+            var trs=$("#tablaSuperior tr").length;
+            if(trs>1){
+                $("#tablaSuperior tr:last").remove();
+            }
+        }else{
+            añadir=1;  
+        }
+    });
+    
+    //--AGREGAR COLUMNAS DE LA TABLA DESCRIPCION--
+    $("#añadir").click(function(){
+        pulsar=pulsar+1;
+        if(pulsar>=2 && pulsar<=4){
+            var tbl = document.getElementById('tablaAgregar'),
+                i;
+            switch(pulsar) {
+              case 2:
+                for (i = 0; i < tbl.rows.length; i++) {
+                    if(i==2 || i==3){
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0 cantidad2','text','cuadrob'.concat(i), 'slider0.sumaTablaDescripcion();');  
+                    }else  if(i==4){
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0','text','cuadrob'.concat(i),"readonly");  
+                    }else{
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0','text','cuadrob'.concat(i));  
+                    }
+                }
+                break;
+              case 3:
+                for (i = 0; i < tbl.rows.length; i++) {
+                    if(i==2 || i==3){
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0 cantidad3','text','cuadroc'.concat(i),'slider0.sumaTablaDescripcion();');  
+                    }else if(i==4){
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0','text','cuadroc'.concat(i),"readonly");
+                    }else{
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0','text','cuadroc'.concat(i));
+                    }
+                                  
+                }
+                break;
+              case 4:
+                for (i = 0; i < tbl.rows.length; i++) {
+                    if(i==2 || i==3){
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0 cantidad4','text','cuadrod'.concat(i),'slider0.sumaTablaDescripcion();');  
+                    }else if(i==4){
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0','text','cuadrod'.concat(i),"readonly");      
+                    }else{
+                        slider0.createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), 'w-100 h5 m-0','text','cuadrod'.concat(i));         
+                    }
+                                       
+                }
+                break;
+              default:
+            }       
+            
+        }else{
+            pulsar=4;
+        }
+        slider0.sumaTablaDescripcion();        
+    });
+    
+    //--ELIMINAR COLUMNAS DE LA TABLA DESCRIPCION--
+    $("#desaparecer").click(function(){
+         pulsar=pulsar-1;
+            if(pulsar>=1){
+                var tbl1 = document.getElementById('tablaAgregar'),
+                lastCol = tbl1.rows[0].cells.length - 1,
+                i, j;
+            for (i = 0; i < tbl1.rows.length; i++) {
+                j=lastCol;
+                tbl1.rows[i].deleteCell(j);
+            }
+        }else{
+            pulsar=1;
+        }
+
+    });
+    
+    //--AGREGAR FILAS DE LA TABLA OTROS--
+    $("#añadirOtros").click(function(){
+        var tds=2;
+        var trs=$("#otros tr").length;
+        var nuevaFila="<tr>";
+        agregar=agregar+1;
+        if(agregar>=2 && agregar<=3){
+          for(var i=1;i<tds;i++){
+            nuevaFila+="<td>Otros "+[agregar]+"</td><td>"+
+            "<div class='form-check form-check-inline'>"+
+            " <input class='mx-2' type='checkbox' class='bloquear' id='otros"+[agregar]+"' onclick='slider0.habilitarInput(this.id)'>"
+            +"<input type='text' id='otros"+agregar+"input' class='form-control w-75' readonly>"+
+            "</div>"+
+            "</td>";
+          }
+          nuevaFila+="</tr>";
+          $("#otros").append(nuevaFila);
+        }else{
+          agregar=3;
+        }
+    });
+    
+    //--ELIMINAR FILAS DE LA TABLA OTROS--
+    $("#eliminarOtros").click(function(){
+        agregar=agregar-1;
+        if(agregar>=1){
+            var trs=$("#otros tr").length;
+            if(trs>1){
+                $("#otros tr:last").remove();
+            }
+        }else{
+            agregar=1;
+        }
+        
+    });
+  
+    //--AGREGAR FILAS DE LA TABLA EMPAQUETADO--
+    $("#añadirCosto").click(function(){
+        var nuevo ="<tr>";
+        acumulador+=1;
+        if(acumulador>=2 && acumulador<=10){
+            nuevo+="<td style='margin: 0; padding: 0;'><input type='number' min='1' style='max-width: 100px;' id='inputPaquete"+[acumulador]+"'  class='monto"+[acumulador]+"' onkeyup='slider0.multi();' ></td>\
+            <td style='margin: 0; padding: 0;'>PAQ. X</td>\
+            <td style='margin: 0; padding: 0;'><input type='number' min='1' style='max-width: 100px;' id='inputUnid"+[acumulador]+"'  class='monto"+[acumulador]+"' onkeyup='slider0.multi();' ></td>\
+            <td style='margin: 0; padding: 0;'>UNID.</td>\
+            <td style='margin: 0; padding: 0;' colspan='2'><input type='number' min='1' style='max-width: 150px;' id='subtotal"+[acumulador]+"' readonly ></td>";
+            nuevo+="</tr>";
+            $("#costos").append(nuevo);
+        }else{
+            acumulador=10;
+        }
+
+    });
+    
+    //--ELIMINAR FILAS DE LA TABLA EMPAQUETADO--
+    $("#eliminarCosto").click(function(){
+        var reducir="";
+        var reducido="";
+        var resultado="";
+        acumulador-=1;
+        if(acumulador>=1){
+            var trs=$("#costos tr").length;
+            if(trs>1){
+                switch(trs) {
+                  case 5:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal2").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 6:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal3").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 7:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal4").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 8:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal5").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 9:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal6").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 10:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal7").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 11:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal8").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 12:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal9").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;
+                  case 13:
+                        reducido = document.getElementById("totalFinalDatos").value;reducir = document.getElementById("subtotal10").value;resultado = reducido-reducir;
+                        document.querySelector("#totalFinalDatos").setAttribute("value",resultado);
+                    break;        
+                  default:
+                    // code block
+                }
+                $("#costos tr:last").remove()
+            }
+        }else{
+            acumulador=1;
+        }
+
+    });
+  
+    //--HABILITAR EL CHECKBOX DE CAJA--
+    $("#caja").click(function(){
+        document.getElementById("caja").checked = false;
+        document.getElementById("empaque").checked = false;
+        this.checked = true;
+        document.getElementById("inputPaquete1").readonly = true;
+        document.getElementById("inputUnid1").readonly = true;
+        document.getElementById("subtotal1").readonly = true;
+        document.querySelector("#caja").setAttribute("checked","true");
+        document.querySelector("#empaque").removeAttribute("checked");
+        document.querySelector("#inputPaquete1").removeAttribute("value");
+        document.querySelector("#inputUnid1").removeAttribute("value");
+        document.querySelector("#subtotal1").removeAttribute("value");
+        document.querySelector("#totalFinalDatos").removeAttribute("value");
+       });
+    
+    //--HABILITAR EL CHECKBOX DE EMPAQUETADO--
+    $("#empaque").click(function(){
+        document.getElementById("caja").checked = false;
+        document.getElementById("empaque").checked = false;
+        this.checked = true;
+        document.querySelector("#empaque").setAttribute("checked","true");
+        document.querySelector("#caja").removeAttribute("checked");
+        document.getElementById("inputPaquete1").readonly = false;
+        document.getElementById("inputUnid1").readonly = false;
+        document.getElementById("añadirCosto").readonly = false;
+        document.getElementById("eliminarCosto").readonly = false; 
+    });
+    
+    //--FUNCION DE GENERAR DE CODIGO DEL ITEM EN OP--
+    $("#codigoOP").keyup(function () {
+        var valor = $(this).val().toString().concat("-").toString();
+        var value = $("#item").val().toString();
+        var ultimo=valor.concat(value);
+        $("#codigoItem").val(ultimo);
+        
+    });
+    
+    //--FUNCION PARA GUARDAR LA ORDEN DE PAPEL--
+    $("#guardar").click(function() {
+        
+        var values = slider0.obtenerDatos();
+        var first = values[0];
+        var second = values[1];
+        slider0.confirmarValidacion(first,second);
+    });
+    
+    //--FUNCION PARA ACTUALIZAR LA ORDEN DE PAPEL--
+    $("#actualizar").click(function() {
+        var codigo = $("#codigoNumero").html();
+        var values = slider0.obtenerDatos();
+        var first = values[0];
+        var second = values[1];
+        slider1.codigosPrincipales(codigo,first,second)
+    });
+    
+    //-FUNCION PARA MOSTRAR AUTOMATICAMENTE EL PANNEAU--
+    $("#panneau1").keyup(function () {
+        var valor = $(this).val();
+        var value = $("#cantidad").val();
+        var ultimo=value/valor;
+        if(ultimo!=NaN && ultimo!="Infinity"){
+          $("#cuadroa2").val(ultimo);
+        }else{
+            $("#cuadroa2").val("");
+        } 
+    });
+    
+    //-FUNCION PARA LLAAMAR LA HABILITACION DE IMAGENES--
+    $("#listadoTipoImpresion").click(function () {
+        var valor = $(this).val();
+        slider0.tipoImpresion(valor);
+    });
+    
+});    
+    
+/*FUNCION PARA AÑADIR O ELIMINAR CAMPO EN UN SELECT*/      
+(function ($) {
+    $(function () {
+        
+        var count=0;
+
+        var addFormGroup = function (event) {
+
+          count=count+1;
+          if(count>1){
+              count=1;
+          }else{
+              event.preventDefault();
+
+              var $formGroup = $(this).closest('.form-group');
+
+              var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+
+              var $formGroupClone = $formGroup.clone();
+
+              $(this)
+                  .toggleClass('btn-default btn-add btn-danger btn-remove')
+                  .html('–');
+
+
+              $formGroupClone.find('input').val('');
+              $formGroupClone.insertAfter($formGroup);
+
+              var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last');
+                 $lastFormGroupLast.find('select').attr('id','listadoDuplicado').attr('onChange','pasarValorImpresion(listadoDuplicado);');
+
+              if ($multipleFormGroup.data('max') <= countFormGroup($multipleFormGroup)) {
+                  $lastFormGroupLast.find('.btn-add').attr('readonly', true);
+              }
+               var nuevaFila="<div><input ";    
+              nuevaFila+="type='text' id='tipoImpresion"+(count)+"' value='' style='width: 100%;' class='h4 m-0' readonly></div>";
+              $("#agregarInput").append(nuevaFila);
+          };
+        }
+            
+        var removeFormGroup = function (event) {
+            if(count==1){
+                event.preventDefault();
+                var $formGroup = $(this).closest('.form-group');                
+                var $multipleFormGroup = $formGroup.closest('.multiple-form-group');
+                var $lastFormGroupLast = $multipleFormGroup.find('.form-group:last ');
+
+                    $(this)
+                    .toggleClass('btn-default btn-add btn-danger btn-remove')
+                    .html('+');
+
+
+                if ($multipleFormGroup.data('max') >= countFormGroup($multipleFormGroup)) {
+                    $lastFormGroupLast.find('.btn-add').attr('readonly', false);
+                }
+                $lastFormGroupLast.remove();   
+                    count=count-1;
+
+                var trs=$("#agregarInput input").length;
+                if(trs>1){
+                    $("#agregarInput input:last").remove();
+                }    
+
+                }else{
+                    count=0;
+                }
+            
+                if(valorSelect == "4"){
+                    $("#pinzaSuperior1").addClass("d-none");    
+                    $("#pinzaSuperior2").addClass("d-none");
+                }
+        };
+        
+        var countFormGroup = function ($form) {
+            return $form.find('.form-group').length;
+        };
+        $(document).on('click', '.btn-add', addFormGroup);
+        $(document).on('click', '.btn-remove', removeFormGroup);
+
+    });
+})(jQuery);
+    
+/*FUNCION DE PASAR VALOR DE SELECT TIPO DE IMPRESION A INPUT TIPO DE IMPRESION*/
+function pasarValorImpresion(id){
+    
+    switch(id) {
+      case (listadoTipoImpresion):
+        var tamaño=id.length;
+        var op=document.getElementById("listadoTipoImpresion"); 
+        var valor=op.value;
+        var text =op.options[op.selectedIndex].innerText;
+        var tt=document.getElementById("tipoImpresion");
+        for (var i=0; i<tamaño; i++){
+            if(i==0){
+                tt.value="";
+            }else{
+                if (op.selectedIndex==i)tt.setAttribute("value",text);tt.value=text;
+            }
+        }
+        break;
+      case (listadoDuplicado):
+        var tamaño=id.length;
+        var op=document.getElementById("listadoDuplicado"); 
+        var valor=op.value;
+        var text =op.options[op.selectedIndex].innerText;
+        var tt=document.getElementById("tipoImpresion1");
+        for (var j=0; j<tamaño; j++){
+            if(j==0){
+                tt.value="";
+            }else{
+                if (op.selectedIndex==j)tt.setAttribute("value",text);tt.value=text; 
+            }
+        }
+            
+        if(valor==4){
+            $("#pinzaSuperior1").removeClass("d-none");    
+            $("#pinzaSuperior2").removeClass("d-none");    
+        }else{
+            $("#pinzaSuperior1").addClass("d-none");    
+            $("#pinzaSuperior2").addClass("d-none");
+        }
+            
+        valorSelect = valor;
+            
+        break;  
+  
+ }
+    
+}
+    
+
+</script>

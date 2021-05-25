@@ -1,0 +1,427 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">ACTUALIZAR EMPRESA</h3>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION GENERAL DE LA EMPRESA-->
+        <div class="col-12 col-md-5 col-xl-4 form-group text-center">
+         
+          <!--CODIGO-->
+          <h6>Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. REGISTRO EN EL SISTEMA-->
+          <h6 class="d-none">Fecha de registro: <span id="fechaRegistro"></span></h6>
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="descripcion">Nombre</label>
+          <input required readonly type="text" class="form-control" id="descripcion" aria-describedby="descripcionHelp" placeholder="Ingresar Nombre">
+          <small id="descripcionHelp" class="form-text text-muted">Ejemplo:COMPUTEXTOS S.A.C.</small>
+        </div>
+        
+    
+        <!--RUC-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="ruc">Ruc</label>
+          <input required readonly type="number" class="form-control" id="ruc" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="9" aria-describedby="rucHelp" placeholder="Ingresar Ruc">
+          <small id="rucHelp" class="form-text text-muted">Ejemplo:10084130</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--DOMICILIO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="domicilio">Domicilio</label>
+          <input required readonly type="text" class="form-control" id="domicilio" aria-describedby="domicilioHelp" placeholder="Ingresar Domicilio">
+          <small id="domicilioHelp" class="form-text text-muted">Ejemplo:Av. Arequipa 1583 Lince</small>
+        </div>
+        
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="estado">Estado</label>
+          <input required readonly type="text" class="form-control" id="estado" aria-describedby="estadoHelp">
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--FAX-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="fax">Fax</label>
+          <input readonly type="number" class="form-control" id="fax" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="9" aria-describedby="faxHelp" placeholder="Ingresar Fax">
+          <small id="faxHelp" class="form-text text-muted">Ejemplo:10084130</small>
+        </div>
+        
+        <!--IDENTIFICACION-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="telefonos">Telefonos</label>
+          <div class="form-inline">
+            <input readonly required type="number" class="form-control w-50" id="telefono1" aria-describedby="numIdentificacionHelp" placeholder="Ingresar numero de identificacion" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11">
+            <input readonly type="number" class="form-control w-50" id="telefono2" aria-describedby="numIdentificacionHelp" placeholder="Ingresar numero de identificacion" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11">
+          </div>
+          <small id="telefonosHelp" class="form-text text-muted">Recomendacion: Ingresar numeros telefonicos.</small>
+        </div>
+    
+      </div>
+   
+    </div>
+  </div>
+  
+  
+<!--DATOS CONTABLES-->
+  
+    <div class="card">
+    <h5 class="card-header h5">Datos Contables</h5>
+    <div class="card-body">
+
+      <div class="row">
+      
+        <!--FACTURAS -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombreContacto">Facturas</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="facturas" aria-describedby="nombreContactoHelp" placeholder="Ingresar numero de Facturas">
+          <small id="nombreContactoHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Facturas.</small>
+        </div>
+        
+        <!--SERIE DE FACTURAS  -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="serieFactura">Serie Factura</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="serieFactura" aria-describedby="serieFacturaHelp" placeholder="Ingresar numero de Serie de Facturas">
+          <small id="serieFacturaHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Serie de Facturas.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--BOLETAS -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="boletas">Boletas</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="boletas" aria-describedby="boletasHelp" placeholder="Ingresar numero de Boletas">
+          <small id="boletasHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Boletas.</small>
+        </div>
+        
+        <!--SERIE DE BOLETAS  -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="serieBoletas">Serie Boletas</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="serieBoletas" aria-describedby="serieBoletasHelp" placeholder="Ingresar numero de Serie de Boletas">
+          <small id="serieBoletasHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Serie de Boletas.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--ORD. SERV. -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="ordServ">Ord. Servi</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="ordServ" aria-describedby="ordServHelp" placeholder="Ingresar Ordenes de Servicio">
+          <small id="ordServHelp" class="form-text text-muted">Recomendacion: Ingresar Ordenes de Sericio.</small>
+        </div>
+        
+        <!--LETRAS  -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="letras">Letras</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="letras" aria-describedby="letrasHelp" placeholder="Ingresar numero de Letras">
+          <small id="letrasHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Letras.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--NOTA DEBITO. -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="debito">Not.Débito</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="debito" aria-describedby="debitoHelp" placeholder="Ingresar numero de Nota de Debito">
+          <small id="debitoHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Nota de Debito.</small>
+        </div>
+        
+        <!--SERIE NOTA DE DEBITO  -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="serieDebito">Serie Not.Débito</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="serieDebito" aria-describedby="serieDebitoHelp" placeholder="Ingresar numero Serie de Nota de Debito">
+          <small id="serieDebitoHelp" class="form-text text-muted">Recomendacion: Ingresar numero Serie de Nota de Debito.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--NOTA CREDITO. -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="credito">Not.Crédito</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="credito" aria-describedby="creditoHelp" placeholder="Ingresar numero de Nota de Credito">
+          <small id="creditoHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Nota de Credito.</small>
+        </div>
+        
+        <!--SERIE NOTA DE CREDITO  -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="serieCredito">Serie Not.Crédito</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="serieCredito" aria-describedby="serieCreditoHelp" placeholder="Ingresar numero Serie de Nota de Credito">
+          <small id="serieCreditoHelp" class="form-text text-muted">Recomendacion: Ingresar numero Serie de Nota de Credito.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--GUIAS -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="guias">Guías</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="guias" aria-describedby="guiasHelp" placeholder="Ingresar numero de Guias">
+          <small id="guiasHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Guias.</small>
+        </div>
+        
+        <!--SERIE GUIAS -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="serieGuias">Serie Guías</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="serieGuias" aria-describedby="serieGuiasHelp" placeholder="Ingresar numero Serie de Guias">
+          <small id="serieGuiasHelp" class="form-text text-muted">Recomendacion: Ingresar numero Serie de Guias.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+         <!--CAJA CHICA -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="chica">Caja Chica</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="chica" aria-describedby="chicaHelp" placeholder="Ingresar numero de Caja Chica">
+          <small id="chicaHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Caja Chica.</small>
+        </div>
+        
+        <!--CAJA GRANDE -->
+        <div class="col-12 col-md-6 form-group">
+          <label for="grande">Caja Grande</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="grande" aria-describedby="grandeHelp" placeholder="Ingresar numero de Caja Grande">
+          <small id="grandeHelp" class="form-text text-muted">Recomendacion: Ingresar numero de Caja Grande.</small>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" onclick="validar();return false" class="btn btn-guardar">Actualizar</button>
+  </div>
+   <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+  
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaEmpresas/VistaEmpresas.js"></script>
+
+<script>
+    
+cargarDatos(empresa); 
+
+/*=============================================
+    CARGAR DATOS DEL CLIENTE
+=============================================*/
+
+function cargarDatos(empresa){
+    
+    var $empresa={
+        '_empresa' : empresa
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Empresa/Controlador_MostrarDatosEmpresa.php',
+        type: 'POST',
+        data: $empresa,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mostrarMensaje("exito",'INFORMACION CARGADA EXITOSAMENTE');
+                
+                if(datos.ESTCODIGO=4){
+                    $("#estado").val("ACTIVO");
+                }else{
+                    $("#estado").val("INACTIVO");
+                }
+                $("#codigo").text(datos.EMPCODIGO);
+                $("#descripcion").val(datos.EMPDESCRIPCION);
+                $("#ruc").val(datos.EMPRUC);
+                $("#domicilio").val(datos.EMPDOMICILIO);
+                $("#fax").val(datos.EMPFAX);
+                $("#telefono1").val(datos.EMPTELEFONO1);
+                $("#telefono2").val(datos.EMPTELEFONO2);
+                $("#facturas").val(datos.EMPNUM_FACTURA);
+                $("#serieFactura").val(datos.EMPSERIE_FACTURA);
+                $("#boletas").val(datos.EMPNUM_BOLETA);
+                $("#serieBoletas").val(datos.EMPSERIE_BOLETA);
+                $("#ordServ").val(datos.EMPORDEN_SERVICIO);
+                $("#letras").val(datos.EMPLETRA);
+                $("#debito").val(datos.EMPNOTA_DEBITO);
+                $("#serieDebito").val(datos.EMPSERIE_NOTA_DEBITO);
+                $("#credito").val(datos.EMPNOTA_CREDITO);
+                $("#serieCredito").val(datos.EMPSERIE_NOTA_CREDITO);
+                $("#guias").val(datos.EMPNUM_GUIA);
+                $("#serieGuias").val(datos.EMPSERIE_GUIA);
+                $("#chica").val(datos.EMPCAJA_CHICA);
+                $("#grande").val(datos.EMPCAJA_GRANDE);
+            }
+        }
+    });  
+} 
+     
+/*=============================================
+    VALIDAR FORMULARIO
+=============================================*/
+    
+function validar(){
+
+    var R1  = $("#facturas").val();
+    var R2  = $("#serieFactura").val();
+    var R3  = $("#boletas").val();
+    var R4  = $("#serieBoletas").val();
+    var R5  = $("#ordServ").val();
+    var R6  = $("#letras").val();
+    var R7  = $("#debito").val();
+    var R8  = $("#serieDebito").val();
+    var R9  = $("#credito").val();
+    var R10 = $("#serieCredito").val();
+    var R11 = $("#guias").val();
+    var R12 = $("#serieGuias").val();
+    var R13 = $("#chica").val();
+    var R14 = $("#grande").val();
+    
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#facturas").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#serieFactura").focus();
+    }
+    else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#boletas").focus();
+    }
+    else if(R4 == null || R4.length == 0 || /^\s+$/.test(R4)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#serieBoletas").focus();
+    }
+    else if(R5 == null || R5.length == 0 || /^\s+$/.test(R5)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#ordServ").focus();
+    }
+    else if(R6 == null || R6.length == 0 || /^\s+$/.test(R6)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#letras").focus();
+    }
+    else if(R7 == null || R7.length == 0 || /^\s+$/.test(R7)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#debito").focus();
+    }
+    else if(R8 == null || R8.length == 0 || /^\s+$/.test(R8)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#serieDebito").focus();
+    }
+    else if(R9 == null || R9.length == 0 || /^\s+$/.test(R9)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#credito").focus();
+    }
+    else if(R10 == null || R10.length == 0 || /^\s+$/.test(R10)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#serieCredito").focus();
+    }
+    else if(R11 == null || R11.length == 0 || /^\s+$/.test(R11)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#guias").focus();
+    }
+    else if(R12 == null || R12.length == 0 || /^\s+$/.test(R12)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#serieGuias").focus();
+    }
+    else if(R13 == null || R13.length == 0 || /^\s+$/.test(R13)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#chica").focus();
+    }
+    else if(R14 == null || R14.length == 0 || /^\s+$/.test(R14)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#grande").focus();
+    }
+    else{
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        ActualizarEmpresa();
+    }
+        
+}    
+    
+/*=============================================
+   ENVIAR FORMULARIO
+=============================================*/
+
+function ActualizarEmpresa(){
+    var $empresa={
+        '_codigo' : $("#codigo").text(),
+        '_facturas' : $("#facturas").val(),
+        '_serieFactura' : $("#serieFactura").val(),
+        '_boletas' : $("#boletas").val(),
+        '_serieBoletas' : $("#serieBoletas").val(),
+        '_ordServ' : $("#ordServ").val(),
+        '_letras' : $("#letras").val(),
+        '_debito' : $("#debito").val(),
+        '_serieDebito' : $("#serieDebito").val(),
+        '_credito' : $("#credito").val(),
+        '_serieCredito' : $("#serieCredito").val(),
+        '_guias' : $("#guias").val(),
+        '_serieGuias' : $("#serieGuias").val(),
+        '_chica' : $("#chica").val(),
+        '_grande' : $("#grande").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Empresa/Controlador_ActualizarEmpresa.php',
+        type: 'POST',
+        data: $empresa,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+            }
+        }
+    });
+}   
+
+</script>

@@ -1,0 +1,337 @@
+<section id="menuAcabados" class="menu">
+<!--OPCIONES DE ACABADOS-->
+  <section id="menuAcabado">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion">COSTOS DEL ACABADO</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION REGISTRAR ACABADOS-->
+        <div class="col"><button onclick="mostrarFormulario();generarCodigo();return false" class="btn btn-lg btnSecundario2"><i class="fas fa-plus-square fa-4x"></i><br>Registrar Acabado</button></div>
+        
+        <!--OPCION ACTUALIZAR ACABADOS-->
+        <div class="col"><button class="btn btn-lg btnSecundario2" data-toggle="modal" data-target="#listadoAcabado"><i class="fas fa-check-square fa-4x"></i><br>Actualizar Acabado</button></div>
+
+        <!--OPCION LISTAR ACABADOS-->
+        <div class="col"><button onclick="buscarListado();return false" class="btn btn-lg btnSecundario2"><i class="fas fa-list-ol fa-4x"></i><br>Listado Acabados</button></div>
+
+      </div>
+      
+    </div>
+  </section>
+</section>
+
+<div class="modal fade" id="listadoAcabado" tabindex="-1" role="dialog" aria-labelledby="listadoPersonalTitulo"
+  aria-hidden="true">
+<div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Acabado</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select name="acabados" id="acabados" class="w-responsive"></select>
+        <button onclick="buscarInfo()" data-dismiss="modal">Buscar</button>
+      </div>
+    </div>
+</div>
+</div>
+
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4"></div>
+
+  <div id="RegistrarAcabado" class="card  mx-4" style="display: none">
+    <h5 class="card-header h5 black white-text">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--CODIGO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="CodigoAcabado">Codigo</label>
+          <input required type="text" class="form-control" id="CodigoAcabado" aria-describedby="codigoHelp" readonly>
+          <small id="codigoHelp" class="form-text text-muted">Ejemplo: Campo Autogenerado</small>
+        </div>
+
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="NombreAcabado">Nombre</label>
+          <input required type="text" class="form-control" id="NombreAcabado" aria-describedby="nombreHelp" placeholder="Ingresar Nombre" >
+          <small id="nombreHelp" class="form-text text-muted">Ejemplo: EMPAQUETADO</small>
+        </div>
+        
+         <div class="w-100"></div>
+    
+        <!--COSTO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="CostoAcabado">Costo</label>
+          <input required type="number" class="form-control" id="CostoAcabado" aria-describedby="CostoAcabadoHelp" placeholder="2.000">
+          <small id="CostoAcabadoHelp" class="form-text text-muted">Costo en Dólares</small>
+        </div>
+
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="estado">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp">
+            <option value="60">ACTIVO</option>
+            <option value="61">INACTIVO</option>
+          </select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+            <div class="w-100"></div>
+        <div class="col-12 col-md-12 form-group" style="float: none;text-align: center">
+      <button id="guardarAcabado" style="display: none" type="submit" onclick="guardar();return false" class="btn principal px-5">GUARDAR</button>
+      <button id="actualizar" style="display: none"  type="submit" onclick="actualizar();return false" class="btn principal px-5">ACTUALIZAR</button>
+        </div>
+        
+      </div>
+    </div>
+  </div> 
+
+
+<!-- LISTADO DE ACABADOS -->
+ <form>
+  <table id='listadoAcabados' class='table table-striped table-bordered' cellspacing='0' style="display: none">
+  <thead><tr>
+      <th class='th-sm'>CODIGO</th>
+      <th class='th-sm'>NOMBRE</th>
+      <th class='th-sm'>COSTO</th>
+      <th class='th-sm'>ESTADO</th>
+    </tr></thead>
+    <tbody id='cuerpotabla'></tbody></table></form>
+ <!-- MENSAJE -->
+<div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModCostos/VistaCostos.js"></script>
+<script type="text/javascript">
+
+mostrarAcabados();
+
+function mostrarFormulario(){
+  document.getElementById("menuAcabados").style.display='none';
+  document.getElementById("RegistrarAcabado").style.display=null;
+  document.getElementById("guardarAcabado").style.display=null;
+  $("#encabezadoPrincipal").html("REGISTRAR NUEVO TIPO ACABADO")
+}
+
+function buscarInfo(){
+      $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/Controlador_MostrarAcabados.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS!");
+            }else{
+                var codigo=$("#acabados").val();
+                for(var i=0;i<datos.length;i++){
+                  if(codigo==datos[i].TIPACABCODIGO){
+                    $("#CodigoAcabado").val(datos[i].TIPACABCODIGO);
+                    $("#NombreAcabado").val(datos[i].TIPACABNOMBRE);
+                    $("#CostoAcabado").val(datos[i].TIPACABCOSTO);
+                    $("#estado").val(datos[i].ESTCODIGO)
+                  }
+                }
+                $("#encabezadoPrincipal").html("ACTUALIZAR COSTO ACABADO")
+                document.getElementById("menuAcabados").style.display='none';
+                document.getElementById("RegistrarAcabado").style.display=null;
+                document.getElementById("actualizar").style.display=null;
+                mostrarMensaje('exito',"DATOS CARGADOS CORRECTAMENTE")
+            }
+        }
+    }); 
+}
+  
+function buscarListado(){
+  $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/Controlador_MostrarAcabados.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS!");
+            }else{
+                mostrarListado(datos);
+                $("#encabezadoPrincipal").html("LISTADO COSTO ACABADO")
+                document.getElementById("listadoAcabados").style.display=null;
+                document.getElementById("menuAcabados").style.display='none';
+            }
+        }
+    }); 
+}
+  
+function mostrarListado(datos){
+  var tablaAcabados="";
+
+    for(var i=0; i<datos.length; i++){
+      
+      if(datos[i].ESTCODIGO=="60"){
+        var descripcion="ACTIVO"
+      }else{
+        var descripcion="INACTIVO"
+      }
+        tablaAcabados+="<tr>\
+                          <td>"+datos[i].TIPACABCODIGO+"</td>\
+                          <td>"+datos[i].TIPACABNOMBRE+"</td>\
+                          <td>"+datos[i].TIPACABCOSTO+"</td>\
+                          <td>"+descripcion+"</td>\
+                      </tr>"
+    }
+
+    $("#cuerpotabla").append(tablaAcabados);
+    $('#listadoAcabados').DataTable( {
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+        ],
+        buttons: [
+             {
+                extend: 'pageLength',
+                text: "VER 10 FILAS"
+            },
+            {
+                extend: 'print',
+                title: 'LISTADO ACABADOS',
+                text: 'IMPRIMIR',
+                className: 'btn boton'
+            },
+            {
+                extend: 'pdfHtml5',
+                download: 'open',
+                title: 'LISTADO ACABADOS',
+                text: 'EXPORTAR PDF',
+                className: 'btn boton'
+            }
+        ]
+    } );
+    $('.dataTables_length').addClass('bs-select');
+}
+  
+function generarCodigo(){
+  $.ajax({
+  url: "../CT-BackEnd/Controlador/ModCostos/Controlador_MostrarAcabados.php",
+  type: 'GET',
+  dataType: 'json',
+  error: function(error){
+    if(error.status == 401){
+        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+    }
+    else{
+        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+    }
+  },
+  success: function(datos){
+
+    if(datos.response=="0"){
+        mostrarMensaje("error","ERROR AL CARGAR LOS DATOS!");
+    }else{
+        var mayor=0;
+          for (var i=0; i<datos.length;i++){
+            if(i==0){
+                mayor=parseInt(datos[i].TIPACABCODIGO.substr(3));
+            }else{
+                if(mayor<parseInt(datos[i].TIPACABCODIGO.substr(3))){
+                    mayor=parseInt(datos[i].TIPACABCODIGO.substr(3));
+                }
+            }
+          }  
+          var nuevocodigo = "TIA"+(mayor+1); $("#CodigoAcabado").val(nuevocodigo)
+      }
+    }
+  
+  }); 
+}
+  
+function guardar(){
+  var $datos={
+     '_codigo':$("#CodigoAcabado").val(),
+     '_nombre':$("#NombreAcabado").val(),
+     '_costo':$("#CostoAcabado").val(),
+     '_estado':$("#estado").val()
+  }
+  $.ajax({
+      url: "../CT-BackEnd/Controlador/ModCostos/Controlador_RegistrarAcabado.php",
+      type: 'POST',
+      data: $datos,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS!");
+          }else{
+              mostrarMensaje("exito","ACABADO REGISTRADO CORRECTAMENTE")
+              document.getElementById("RegistrarAcabado").style.display='none';
+              document.getElementById("menuAcabados").style.display=null;
+              $("#encabezadoPrincipal").html("");
+          }
+      }
+  });    
+}
+
+function actualizar(){
+  var $datos={
+     '_codigo':$("#CodigoAcabado").val(),
+     '_nombre':$("#NombreAcabado").val(),
+     '_costo':$("#CostoAcabado").val(),
+     '_estado':$("#estado").val()
+  }
+  $.ajax({
+      url: "../CT-BackEnd/Controlador/ModCostos/Controlador_ActualizarAcabado.php",
+      type: 'POST',
+      data: $datos,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS!");
+          }else{
+              mostrarMensaje("exito","ACABADO ACTUALIZADO CORRECTAMENTE");
+              document.getElementById("RegistrarAcabado").style.display='none';
+                document.getElementById("menuAcabados").style.display=null;
+            $("#encabezadoPrincipal").html("")
+          }
+      }
+  });    
+}
+</script>

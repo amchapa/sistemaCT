@@ -1,0 +1,230 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="listado">
+  
+  <!--TITULO DE LA VISTA-->
+  <h3 class="h3-responsive titulo">CONSOLIDADO DE CONTRATOS VIGENTES AL <span id="fechaRegistro"></span></h3>
+
+  <!--CONTENIDO PRINCIPAL DE LA VISTA-->
+  <table id="tablaListado-min" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead><tr>
+        <th>EMP</th>
+        <th>Apellidos</th>
+        <th>Nombre</th>
+        <th>1er. Contrato</th>
+        <th>2do. Contrato</th>
+        <th>3er. Contrato</th>
+        <th>4to. Contrato</th>
+        <th>5to. Contrato</th>
+        <th>6to. Contrato</th>
+        <th>7mo. Contrato</th>
+      </tr></thead>
+    <tbody id="cuerpoTabla"></tbody>
+  </table>
+  
+  <!--LOADING-->
+  <section id="loading">
+    <img src="/CT-FrontEnd/Index/CT-Logo.png" alt="Computextos S.A.C.">
+    <div class="spinner-border principal-text" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </section>
+  
+</section>
+
+<!-- MENSAJE -->
+<div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+<script type="text/javascript">
+ 
+var personal;  
+
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function() {
+    vPersonal.fechaActual("fecha");  
+    cargarDatos();
+});
+//--CARGAR DATOS TODOS CONTRATOS--   
+function cargarDatos(palabraAsignada){
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosContratos.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(contrato){
+
+            if(contrato.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#cuerpoTabla").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                mostrarDetallesContrato(contrato,palabraAsignada);
+            }
+        }
+    }); 
+    
+}
+    
+//--MOSTRAR DATOS TODOS PERSONAL CON CONTRATO--
+function mostrarDetallesContrato(contrato,palabraAsignada){
+    var evaluar;
+    for(var i=0;i<contrato.length;i++){
+      if(contrato[i].EMPCODIGO==contrato[i].EMP_PERSONAL){
+          var $personal={
+              '_personal' : contrato[i].PERSCODIGO
+          }
+          $.ajax({
+            url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalContratado.php',
+            type: 'POST',
+            data: $personal,
+            async: false,
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+                }
+                else{
+                    mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+                }
+            },
+            success: function(datos){
+                if(datos.response=="0"){
+                    mostrarMensaje("error",'ERROR: '+datos.message);
+                    $("#cuerpoTabla").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+                }else{
+                    var op="renovarContrato";
+                    var consolidadoContratos="<tr>"
+                    switch(datos[0].EMPCODIGO){
+                      case 'CT': consolidadoContratos+="\<td class='secundario'>"+datos[0].EMPCODIGO+"</td>"; break;
+                      case 'ED': consolidadoContratos+="\<td class='strong'>"+datos[0].EMPCODIGO+"</td>"; break;
+                      case 'ER': consolidadoContratos+="\<td class='enfasis3'>"+datos[0].EMPCODIGO+"</td>"; break;
+                      case 'GR': consolidadoContratos+="\<td class='strong5'>"+datos[0].EMPCODIGO+"</td>"; break;
+                      default: consolidadoContratos+="\<td>"+datos[0].EMPCODIGO+"</td>"; break;
+                    }
+                    consolidadoContratos+="\<td class='text-link font-weight-bold' onclick='enviar("+datos[0].PERSCODIGO+");return false';><u>"+datos[0].PERSAPELLIDO_PATERNO+" "+datos[0].PERSAPELLIDO_MATERNO+"</u></td>\
+                        <td>"+datos[0].PERSNOMBRE+"</td>"
+
+                    var fecha,hoy,cinicio,cvigencia, options = {  day: 'numeric', month: 'numeric', year: 'numeric'};
+                    var total=0;
+
+                    for(var j=0; j<datos.length; j++){
+                      
+                        hoy =new Date();
+
+                        //capturar fecha de inicio del contrato
+                        fecha = new Date(datos[j].DETCONTRFECHA_CONTRATACION);
+                        fecha.setDate(fecha.getDate() + 1);
+                        cinicio= fecha.toLocaleDateString("es-ES", options);
+
+                        //capturar vigencia del contrato
+                        fecha = new Date(datos[j].DETCONTRFECHA_CONTRATACION.replace(/-/g, '\/').replace(/T.+/, ''));
+                        fecha.setMonth(fecha.getMonth() + parseFloat(datos[j].DETCONTRTIEMPO));
+                        fecha.setDate(fecha.getDate()-1 );
+                        cvigencia= fecha.toLocaleDateString("es-ES", options);
+                      
+                        total= total+parseInt(datos[j].DETCONTRTIEMPO);
+                      
+                        if(j==6){
+                          consolidadoContratos+="\<td class='strong font-weight-bold'>"+cinicio+"<br>"+cvigencia+"<br>LIQUIDAR</td>"
+                            evaluar="mostrar";
+                        }else{
+                          if(j==(datos.length-1)){
+                            if(total==60){
+                              consolidadoContratos+="\<td class='strong font-weight-bold'>"+cinicio+"<br>"+cvigencia+"<br>LIQUIDAR</td>"
+                              evaluar="mostrar";
+                            }else if(datos[j].DETCONTRLIQUIDACION=="SI"){
+                                consolidadoContratos+="\<td class='strong font-weight-bold'>"+cinicio+"<br>"+cvigencia+"<br>LIQUIDAR</td>"
+                                evaluar="mostrar";    
+                            }else if(fecha<=hoy){
+                              consolidadoContratos+="\<td class='enfasis1 font-weight-bold'>"+cinicio+"<br>"+cvigencia+"<br>EXPIRADO</td>";
+                                evaluar=palabraAsignada;
+                            }else if(fecha.getFullYear()==hoy.getFullYear() && fecha.getMonth()-hoy.getMonth()<=2){
+                              consolidadoContratos+="\<td class='strong2 font-weight-bold'>"+cinicio+"<br>"+cvigencia+"<br>PROX EXPIRAR</td>"
+                                evaluar="mostrar";
+                            }else{
+                              consolidadoContratos+="\<td>"+cinicio+"<br>"+cvigencia+"</td>"
+                                evaluar="mostrar";
+                            }
+                            if(j!=6){
+                              for(var k=0; k<(6-j);k++){
+                                consolidadoContratos+="\<td>.</td>"
+                              }
+                            }
+                          }else{
+                            consolidadoContratos+="\<td>"+cinicio+"<br>"+cvigencia+"</td>"
+                          }
+                        }
+                    }
+                    consolidadoContratos+="\</tr>";
+                    if(evaluar=="mostrar"){
+                        $("#cuerpoTabla").append(consolidadoContratos);
+                    }
+                        
+                }
+            }
+          });
+      }
+    }
+    $("#cuerpoTabla").append("\</tbody></table>");
+    $('#tablaListado-min').DataTable( {
+        dom: 'Bf',
+        "pageLength": -1,
+        columnDefs: [{
+          orderable: false,
+          className: 'select-checkbox',
+          targets: [3,4,5,6,7,8,9]
+        }],
+        buttons: [{
+                extend: 'print',
+                title: 'CONSOLIDADO CONTRATOS',
+                text: 'IMPRIMIR',
+                className: 'btn boton'
+            },
+            {
+                extend: 'collection',
+                text: 'OCULTAR/MOSTRAR EXPIRADOS',
+                autoClose: true,
+                buttons: [
+                    {
+                        text: 'MOSTRAR',
+                        action: function ( e, dt, node, config ){
+                            var palabraAsignada = "mostrar"
+                            cambio(palabraAsignada);
+                        }
+                    },
+                    {
+                        text: 'OCULTAR',
+                        action: function ( e, dt, node, config ){
+                            var palabraAsignada = "eliminar"
+                            cambio(palabraAsignada);
+                        }
+                    }
+                ]
+            }
+        ]
+    } );
+    $("#loading").html("");  
+} 
+   
+function cambio(palabraAsignada){
+    $('#tablaListado-min').DataTable().destroy();
+    $("#cuerpoTabla").html("");
+    cargarDatos(palabraAsignada);
+}
+ 
+//--MOSTRAR VISTA RENOVAR CONTRATO DEL PERSONAL SELECCIONADO--
+function enviar(pers){
+    personal=pers;
+    VistasEspecificas(personal,'renovarContrato')
+}
+  
+</script>

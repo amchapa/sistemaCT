@@ -1,0 +1,451 @@
+<style>
+
+.talla {
+    width: 300px;
+}
+
+</style>
+
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="listado">
+  
+  <!--TITULO DE LA VISTA-->
+  <h3 class="h3-responsive titulo" id="titulo"></h3>
+
+  <!--CONTENIDO PRINCIPAL DE LA VISTA-->
+  <div id="listadoXOT"></div>
+  
+</section>
+
+<div class="modal fade" id="modalActualizarEstado" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Actualizar Estado</h4>
+                <button id="modalActualizarClose" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body row text-center">
+                <div class="col-12 col-md form-group">
+                    <label for="tipo">SIN O/T: CODIGO</label>
+                    <select required id="tipo" class="form-control">
+                      <option value="0">Seleccione</option>
+                      <option value="transporte">Transporte</option>
+                      <option value="caja">Caja</option>
+                      <option value="contabilidad">Contabilidad</option>
+                      <option value="gerencia">Gerencia</option>
+                      <option value="preprensa">PrePrensa</option>
+                      <option value="gestion">Gestión</option>
+                      <option value="tpi">TPI</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<script type="text/javascript">
+
+var enviarCodigo, url="";
+var $codigo
+
+console.log(opcion,tipo)
+
+$(document).ready(function(){
+    if(tipo=="OT"){
+        document.getElementById("titulo").innerHTML="LISTADO MENSAJERIA - "+ opcion;
+        url='../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarRegistrosTotalXOt.php'
+        $codigo={'_codigo': opcion}
+        listarXTipo($codigo,url,tipo)
+    }else if(tipo=="Cliente"){
+        listarXCliente(opcion);
+    }else if(tipo=="Turno"){
+        document.getElementById("titulo").innerHTML="LISTADO MENSAJERIA - DE "+ opcion[1]+" AL " +opcion[2];
+        url='../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarRegistrosTotalXTurno.php';
+        $codigo={'_turno': opcion[0], '_fInicial': vProduccion.convertirAFecha(opcion[1]), '_fFinal': vProduccion.convertirAFecha(opcion[2])}
+        listarXTipo($codigo,url,tipo)
+    }else if(tipo=="Solicitante"){
+        url='../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarRegistrosTotalXSolicitante.php';
+        $codigo={'_solicitante': opcion[0], '_fInicial': vProduccion.convertirAFecha(opcion[1]), '_fFinal': vProduccion.convertirAFecha(opcion[2])}
+        listarXTipo($codigo,url,tipo)
+    }else if(tipo=="Padron"){
+        url='../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarPadronTerceroXEstado.php';
+        $codigo={'_estado': opcion[0], '_fInicial': vProduccion.convertirAFecha(opcion[1]), '_fFinal': vProduccion.convertirAFecha(opcion[2])}
+        listarXTipo($codigo,url,tipo)
+    }else if(tipo=="Estado"){
+        url='../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarPadronTerceroXOT.php';
+        $codigo={'_ot': opcion}
+        listarXTipo($codigo,url,tipo)
+    }
+});
+
+/*FUNCION PARA LISTAR LOS REGISTROS DE DESPACHO POR COD. CLIENTE*/
+function listarXCliente(codigo){
+    var $codigo={'_codigo': codigo}
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarRegistrosTotalXCliente.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'OT SIN REGISTROS');
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                generalTablaXCliente(datos);
+            }              
+        }
+    });
+}
+    
+/*FUNCION PARA GENERAR LA TABLA DE REGISTROS DE DESPACHO POR COD. CLIENTE*/
+function generalTablaXCliente(datos){
+    document.getElementById("titulo").innerHTML="LISTADO MENSAJERIA -"+ datos[0].CLIENRAZON_SOCIAL;
+    var titulo="";
+    var cuerpo="";
+    var costoTotal = 0;
+    
+    titulo+="<div class='principal white-text font-weight-bold'>Turno: Todos</div><table id='datatable' class='table my-3'><thead><tr>\
+                <th class='text-center' style='font-size:75%;'>CODIGO</th>\
+                <th class='text-center' style='font-size:75%;'>DISTRITO</th>\
+                <th class='text-center' style='font-size:75%;'>F/H</th>\
+                <th class='text-center' style='font-size:75%;'>O/T</th>\
+                <th class='text-center' style='font-size:75%;'>DESCRIPCION</th>\
+                <th class='text-center' style='font-size:75%; width:10%;'>DESTINO</th>\
+                <th class='text-center' style='font-size:75%;'>ENCARGADO</th>\
+                <th class='text-center' style='font-size:75%;'>ESTADO</th>\
+                <th class='text-center' style='font-size:75%;'>F/R</th>\
+                <th class='text-center' style='font-size:75%;'>COSTO</th>\
+                <th class='text-center' style='font-size:75%;'>VEHICULO</th>\
+                <th class='text-center' style='font-size:75%;'>MENSAJERO</th>\
+                <th class='text-center' style='font-size:75%;'>GRUPO</th>\
+            </tr></thead><tbody id=tablaCuerpo></tbody></table>";
+   
+    $("#listadoXOT").html(titulo);
+    
+    for(var i=0; i<datos.length;i++){
+        
+        
+        cuerpo +="<tr>\
+            <td id='"+datos[i].PRODESCODIGO+"' class='text-center' style='font-size:75%; vertical-align:middle;' onclick='detalleMensaje(this.id)'><u><b>"+datos[i].PRODESTIPO_MENSAJERIA+"</b></u></td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].DISTRNOMBRE+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_DESTINO)+"</td>\
+            <td id='"+datos[i].PRODESCODIGO+"' class='text-center' style='font-size:75%; vertical-align:middle;' onclick='actualizarEstado(this.id)'><u><b>"+datos[i].OPCODIGO+"</b></u></td>\
+            <td id='"+datos[i].PRODESCODIGO+"' class='text-center talla' style='font-size:75%; vertical-align:middle;' onclick='detalleDistrito(this.id)'><u><b>"+datos[i].PRODES_DESCRIPCION+"</b></u></td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_DIRECCION+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.estadoPrograDespacho(datos[i].estadoDespacho)+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_REGISTRO.split(" ")[0])+" "+datos[i].PRODES_FECHA_REGISTRO.split(" ")[1]+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_MONTO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.changeTextTrasportation(datos[i].PRODES_VEHICULO)+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.changeValueToTextmensajero(datos[i].PRODES_MENSAJERO)+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>grupo</td>\
+           </tr>"
+    }
+
+    $("#tablaCuerpo").html(cuerpo)
+    $('#datatable').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+    });
+    //$('.dataTables_length').addClass('bs-select');
+}    
+    
+/*FUNCION PARA LISTAR LOS REGISTROS DE DESPACHO POR COD. DE ORD. PRODUCCION O POR TURNO*/ 
+function listarXTipo($codigo,url,tipo){
+    $.ajax({
+        url: url ,
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",tipo+' SIN REGISTROS');
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                if(tipo=="Solicitante"){
+                    generarTablaXSolicitante(datos,opcion[0]);
+                }else if(tipo=="Padron"){
+                    listadoPadronTercero(datos)
+                }else if(tipo=="Estado"){
+                    generalTablaXOT(datos);
+                }else{
+                    generalTablaXTipo(datos);
+                }
+            }              
+        }
+    });
+}
+
+/*FUNCION PARA GENERAR LA TABLA DE REGISTROS DE DESPACHO POR COD. DE ORD. PRODUCCION O POR TURNO*/
+function generalTablaXTipo(datos){
+    var arrayTurno = [datos[0].PRODES_HORARIO];
+    var titulo="";
+    var cuerpo="";var c=1;
+    var costoTotal = 0;
+    
+    
+    for(var i=0; i<datos.length; i++){
+        arrayTurno.push(datos[i].PRODES_HORARIO)
+    }
+               
+    let sinRepetidos = arrayTurno.filter((valor, indiceActual, arreglo) => arreglo.indexOf(valor) === indiceActual);
+    
+    for (var i=0;i<sinRepetidos.length;i++){
+        titulo+="<div class='principal white-text font-weight-bold'>Turno: "+vProduccion.cambiarTextoHorario(sinRepetidos[i])+"</div><table id='table"+i+"' class='table my-3'><thead><tr>\
+                    <th class='text-center' style='font-size:75%;'>CODIGO</th>\
+                    <th class='text-center' style='font-size:75%;'>DISTRITO</th>\
+                    <th class='text-center' style='font-size:75%;'>F/H</th>\
+                    <th class='text-center' style='font-size:75%;'>RAZON SOCIAL</th>\
+                    <th class='text-center' style='font-size:75%;'>O/T</th>\
+                    <th class='text-center' style='font-size:75%;'>DESCRIPCION</th>\
+                    <th class='text-center' style='font-size:75%;'>DESTINO</th>\
+                    <th class='text-center' style='font-size:75%;'>ENCARGADO</th>\
+                    <th class='text-center' style='font-size:75%;'>ESTADO</th>\
+                    <th class='text-center' style='font-size:75%;'>F/R</th>\
+                    <th class='text-center' style='font-size:75%;'>COSTO</th>\
+                    <th class='text-center' style='font-size:75%;'>VEHICULO</th>\
+                    <th class='text-center' style='font-size:75%;'>MENSAJERO</th>\
+                    <th class='text-center' style='font-size:75%;'>GRUPO</th>\
+                    <th class='text-center' style='font-size:75%;'># PAQUETES</th>\
+                    <th class='text-center' style='font-size:75%;'>PESO</th>\
+                </tr></thead><tbody id=cuerpo"+i+"></tbody></table>";
+    }
+    
+    $("#listadoXOT").html(titulo);
+    for (var j=0;j<sinRepetidos.length;j++){ 
+        for (var i=0;i<datos.length;i++){
+            if (sinRepetidos[j]==datos[i].PRODES_HORARIO){
+                cuerpo +="<tr>\
+                            <td id='"+datos[i].PRODESCODIGO+"' class='text-center' style='font-size:75%; vertical-align:middle;' onclick='detalleMensaje(this.id)'><u><b>"+datos[i].PRODESTIPO_MENSAJERIA+"</b></u></td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].DISTRNOMBRE+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_DESTINO)+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].CLIENRAZON_SOCIAL+"</td>\
+                            <td id='"+datos[i].PRODESCODIGO+"' class='text-center' style='font-size:75%; vertical-align:middle;' onclick='actualizarEstado(this.id)'><u><b>"+datos[i].OPCODIGO+"</b></u></td>\
+                            <td id='"+datos[i].PRODESCODIGO+"' class='text-center talla' style='font-size:75%; vertical-align:middle;' onclick='detalleDistrito(this.id)'><u><b>"+datos[i].PRODES_DESCRIPCION+"</b></u></td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_DIRECCION+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.estadoPrograDespacho(datos[i].estadoDespacho)+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_REGISTRO.split(" ")[0])+" "+datos[i].PRODES_FECHA_REGISTRO.split(" ")[1]+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_MONTO+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.changeTextTrasportation(datos[i].PRODES_VEHICULO)+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.changeValueToTextmensajero(datos[i].PRODES_MENSAJERO)+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>grupo</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_NUM_PAQ+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_PESO_BRUTO+" Kgs</td>\
+                           </tr>";
+                c=c+1;
+                costoTotal=costoTotal+parseInt(datos[i].PRODES_MONTO);
+            }   
+        }
+        //cuerpo+="<tr><td colspan='10' style='text-align: right;'>Costo Total: </td><td colspan='6'></td></tr>";
+        $("#cuerpo"+j).html(cuerpo); cuerpo="";
+        $('#table'+j).DataTable({
+            "paging":   false,
+            "ordering": false,
+            "info":     false
+        });
+        //$('.dataTables_length').addClass('bs-select');
+        c=1;
+        cuerpo+="<tfoot><tr><td colspan='10' style='text-align: right;'>Costo Total: </td><td colspan='6'>S/."+costoTotal+"</td></tr></tfoot>";
+        $("#table"+j).append(cuerpo); cuerpo=""; costoTotal=0;
+    }
+}
+
+/*FUNCION PARA GENERAR LA TABLA DE REGISTROS DE DESPACHO POR COD. DE SOLICITANTE*/
+function generarTablaXSolicitante(datos,opcion){
+    
+    if(opcion=="solicitante"){
+        document.getElementById("titulo").innerHTML="LISTADO MENSAJERIA - TODOS"
+    }else{
+        document.getElementById("titulo").innerHTML="LISTADO MENSAJERIA - "+ datos[0].PERSNOMBRE+" "+datos[0].PERSAPELLIDO_PATERNO;
+    }
+    var arrayTurno = [datos[0].PRODES_HORARIO];
+    var titulo="";
+    var cuerpo="";var c=1;
+    
+    for(var i=0; i<datos.length; i++){
+        arrayTurno.push(datos[i].PRODES_HORARIO)
+    }
+               
+    let sinRepetidos = arrayTurno.filter((valor, indiceActual, arreglo) => arreglo.indexOf(valor) === indiceActual); 
+
+    for (var i=0;i<sinRepetidos.length;i++){
+        titulo+="<div class='principal white-text font-weight-bold'>Turno: "+vProduccion.cambiarTextoHorario(sinRepetidos[i])+"</div><table id='table"+i+"' class='table my-3'><thead><tr>\
+                    <th class='text-center' style='font-size:75%;'>CODIGO</th>\
+                    <th class='text-center' style='font-size:75%;'>DISTRITO</th>\
+                    <th class='text-center' style='font-size:75%;'>F/H</th>\
+                    <th class='text-center' style='font-size:75%;'>O/T</th>\
+                    <th class='text-center' style='font-size:75%;'>DESCRIPCION</th>\
+                    <th class='text-center' style='font-size:75%;'>DESTINO</th>\
+                    <th class='text-center' style='font-size:75%;'>ENCARGADO</th>\
+                    <th class='text-center' style='font-size:75%;'>ESTADO</th>\
+                    <th class='text-center' style='font-size:75%;'>F/R</th>\
+                </tr></thead><tbody id=cuerpo"+i+"></tbody></table>";
+    }
+    
+    $("#listadoXOT").html(titulo);
+    for (var j=0;j<sinRepetidos.length;j++){ 
+        for (var i=0;i<datos.length;i++){
+            if (sinRepetidos[j]==datos[i].PRODES_HORARIO){
+                cuerpo +="<tr>\
+                            <td id='"+datos[i].PRODESCODIGO+"' class='text-center' style='font-size:75%; vertical-align:middle;' onclick='detalleMensaje(this.id)'><u><b>"+datos[i].PRODESTIPO_MENSAJERIA+"</b></u></td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].DISTRNOMBRE+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_DESTINO)+"</td>\
+                            <td id='"+datos[i].PRODESCODIGO+"' class='text-center' style='font-size:75%; vertical-align:middle;' onclick='actualizarEstado(this.id)'><u><b>"+datos[i].OPCODIGO+"</b></u></td>\
+                            <td id='"+datos[i].PRODESCODIGO+"' class='text-center talla' style='font-size:75%; vertical-align:middle;' onclick='detalleDistrito(this.id)'><u><b>"+datos[i].PRODES_DESCRIPCION+"</b></u></td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PRODES_DIRECCION+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.estadoPrograDespacho(datos[i].estadoDespacho)+"</td>\
+                            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_REGISTRO.split(" ")[0])+" "+datos[i].PRODES_FECHA_REGISTRO.split(" ")[1]+"</td>\
+                           </tr>";
+                c=c+1;
+            }   
+        }
+        $("#cuerpo"+j).html(cuerpo); cuerpo="";
+        $('#table'+j).DataTable({
+            "paging":   false,
+            "ordering": false,
+            "info":     false
+        });
+        //$('.dataTables_length').addClass('bs-select');
+        c=1;
+    }
+    
+}
+    
+/*FUNCION PARA REDIRIGIR A LA VENTANA DEL DETALLE MENSAJE*/
+function detalleMensaje(codigo){
+    enviarCodigo=codigo;
+    DetalleMensajeria(enviarCodigo);
+    
+}
+    
+/*FUNCION PARA REDIRIGIR A LA VENTANA DEL DETALLE DISTRITO*/
+function detalleDistrito(codigo){
+    enviarCodigo=codigo;
+    DetalleDistrito(enviarCodigo);
+}
+
+/*FUNCION PARA REDIRIGIR A LA VENTANA DEL DETALLE ESTADO*/
+function actualizarEstado(codigo){
+    enviarCodigo=codigo;
+    ActualizarEstado(enviarCodigo)
+    
+}
+    
+/*FUNCION PARA LISTAR PADRON TERCERO*/
+function listadoPadronTercero(datos){
+    var titulo,cuerpo="";
+    document.getElementById("titulo").innerHTML="LISTADO DE PADRONES CREADOS";
+    titulo+="<table id='datatable1' class='table my-3'><thead><tr>\
+                <th class='text-center' style='font-size:75%;'>FECHA TRANSPORTE</th>\
+                <th class='text-center' style='font-size:75%;'>FECHA CREACION</th>\
+                <th class='text-center' style='font-size:75%;'>PROVEEDOR</th>\
+                <th class='text-center' style='font-size:75%;'>O/T</th>\
+                <th class='text-center' style='font-size:75%;'>CANTIDAD</th>\
+                <th class='text-center' style='font-size:75%;'>PLIEGO</th>\
+                <th class='text-center' style='font-size:75%;'>DESCRIPCION</th>\
+                <th class='text-center' style='font-size:75%;'>EJECUTIVA</th>\
+                <th class='text-center' style='font-size:75%;'>ESTADO</th>\
+                <th class='text-center' style='font-size:75%;'>GUIA ENTREGA</th>\
+                <th class='text-center' style='font-size:75%;'>FACTURA PROVEEDOR</th>\
+            </tr></thead><tbody id=tablaCuerpo></tbody></table>";
+   
+    $("#listadoXOT").html(titulo);
+    
+    for(var i=0; i<datos.length;i++){
+        cuerpo +="<tr>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADFECHA_TRANSPORTE+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADFECHA_REGISTRO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PROVEEDRAZON_SOCIAL+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].OPCODIGO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADCANTIDAD+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADMEDIDA_PLIEGO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADDESCRIPCION+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>EJECUTIVA</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].ESTDESCRIPCION+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADNUM_GUIA+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>**</td>\
+           </tr>"
+    }
+    
+    $("#tablaCuerpo").html(cuerpo)
+    $('#datatable1').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+    });
+    
+}
+    
+    
+function generalTablaXOT(datos){
+    var titulo,cuerpo="";
+    document.getElementById("titulo").innerHTML="LISTADO DE PADRONES CREADOS";
+    titulo+="<table id='datatable1' class='table my-3'><thead><tr>\
+                <th class='text-center' style='font-size:75%;'>FECHA TRANSPORTE</th>\
+                <th class='text-center' style='font-size:75%;'>FECHA CREACION</th>\
+                <th class='text-center' style='font-size:75%;'>PROVEEDOR</th>\
+                <th class='text-center' style='font-size:75%;'>O/T</th>\
+                <th class='text-center' style='font-size:75%;'>CANTIDAD</th>\
+                <th class='text-center' style='font-size:75%;'>PLIEGO</th>\
+                <th class='text-center' style='font-size:75%;'>DESCRIPCION</th>\
+                <th class='text-center' style='font-size:75%;'>EJECUTIVA</th>\
+                <th class='text-center' style='font-size:75%;'>ESTADO</th>\
+                <th class='text-center' style='font-size:75%;'>GUIA ENTREGA</th>\
+                <th class='text-center' style='font-size:75%;'>FACTURA PROVEEDOR</th>\
+            </tr></thead><tbody id=tablaCuerpo></tbody></table>";
+   
+    $("#listadoXOT").html(titulo);
+    
+    for(var i=0; i<datos.length;i++){
+        cuerpo +="<tr>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADFECHA_TRANSPORTE+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADFECHA_REGISTRO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PROVEEDRAZON_SOCIAL+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].OPCODIGO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADCANTIDAD+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADMEDIDA_PLIEGO+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADDESCRIPCION+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>EJECUTIVA</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;' onclick='cambiarEstado()'><b><u>"+datos[i].ESTDESCRIPCION+"</b></u></td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>"+datos[i].PADNUM_GUIA+"</td>\
+            <td class='text-center' style='font-size:75%; vertical-align:middle;'>**</td>\
+           </tr>"
+    }
+    
+    $("#tablaCuerpo").html(cuerpo)
+    $('#datatable1').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+    });
+}
+    
+function cambiarEstado(){
+    $('#modalActualizarEstado').modal('show');
+}
+</script>

@@ -1,0 +1,414 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="listado">
+<form class="text-center">
+  <!--TITULO DE LA VISTA-->
+  <h3 class="h3-responsive titulo">ASIGNAR VACACIONES - PERSONAL</h3>
+    
+  <!--BOTONES SUPERIORES-->
+  <div class="btn-group" role="group" style="position: fixed; top:10%; right: 5%;">
+    <button id="btnañadir" class="btn principal" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-plus fa-lg"></i>AÑADIR</button>
+    <button id="btneliminar" class="btn principal"><i class="fas fa-times fa-lg"></i>ELIMINAR</button>
+    <button id="btnmodificar"  class="btn principal"><i class="fas fa-edit fa-lg"></i>MODIFICAR</button>
+  </div>
+    
+  <!--CONTENIDO PRINCIPAL DE LA VISTA-->
+  <table id="tablaListado" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead><tr>
+        <th>#</th>
+        <th>CODIGO</th>
+        <th>APELLIDOS</th>
+        <th>NOMBRES</th>
+        <th>AREA</th>
+        <th>PERIODO</th>
+        <th>DIAS</th>
+        <th>ACCION</th>
+      </tr></thead>
+    <tbody id="cuerpoTabla"></tbody>
+  </table>
+
+  <!-- MODAL LISTAR PERSONAL -->
+  <div class="modal fade" id="listadoPersonal" tabindex="-1" role="dialog" aria-labelledby="listadoPersonalTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Añadir Vacaciones</h5>
+            <input id="CodigoVacaciones" type="hidden" >
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+            
+                <div class="col-12 form-group">
+                  <label for="mpersonal">Personal</label>
+                  <select  id="persona" class="form-control" ></select>
+                </div>
+                
+                <div class="col-12 form-group">
+                  <label for="minicio">Inicio</label>
+                  <input  id="minicio" type="date" class="form-control" onchange="calcularPeriodo()"  >
+                </div>
+                
+                <div class="col-12 form-group">
+                  <label for="mperiodo">Periodo</label>
+                  <input readonly id="periodo" type="text" class="form-control" onchange="calcularPeriodo()">
+                </div>
+                
+                <div class="col-12 form-group">
+                  <label for="mdias">Dias</label>
+                  <input  id="mdias" type="number" class="form-control" >
+                </div>
+                
+                
+                <button class="btn btn-block principal" id="mguardar" data-dismiss="modal">GUARDAR</button>
+                
+            
+            </div>
+
+    
+        </div>
+
+      </div>
+
+  </div>
+</div>
+</form>
+</section>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+
+<script>
+  
+ mostrarPersonal();
+ mostrarVacaciones();
+    
+/********************************
+        CALCULAR PERIODO
+********************************/
+    
+function calcularPeriodo(){
+    var fecha = $("#minicio").val();
+    var periodo= vPersonal.calcularPeriodo(fecha);
+    $("#periodo").val(periodo);
+}    
+
+/********************************
+        CREAR VACACIONES
+********************************/  
+var texto = "";
+$("#btnañadir").click(function(){
+    $("#persona").val("");
+    $("#periodo").val("");
+    $("#mdias").val("");
+    $("#CodigoVacaciones").val("");
+    texto="AÑADIR";
+});
+
+/********************************
+    GUARDAR/ACTUALIZAR VACACIONES
+********************************/     
+$("#mguardar").click(function(){
+    var R1 = $("#persona").val();
+    var R2 = $("#minicio").val();
+    var R3 = $("#mdias").val();
+    var R4 = $("#CodigoVacaciones").val();
+    
+    
+    if (texto=="MODIFICAR"){
+        actualizarVacaciones();
+    }
+    else if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#persona").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#minicio").focus();
+    }
+    else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#mdias").focus();
+    }else if (texto=="AÑADIR"){
+        var personal = $("#persona").val();
+        var periodo = $("#periodo").val();
+        var dias = $("#mdias").val();
+        vPersonal.generarCodigoVacaciones(personal,periodo,dias);
+        mostrarVacaciones(); 
+    } else{
+        texto="";
+    }
+    
+});
+
+/********************************
+   MOSTRAR EL BOTON ELIMINAR
+********************************/    
+    
+$("#btneliminar").click(function(){
+    var filas = $("#cuerpoTabla tr").length; 
+    for(var i=0;i< (filas*5);i++){
+        $("#btnx"+i+"").removeClass("d-none");
+        $("#btni"+i+"").addClass("d-none");
+    }
+    return false;
+});
+
+/********************************
+   MOSTRAR EL BOTON MODIFICAR
+********************************/    
+$("#btnmodificar").click(function(){
+    texto="MODIFICAR";
+    var filas = $("#cuerpoTabla tr").length;
+    for(var i=0;i< (filas*5);i++){
+        $("#btni"+i+"").removeClass("d-none");
+        $("#btnx"+i+"").addClass("d-none");
+    }
+  return false;
+});    
+
+/********************************
+        MOSTRAR PERSONAL
+********************************/
+function mostrarPersonal(){
+    var boxPersonal="";
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxPersonal+="<option value='' selected>Elegir Personal</option>";
+            $("#persona").html(boxPersonal);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                $("#persona").html(boxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                    }
+                    boxPersonal+="<option value='"+datos[i].PERSCODIGO+"'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+" "+datos[i].PERSNOMBRE+"</option>";
+                }
+                $("#persona").html(boxPersonal);
+            }
+        }
+    });  
+}    
+    
+var codigo = new Array(); 
+        
+/********************************
+   MOSTRAR LA TABLA VACACIONES
+********************************/   
+  
+function mostrarVacaciones(){
+    var posicion=1;
+    var tabladatos="";
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTotalVacaciones.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else {
+                
+                for(var i=0;i<datos.length;i++){
+                    if(datos[i].VACAPERSDIAS!=datos[i].VACAPERSEFECTIVAS){
+                        codigo[i]= datos[i].VACAPERSCODIGO
+                        tabladatos+="<tr>\
+                                   <td>"+(posicion)+"</td>\
+                                   <td>"+datos[i].VACAPERSCODIGO+"</td>\
+                                   <td>"+datos[i].PERSAPELLIDO_PATERNO+ " "+datos[i].PERSAPELLIDO_MATERNO +"</td>\
+                                   <td>"+datos[i].PERSNOMBRE+"</td>\
+                                   <td>"+datos[i].AREADESCRIPCION+"</td>\
+                                   <td>"+datos[i].VACAPERSPERIODO+"</td>\
+                                   <td>"+datos[i].VACAPERSDIAS+"</td>\
+                                   <td><button id='btnx"+i+"' class='red d-none' onclick='alerta("+i+");return false' >X</button><button id='btni"+i+"'  class='green d-none' data-toggle='modal' data-target='#listadoPersonal' onclick='cargarVacaciones("+i+");return false'>/</button></td>\
+                                </tr>"
+                        posicion=posicion+1;
+                    }
+                }
+                $("#cuerpoTabla").html(tabladatos);
+
+
+            }
+        }
+     });
+}
+
+/********************************
+       FUNCION ALERTA
+********************************/ 
+    
+function alerta(posicion){
+    var mensaje;
+    var opcion = confirm("Al Eliminar esta campo, Eliminará todos los detalles Vacaciones. ¿Desea Eliminar este campo? ");
+    if (opcion == true) {
+       eliminarDetalleVacaciones(posicion);
+	} else {
+	    
+	}
+} 
+    
+/********************************
+    ELIMINAR DETALLE-VACACIONES
+********************************/  
+  
+function eliminarDetalleVacaciones(posicion){
+    var codigoVaca = codigo[posicion];
+    var $codigo={
+        '_codigo' : codigoVaca, 
+    } 
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_EliminarDetalleVacaciones.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+               eliminarVacaciones(codigoVaca);
+            }
+        }
+    });
+    
+}
+
+/********************************
+   ELIMINAR VACACIONES
+********************************/     
+
+function eliminarVacaciones(codeVaca){
+    var $codigo={
+        '_codigo' : codeVaca,   
+   }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_EliminarVacaciones.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+               mostrarVacaciones();
+            }
+        }
+    });   
+}    
+
+/********************************
+    CARGAR VACACIONES - MODAL
+********************************/
+    
+function cargarVacaciones(posicion){
+    var codigoVaca = codigo[posicion];
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTotalVacaciones.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else {
+                
+                for(var i=0;i<datos.length;i++){
+                  if( codigoVaca==datos[i].VACAPERSCODIGO){
+                      $("#persona").val(datos[i].PERSCODIGO);
+                      $("#periodo").val(datos[i].VACAPERSPERIODO);
+                      $("#mdias").val(datos[i].VACAPERSDIAS);
+                      $("#CodigoVacaciones").val(datos[i].VACAPERSCODIGO);
+                  } 
+                }
+                
+            }
+        }
+     });
+}    
+
+/********************************
+     ACTUALIZAR VACACIONES
+********************************/ 
+  
+function actualizarVacaciones(){
+    var $vacaciones={
+        '_codigo' : $("#CodigoVacaciones").val(),   
+        '_personal' : $("#persona").val(),   
+        '_periodo' : $("#periodo").val(),   
+        '_dias' : $("#mdias").val()   
+   }
+
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_ActualizarTodoVacaciones.php',
+        type: 'POST',
+        data: $vacaciones,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mostrarMensaje("exito","EXITO: VACACIONES ACTUALIZADAS");
+               mostrarVacaciones();
+            }
+        }
+    });
+    
+    
+}    
+ 
+</script>

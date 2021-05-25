@@ -1,0 +1,243 @@
+<div class="card">
+    <div class="col-12 my-3 h3-responsive font-weight-bold">ACTUALIZAR DESPACHO</div>
+    <div class="card-body">
+        <div class="form-row">
+            <div class="col-12 col-md-6 form-group">
+                <label for="estado">Estado</label>
+                <select required id="estado" class="form-control">
+                    <option value="0" selected>Seleccionar Estado</option>
+                    <option value="68">Terminada</option>
+                    <option value="69">Abierta</option>
+                    <option value="70">Atendida</option>
+                    <option value="71">Anulada</option>
+                </select>
+            </div>
+               
+            <div class="col-12 col-md-6 form-group">
+                <label for="accion">SOLO CUANDO ESTADO SEA (Terminada) Seleccionar Acción : </label>
+                <select required id="accion" class="form-control">
+                    <option value="0" selected>Seleccionar Accion</option>
+                    <option value="1">Se Realizo</option>
+                    <option value="2">No Se Realizo</option>
+                </select>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-12 form-group">
+              <label for="respuesta">Respuesta: </label>
+              <input type="text" class="form-control" id="respuesta">
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="costoEstado">Costo S/.: </label>
+              <input type="text" class="form-control" id="costoEstado" value="0.00">
+            </div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="costoObjeto">Costo Objeto S/.: </label>
+              <input type="text" class="form-control" id="costoObjeto" value="0">
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-6 form-group">
+                <label for="vehiculo">Vehiculo</label>
+                <select required id="vehiculo" class="form-control">
+                    <option value="0" selected>Seleccionar Vehiculo</option>
+                    <option value="1">A Pie</option>
+                    <option value="2">Bicicleta</option>
+                    <option value="3">Camioneta</option>
+                    <option value="4">Combi</option>
+                    <option value="5">Moto</option>
+                    <option value="6">Taxi</option>
+                </select>
+            </div>
+            
+            <div class="col-12 col-md-6 form-group">
+                <label for="mensajero">Mensajero</label>
+                <div class="form-inline">
+                    <select required id="mensajero" class="form-control w-50">
+                    </select>
+                    <input type="text" class="form-control w-50" id="mensajeroInput">
+                </div>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="kmi">Kmi: </label>
+              <input type="number" class="form-control" id="kmi" value="0">
+            </div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="kmf">Kmf: </label>
+              <input type="number" class="form-control" id="kmf" value="0">
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md form-group">
+              <label for="kmi">Costo en KM solo Autos Propios:</label>
+              <input type="text" class="form-control" id="kmi" value="0 Kms x S/.1.70 es S/.0" readonly>
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="fhsale">F/H Sale: </label>
+              <input type="number" class="form-control" id="fhsale" readonly>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="fhllega">F/H Llega: </label>
+              <input type="number" class="form-control" id="fhllega" readonly>
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="tiempo">Tiempo: </label>
+              <input type="number" class="form-control" id="tiempo" readonly>
+            </div>
+            
+        </div>
+        
+        <div class="form-inline justify-content-center">
+          <button id="updateButtonDespacho" type="button" class="btn btn-info">Actualizar Despacho</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    
+$(document).ready(function(){
+    cargarMensajeros();
+});
+    
+$(document).ready(function(){
+    $("#updateButtonDespacho").click(function(){
+        updateDespacho(enviarCodigo);
+    });
+});
+    
+/*FUNCION PARA CARGAR LOS MENSAJEROS*/
+function cargarMensajeros(){
+    
+    var boxMensajero="<option value='0' selected>Seleccionar Mensajero</option>";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje('ERROR: '+datos.message);
+            }else{
+                for(var i=0; i<datos.length; i++){
+                    if(datos[i].AREACODIGO == 'A6'){
+                        boxMensajero+="<option value='"+datos[i].PERSCODIGO +"'>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO +"</option>"
+                    }
+                }
+                boxMensajero+="<option value='taxi'>Servicio Taxi</option>";
+                boxMensajero+="<option value='otro'>Otro</option>";
+               $("#mensajero").html(boxMensajero); 
+                cargarDatos(enviarCodigo)
+            }
+        }
+    }); 
+}
+    
+/*FUNCION PARA CARGAR LOS DATOS*/
+function cargarDatos(codigoDespacho){
+    var $codigo={
+        '_codigo':codigoDespacho
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarInfoXRegDespacho.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#estado option[value="+document.getElementById("estado").value+"]").attr("selected", false);
+                $("#estado option[value="+datos.estadoDespacho+"]").attr("selected",true);
+                $("#accion option[value="+document.getElementById("accion").value+"]").attr("selected", false);
+                $("#accion option[value="+datos.PRODES_ACCION+"]").attr("selected",true);
+                document.getElementById("respuesta").value=datos.PRODES_RESPUESTA;
+                document.getElementById("costoEstado").value=datos.PRODES_COSTO_ESTADO;
+                document.getElementById("costoObjeto").value=datos.PRODES_COSTO_OBJETO;
+                $("#vehiculo option[value="+document.getElementById("vehiculo").value+"]").attr("selected", false);
+                $("#vehiculo option[value="+datos.PRODES_VEHICULO+"]").attr("selected",true);
+                $("#mensajero option[value="+document.getElementById("mensajero").value+"]").attr("selected", false);
+                $("#mensajero option[value="+datos.PRODES_MENSAJERO+"]").attr("selected",true);
+                document.getElementById("mensajeroInput").value=datos.PRODES_MENSAJERO_INPUT;
+                document.getElementById("kmi").value=datos.PRODES_KMI;
+                document.getElementById("kmf").value=datos.PRODES_KMF;
+            } 
+        }
+    })
+}
+
+/*FUNCION PARA ACTUALIZAR REGISTRO DESPACHO*/
+function updateDespacho(codigoDespacho){
+    
+    var $datos={
+        '_codigo': codigoDespacho,
+        '_estado':document.getElementById("estado").value,
+        '_accion':document.getElementById("accion").value,
+        '_respuesta':document.getElementById("respuesta").value,
+        '_costoEstado':document.getElementById("costoEstado").value,
+        '_costoObjeto':document.getElementById("costoObjeto").value,
+        '_vehiculo':document.getElementById("vehiculo").value,
+        '_mensajero':document.getElementById("mensajero").value,
+        '_mensajeroInput':document.getElementById("mensajeroInput").value,
+        '_kmi':document.getElementById("kmi").value,
+        '_kmf':document.getElementById("kmf").value
+    }
+    
+    $.ajax({
+          url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_ActualizarEstadoDespacho.php',
+          type: 'POST',
+          data: $datos,
+          dataType: 'json',
+          error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+          },
+          success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error","ERROR: "+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","Datos Actualizados");
+            }
+           }
+        });
+}
+    
+</script>

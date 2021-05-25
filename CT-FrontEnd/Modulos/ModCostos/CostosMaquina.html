@@ -1,0 +1,308 @@
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">COSTOS DE MÁQUINA</div>
+
+<div id="llenadoprincipal" class="w-responsive mx-auto my-5">
+  <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">LLENAR COSTOS MAQUINA PARA ORDEN</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto font-weight-bold pr-2" for="codigo">ORDEN PRODUCCION</label>
+            <input id="codigo" class="w-responsive" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" min="1" maxlength="9">
+           </div>
+           <button id="llenarcodigo" type="submit" onclick="evaluar();ocultar()" class="btn principal px-5">INGRESAR</button>
+  </div>
+  <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">LLENAR COSTOS DE MAQUINA</p>
+  
+           <button type="submit" onclick="mostrarFormulario2()" class="btn principal px-5">INGRESAR</button>
+  </div>
+</div>
+<div id="llenadosecundario" class="w-responsive mx-auto my-5" style="display: none">
+
+  <div id="item" style="float: none;text-align: center"></div>
+  <div id="contenedor-item" style="float: none;text-align: center"></div>
+</div>
+<div id="llenadomaquina" class="w-responsive mx-auto my-5" style="display: none">
+
+  <div id="llenadomaquina-costos" style="float: none;text-align: center"></div>
+</div>
+  <div id="return" style="float: right; margin-right:15%;display: none"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="retroceder()"></i></div>
+ <!-- MENSAJE -->
+<div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModCostos/VistaCostos.js"></script>
+
+<script type="text/javascript">
+  
+var arrayBotones = new Array();
+function retroceder(){
+  document.getElementById("llenadoprincipal").style.display=null;
+  document.getElementById("llenadosecundario").style.display='none';
+  document.getElementById("llenadomaquina").style.display="none";
+  document.getElementById("return").style.display="none";
+}  
+function mostrarFormulario(item,descripcion){
+  $("#llenadomaquina-costos").html("");
+  var formulario="";
+  formulario+="<div  class='formulario text-center my-3 mt-4 pb-3'>\
+                  <p class='b principal white-text py-1 font-weight-bold'>"+descripcion+"</p>\
+                  <input type='hidden' id='itemnumero'>\
+                  <table style='float: none;text-align: center;width: 100%'>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA INICIO:</td>\
+                        <td><input style='width: 60%' id='fechai' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horai'>HORA INICIO:</label><input style='width: 50%' id='horai' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA FIN:</td>\
+                        <td><input style='width: 60%' id='fechaf' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horaf'>HORA FIN:</label><input style='width: 50%' id='horaf' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>MÁQUINA:</td>\
+                        <td><select style='width: 60%' id='maquinas'></td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>PERSONAL:</td>\
+                        <td><select style='width: 60%' id='personal'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='ayudante'>AYUDANTE:</label><select style='width: 50%' id='ayudante'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>TIPO:</td>\
+                        <td><select style='width: 60%' id='tipo'>\
+                            <option value='T1'>TRABAJO</option>\
+                            <option value='T2'>PREPARACION</option>\
+                          </td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>OBSERVACIONES:</td>\
+                        <td><input style='width: 60%' type='text' id='observaciones' onkeyup='javascript:this.value=this.value.toUpperCase();' ></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='cantidad'>CANT:</label><input style='width: 50%' type='number' id='cantidad' ></td>\
+                     </tr>\
+                  </table>\
+                  <button id='guardarxPersonal' type='submit' onclick='guardar(this.id)' class='btn principal px-5'>GUARDAR</button>\
+                </div>";
+  
+  $("#contenedor-item").html(formulario);
+  mostrarMaquinas();
+  mostrarPersonal();
+  botonActivo(item);
+  var Hoy = new Date();
+  var fecha= Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+  if(Hoy.getMinutes().toString().length==1){
+     var hora= Hoy.getHours()+ ":0" + Hoy.getMinutes();
+  }else{
+     var hora= Hoy.getHours()+ ":" + Hoy.getMinutes();
+  }
+ 
+  $("#fechai").val(fecha);
+  $("#fechaf").val(fecha);
+  $("#horai").val(hora);
+  $("#horaf").val(hora);
+  $("#itemnumero").val(item);
+}
+  
+function mostrarFormulario2(){
+   $("#contenedor-item").html("");
+  document.getElementById("llenadoprincipal").style.display='none';
+  document.getElementById("llenadomaquina").style.display=null;
+  document.getElementById("return").style.display=null;
+  var formulario="";
+  formulario+="<div  class='formulario text-center my-3 mt-4 pb-3'>\
+                  <p class='b principal white-text py-1 font-weight-bold'>COSTOS - MÁQUINA</p>\
+                  <table style='float: none;text-align: center;width: 100%'>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA INICIO:</td>\
+                        <td><input style='width: 60%' id='fechai' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horai'>HORA:</label><input style='width: 50%' id='horai' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA-HORA FIN:</td>\
+                        <td><input style='width: 60%' id='fechaf' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horafs'>HORA:</label><input style='width: 50%' id='horaf' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>MAQUINA:</td>\
+                        <td><select style='width: 60%' id='maquinas'></td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>PERSONAL:</td>\
+                        <td><select style='width: 60%' id='personal'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='cantidad'>AYUDANTE:</label><select style='width: 50%' id='ayudante'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>TIPO:</td>\
+                        <td><select style='width: 60%' id='tipo'>\
+                            <option value='T3'>LIMPIEZA-MAQUINA</option>\
+                            <option value='T4'>REPARACION-MAQUINA</option>\
+                            <option value='T5'>PROBLEMAS-MAQUINA</option>\
+                            <option value='T6'>MAQUINA-MALOGRADA</option>\
+                            <option value='T7'>MANTENIMIENTO-MAQUINA</option>\
+                          </td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>OBSERVACIONES:</td>\
+                        <td><input style='width: 60%' type='text' id='observaciones' onkeyup='javascript:this.value=this.value.toUpperCase();'></td>\
+                        <td></td>\
+                     </tr>\
+                  </table>\
+                  <button id='guardarxMaquina' type='submit' onclick='guardar(this.id)' class='btn principal px-5'>GUARDAR</button>\
+                </div>";
+  
+  $("#llenadomaquina-costos").html(formulario);
+  mostrarAcabados();
+  mostrarMaquinas();
+  mostrarPersonal();
+  var Hoy = new Date();
+  var fecha= Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+  if(Hoy.getMinutes().length==1){
+     var hora= Hoy.getHours()+ ":0" + Hoy.getMinutes();
+  }else{
+     var hora= Hoy.getHours()+ ":" + Hoy.getMinutes();
+  }
+  $("#fechai").val(fecha);
+  $("#fechaf").val(fecha);
+  $("#horai").val(hora);
+  $("#horaf").val(hora);
+}
+  
+function ocultar(){
+  document.getElementById("llenadomaquina").style.display='none';
+}
+  
+function guardar(texto){
+  if(texto=='guardarxPersonal'){
+    var now  = moment($("#fechaf").val()+" "+$("#horaf").val());
+    var then = moment($("#fechai").val()+" "+$("#horai").val());
+    var diferencia = now.diff(then,'HH:mm:ss');
+    if(diferencia < 0){
+      mostrarMensaje("error","Verificar ingreso de Fechas");
+      $("#fechai").focus();
+    }else if($("#maquinas").val()=="0"){
+         mostrarMensaje("advertencia","ADVERTENCIA: Seleccione la Máquina en actividad");
+        $("#maquinas").focus();
+    }else if($("#personal").val()=="0"){
+        mostrarMensaje("advertencia","ADVERTENCIA: Seleccione al Personal en actividad");
+        $("#personal").focus();
+    }else if($("#observaciones").val() == null || $("#observaciones").val().length == 0 || /^\s+$/.test($("#observaciones").val())){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#observaciones").focus();
+    }else{
+      buscarcontrolinsumo(texto,$("#codigo").val());
+    }
+  }else{
+    
+  }
+}
+  
+function buscarcontrolinsumo(texto,op){
+  var $datos = {
+    '_codigo': op
+  }
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/Controlador_MostrarControlInsumoDeOP.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+              registrarControlInsumo(texto,op);
+            }
+            else{
+              if(texto=='guardarxPersonal' ){
+                mostrarCostoMaquina(datos.CRINSCODIGO,$("#maquinas").val());
+              }else{
+                registrarCostosMaquina(datos.CRINSCODIGO);
+              }   
+            }
+        }
+    });
+}
+
+function mostrarCostoMaquina(controlinsumo,maquina){
+  var $maquina={
+        '_maquina' : maquina
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Maquinas/Controlador_MostrarDatosMaquina.php',
+        type: 'POST',
+        data: $maquina,
+        dataType: 'json',
+        error: function (error){
+             if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                registrarCostosMaquina(controlinsumo,datos.MAQUICOSTO_HORA)            
+            }
+        }
+    });
+}
+  
+function registrarCostosMaquina(controlinsumo,costomaquina){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  var now  = $("#fechaf").val()+" "+$("#horaf").val();
+  var then = $("#fechai").val()+" "+$("#horai").val();
+  var dif = moment.utc(moment(now, "YYYY/MM/DD HH:mm:ss").diff(moment(then, "YYYY/MM/DD HH:mm:ss"))).format("HH:mm:ss");
+
+  var costotrabajo =((dif.split(":")[0]*costomaquina) + (dif.split(":")[1]*costomaquina)/60);
+  var $datos={
+    '_controlinsumo':controlinsumo,
+    '_itemnumero':$("#itemnumero").val(),
+    '_maquina':$("#maquinas").val(),
+    '_fecharegistro':fecharegistro,
+    '_personal':$("#personal").val(),
+    '_ayudante':$("#ayudante").val(),
+    '_trabajo':$("#tipo").val(),
+    '_fechainicio':$("#fechai").val(),
+    '_fechafinal':$("#fechaf").val(),
+    '_horainicio':$("#horai").val(),
+    '_horafinal':$("#horaf").val(),
+    '_costo':costotrabajo,
+    '_observaciones':$("#observaciones").val(),
+    '_usuario':USUACODIGO,
+  }
+  $.ajax({
+      url: '../CT-BackEnd/Controlador/ModCostos/Controlador_RegistrarCostosMaquina.php',
+      type: 'POST',
+      data: $datos,
+      dataType: 'json',
+      error: function (error){
+           if(error.status == 401){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error",'ERROR: '+datos.message);
+          }else{
+              mostrarMensaje("exito","DATOS REGISTRADOS CORRECTAMENTE")           
+          }
+      }
+  });
+}
+</script> 

@@ -1,0 +1,2204 @@
+<!--ESTILOS DE LA VISTA-->
+<style>
+  
+  .verde{background: #A9D08E;}
+  .rojo{background: #FF9393;}
+  .cuadro{
+    border: 2px black solid;
+    width: 200px;
+    height: 25px;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+  .cuadro2{
+    border: 2px black solid;
+    width: 200px;
+    height: 25px;
+    font-weight: bold;
+    vertical-align: middle;
+  }
+  .carousel-control-prev, .carousel-control-next{
+    position: relative;
+    top: 0px;
+    left: 0px;
+  }
+  .carousel-control-prev span, .carousel-control-next span{
+    width: 40px;
+    height: 40px;
+  }
+  
+  /*=======================================
+  
+  SLIDER 0: TABLA PRINCIPAL
+  
+  =======================================*/
+  
+  #PRINCIPAL, #PRINCIPAL table{width: 100%;}
+  #PRINCIPAL tr td {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle; 
+  }
+  #PRINCIPAL select,#PRINCIPAL input{width: 100%; text-align: center;font-weight: bold; font-size: 18px;border: 0}
+  #PRINCIPAL #encabezado select,#PRINCIPAL #encabezado input{min-width: 100px;}
+  
+  /*=======================================
+  
+  SLIDER 1: TABLA F1810
+  
+  =======================================*/
+  #F1810 {width: 100%;}
+  #F1810 tr td {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle; 
+    font-size: 13px;
+  }
+  #F1810 .cuadro{background: #B4C6E7;}
+  #F1810 .cuadro2{background: #F8CBAD;}
+  
+  /*=======================================
+  
+  SLIDER 2: TABLA F1810MAQUINAS
+  
+  =======================================*/
+  #F1810MAQUINAS tr td,#F1810MAQUINAS input{font-weight:bold; text-align: right; margin: 0; padding: 0;}
+  #F1810MAQUINAS input{width: 100%; border: 0;}
+  #F1810MAQUINAS td{vertical-align: top; min-width: 140px;}
+  #MAQ td{min-width: 150px; vertical-align: middle; height: 22px;}
+  
+  /*=======================================
+  
+  SLIDER 3: TABLA F1810INSUMOS
+  
+  =======================================*/
+  #F1810INSUMOS tr td,#F1810INSUMOS input{font-weight:bold; text-align: right; margin: 0; padding: 0; font-size: 13px;}
+  #F1810INSUMOS input{width: 100%; border: 0; height: 100%;}
+  #F1810INSUMOS td{vertical-align: top; max-width: 160px;}
+  .sub{background-color: #2D529B}
+  #papel td, #placas td, #dplacas td, #vitem td{vertical-align: middle; height: 40px;}
+  #mplacas td{vertical-align: middle; height: 30px; width: 100px;}
+  #operario td{vertical-align: middle; height: 30px; width: 150px;}
+  #placas td, #vitem td{width: 150px;}
+  #item td{width: 180px; vertical-align: middle;}
+  
+</style>
+
+<!--CONTENIDO PRINCIPAL DE LA VISTA-->
+<table style="width: 100%;">
+  <h3 id="TituloNuevoPresupuesto" class="h3-responsive titulo py-4">Nuevo presupuesto</h3>
+ <thead id="cabezal" >
+   <tr>
+     <th id="F1810Titulo" colspan="2" class="black text-white h3 p-2">NUEVO PRESUPUESTO</th>
+     <th class="black">
+        <div class="row">
+          <a class='carousel-control-prev' href='#carouselExampleControls' role='button' data-slide='prev'>
+              <span class='carousel-control-prev-icon' aria-hidden='true' id="btnRetroceder"></span>
+              <span class='sr-only'>Previous</span>
+          </a>
+          ------
+          <a class='carousel-control-next' href='#carouselExampleControls' role='button' data-slide='next'>
+              <span class='carousel-control-next-icon' aria-hidden='true' id="btnAdelantar"></span>
+              <span class='sr-only'>Next</span>
+          </a>
+        </div>
+     </th>
+     <th colspan="1" class="black text-right">
+       <button class="btn secundario disabled" id="habilitar" onclick="HABILITAR();return false">HABILITAR</button>
+       <button class="btn secundario disabled " id="guardar" onclick="return false">ACTUALIZAR FORMULA</button>
+     </th>
+   </tr>
+ </thead>
+
+ <tbody>
+   <tr><td colspan="4">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+      
+        <div class="carousel-item active">
+          <form id="form">
+
+          <!--DATOS GENERALES-->
+          <div class="card" >
+            <div class="card-body">
+
+              <div class="row justify-content-center">
+
+                <!--INFORMACION GENERAL DEL PRESUPUESTO-->
+                <div class="col-12 col-md-4 form-group">
+
+                  <!--CODIGO-->
+                  <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+
+                  <!--CLIENTE-->
+                  <label for="clientex" style="margin-top: 1rem;">Seleccionar cliente</label>
+                  <select required id="clientex" class="form-control" aria-describedby="clienteHelp" onchange="slider4.colocarPContactoYCliente()"></select>
+                  <small id="clientexHelp" class="form-text text-muted">Campo obligatorio.</small>
+
+                </div>
+
+                <!--VENDEDOR-->
+                <div class="col-12 col-md-4 form-group">
+                  <label for="vendedorx" style="margin-top: 1rem;">Seleccionar vendedor</label>
+                  <select required id="vendedorx" class="form-control" aria-describedby="vendedorHelp">
+                    <option value="49">PEPE</option>
+                    <option value="35">FABIOLA</option>
+                    <option value="39">YRMA</option>
+                    <option value="54">MILAGROS</option>
+                    <option value="28">LIZ</option>
+                    <option value="74">ALAN</option>
+                  </select>
+                  <small id="vendedorxHelp" class="form-text text-muted">Campo obligatorio.</small>
+                </div>
+                
+                <div class="col-12 col-md-4 form-group">
+                   <label for="pContacto" style="margin-top: 1rem;">Persona de Contacto</label>
+                    <input required type="text" id="pContacto" class="form-control" placeholder="Ingresar nombre de la persona de contacto." onchange="slider4.colocarPContactoYCliente()" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                    <small id="pContactoHelp" class="form-text text-muted">Campo obligatorio.</small>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!--ITEM-->
+          <div  class="card">
+            <h5 class="card-header h5"><label id="ITEM1">ITEM 1</label>
+              <button class="btn btn-titulo" id='1'  onclick="slider4.validar(this.id);return false" >NUEVO ITEM</button>
+              <button id="-1" class="btn btn-titulo2"  onclick="slider4.CrearPresupuesto(this.id);return false">PERSONALIZADO</button>
+              <button id="editar-1" class="btn btn-titulo2" onclick="slider4.editarItem(this.id);return false" style="display: none">EDITAR</button>
+            </h5>
+            <div class="card-body">
+
+              <div class="form-row">
+
+                <!--CODIGO-->
+                <div class="col-12 col-md-2 form-group">
+                  <label for="codigoPresupuestoItem">Código</label>
+                  <input readonly type="text" class="form-control" id="codigoPresupuestoItem1" aria-describedby="codigoPresupuestoItemHelp">
+                  <small id="codigoPresupuestoItemHelp" class="form-text text-muted">Campo autogenerado.</small>
+                </div>
+
+                <!--CANTIDAD-->
+                <div class="col-12 col-md-2 form-group">
+                  <label for="cantidad">Cantidad</label>
+                  <input required type="number" min="1" class="form-control" id="cantidad1" aria-describedby="cantidadHelp" placeholder="5000">
+                  <small id="cantidadHelp" class="form-text text-muted">Campo obligatorio.</small>
+                </div>
+                
+                <!--MEDIDAS-->
+                <div class="col-12 col-md form-group">
+                  <label for="medidas1">Medidas</label>
+                  <input required class="form-control" id="medidas1" aria-describedby="medidasHelp" placeholder="21 x 19 cm, abierto" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></input>
+                  <small id="medidasHelp" class="form-text text-muted"></small>
+                </div>
+
+                <!--DESCRIPCION-->
+                <div class="col-12 col-md form-group">
+                  <label for="descripcion">Descripcion</label>
+                  <textarea required class="form-control" id="descripcion1" aria-describedby="descripcionHelp" placeholder="Volantes" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+                  <small id="descripcionHelp" class="form-text text-muted">Recomendación: Usar palabras claves como volantes, afiches,...</small>
+                </div>
+                
+                <div style="max-width: 1260px; overflow-y: scroll;width: 80%" id="deslizableEstilos1">
+                    
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div id="siguiente2" ></div>
+
+          <!--VISTA PREVIA-->
+          <div id="vistaPrevi" class="card">
+            <div class="card-header">
+            <h5 id="1" class="h5">VISTA PREVIA</h5>
+            <button id='codigoPresupuesto' class="btn btn-titulo"onclick="slider4.vistaPrevia(this.id);return false">ACTUALIZAR</button>
+            <button  class="word-export btn btn-titulo" href="javascript:void(0)" >EXPORTAR A WORD</button>
+            <button  class="btn btn-titulo" onclick="slider4.imprimir('PrespuestoImprenta');return false">EXPORTAR A PDF/ IMPRIMIR</button>
+                        
+            </div>
+            
+            <div style="width: 80%; margin: auto;" class="card-body">
+            <div id="PrespuestoImprenta" >
+              <table class="my-4" id="vistaPrevia" name="vistaPrevia" style="width: 84%;margin-left: 8%;margin-right: 8%">
+                <thead>
+                    <tr>
+                      <td id="logoEmpresa" rowspan=4 colspan="2"><img src="Modulos/ModPresupuesto/Logo-Computextos.png" width="220" height="65"></td>
+                      <td class="text-right" id="clienteEmpresa">TELEFONICA DEL PERU</td>  
+                    </tr>
+                    <tr>
+                      <td id="nPresupuesto" class="h4-responsive font-weight-bold text-right">Presupuesto 3210-19</td> 
+                    </tr>
+                    <tr>
+                      <td class="text-right" id="fechaRegistroModal">Lince, 13 de Marzo del 2019</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right font-weight-bold" id="totalVenta">Total: S/. 1000 + IGV</td>
+                    </tr>
+                    
+                </thead>
+                <tr><td id="pContactoTd" style="padding: 5px"></td></tr>
+                    <tr>
+                      <td class="text-left font-weight-bold" >De nuestra consideración:</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left" colspan="3" >Por medio de la presente es grato saludarles y a la vez hacerles llegar el presupuesto que nos solicitara con las siguientes características:</td>
+                    </tr>
+                <tbody id="cuerpovista">
+                </tbody>
+                <tr><td id="valorTotal" class='font-weight-bold pt-3' colspan='3'></td></tr>
+                <tr><td style="padding: 5px"></td></tr>
+                    <tr>
+                      <td class="text-left font-weight-bold" style='text-decoration: underline' >Observaciones.-</td>
+                    </tr>
+                    <tr><td style="padding: 5px"></td></tr>
+                    <tr>
+                      <td class="text-left" colspan="3"> - Cliente proporciona archivo y boceto final.</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left" colspan="3"> - Una vez aprobado el presupuesto enviar orden de compra.</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left font-weight-bold" colspan="3"> - Forma de pago factura a 30 días.</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left" colspan="3"> - Acogiéndonos a las normas de demasías industriales, éstas oscilarán en 4% +/-facturándose la cantidad entregada por su precio unitario, sólo en el caso que ésta sea menor a la solicitada. Rogamos tener en cuenta al momento de la aceptación del presupuesto.</td>
+                    </tr>
+                    <tr><td style="padding: 5px"></td></tr>
+                    <tr>
+                      <td class="text-left" colspan="3">Sin otro particular y a la espera de sus gratas órdenes. Quedamos de Uds. como sus S.S.</td>
+                    </tr>
+                    <tr>
+                     <tr><td style="padding: 5px" colspan="3"></td></tr>
+                      <td class="text-left">Atentamente,</td>
+                      <tr><td style="padding: 10px"></td></tr>
+                    </tr>
+                <tfoot>
+                  <tr><td >
+                    <div class="font-weight-bold" id="ejecutiva" onchange="slider4.cargarItem('0')" style="font-size: 13px;"></div>
+                    <div class="font-weight-bold"style="font-size: 14px;"> GRUPO COMPUTEXTOS S.A.C.</div>
+                  </td></tr>
+                </tfoot>
+              </table>
+            </div>
+            <div id="elementH"></div>
+            </div>
+          </div>
+         
+          <!-- MODAL 1 -->
+         <div class="modal fade" id="modalOpcion" tabindex="-1" role="dialog" aria-labelledby="modalDatosTitulo" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+
+              <div class="modal-content" style="top: 200px">
+
+                <div class="modal-header white">
+                  <h5 id="tituloEstilo" class="modal-title black-text font-weight-bold">DATOS GUARDADOS</h5>
+                  <span id="noVisible" style="display: none"></span>
+                  <input type="hidden" id="codigonumeroItem">
+                  <button id="closeModal" type="button" class="close red-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div id="eliminarSubItem" class="modal-body">
+                    <div class="form-row">
+                        <button id="btnEditar" onclick="slider4.editarSubItem();return false" class=" btn btn-block green mx-2" style="width: 45%;" data-dismiss="modal">EDITAR</button>
+                        <button id="btnEliminar" onclick="slider4.eliminarSubItem();return false" class=" btn btn-block red mx-2" style="width: 45%;" data-dismiss="modal">ELIMINAR</button>
+                    </div>
+                </div>
+                <div id="eliminarPresupuesto" class="modal-body">
+                    <div class="form-row">
+                        <button  onclick="slider4.cancelarPresupuestoTotal2();return false" class=" btn btn-block green mx-2" style="width: 45%;" data-dismiss="modal">SI</button>
+                        <button onclick="return false" class=" btn btn-block red mx-2" style="width: 45%;" data-dismiss="modal">NO</button>
+                    </div>
+                </div>
+
+              </div>
+          </div>
+         </div>
+
+          <!--OPCIONES DEL FORMULARIO-->
+          <div id="opcionesFormulario" class="form-inline justify-content-center">
+            <button type="button" id="guardar" onclick="slider4.guardarPresupuestoTotal();return false" class="btn btn-guardar">Guardar</button>
+            <button type="button" id="cancelar" onclick="slider4.cancelarPresupuestoTotal();return false" class="btn btn-guardar">Cancelar</button>
+            <!--<button type="button" id="cambiar" class="btn btn-reset">Cambiar monto</button>-->
+            <button type="reset" id="reset" class="btn btn-reset">Limpiar</button>
+          </div>
+
+        </form>
+      </div>
+      
+      <!-- PRINCIPAL -->
+        <div class="carousel-item">
+          <form method="post" name="PRINCIPAL">
+              <table id="PRINCIPAL" style="width: 100%;"><tbody>
+
+           <!--TABLA SUPERIOR-->
+           <tr><td colspan="4">
+            <table border>
+
+              <thead>
+                <tr>
+                  <td class="secundario font-weight-bold">CLIENTE</td>
+                  <td><select id="cliente"><option value="">-</option></select></td>
+                  <td class="secundario font-weight-bold">VENDEDOR</td>
+                  <td>
+                    <select id="vendedor">
+                      <option value="49">PEPE</option>
+                      <option value="35">FABIOLA</option>
+                      <option value="39">YRMA</option>
+                      <option value="54">MILAGROS</option>
+                      <option value="28">LIZ</option>
+                      <option value="74">ALAN</option>
+                    </select>
+                  </td>
+                  <th colspan="2" class="formulario font-weight-bold text-center">VERSION</th>
+                  <th colspan="2" class="text-right">5 de Enero del 2019</th>
+                  <th colspan="2" class="formulario font-weight-bold text-center">CAMBIO S/3.38</th>
+                  <th colspan="2" style="width: 160px;">
+                    <input id="guardarButton" onclick="slider4.enviar();return false" class="btn w-100 py-0 m-0 principal border font-weight-bold" type="button"  value="GUARDAR" style="width:120px;" disabled/>
+                    <button  id="actualizarButton" onclick="slider4.actualizarItem(); return false;" class="btn w-100 py-0 m-0 principal border font-weight-bold" style="width:120px; height: 29px; font-size: 18px ; display: none" disabled> ACTUALIZAR  </button>
+                    <button  class="btn w-100 py-0 m-0 principal border font-weight-bold" onclick="return false;" style="width:120px; height: 29px; font-size: 18px "  data-toggle="modal" data-target="#medidasItem-P"> MEDIDAS </button>
+                    <input class="btn w-100 py-0 m-0 principal border font-weight-bold" type="reset" onclick="document.getElementById('guardarButton').disabled = true;return false" value="LIMPIAR" style="width:120px;display: none">
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td class="secundario font-weight-bold">CODIGO</td>
+                  <td><input type="text" class="w-100 text-center" id="numeroItem" readonly></td>
+                  <td class="secundario font-weight-bold">DESCRIPCION</td>
+                  <td colspan="8"><input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" class="w-100 text-left"></td>
+                </tr>
+              </tbody>
+
+            </table>
+           </td></tr>
+
+           <!--TABLA CENTRAL-->
+           <tr>
+
+            <!--ENTRADA DE DATOS-->
+            <td colspan="2" style="width: 50%; vertical-align: top;">
+              <table class="mt-2">
+
+               <!--DATOS GENERALES-->
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">MAQUINA :</td>
+                  <td class="cuadro">
+                    <select id="maquinas">
+                      <option value selected>Elegir Maquina</option>
+                      <option value="MQ15">GTO</option>
+                      <option value="MQ01">ADAST</option>
+                      <option value="MQ21">KBA</option>
+                      <option value="MQ29">R700</option>
+                      <option value="MQ30">SM</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TAMAÑO DEL PLIEGO DE MAQUINA :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="normal">NORMAL</option>
+                      <option value="especial">ESPECIAL</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="green-text font-weight-bold text-right"># DE P/M's POR HOJA/RESMA :</td>
+                  <td class="cuadro"><input type="number" min="1" data-toggle="tooltip" value="1" data-placement="right" title="SI EL TAMAÑO DEL PLIEGO DE MAQUINA ES ESPECIAL
+            (C10) ENTONCES ESTE CAMPO ES OBLIGATORIO
+
+            Pliego de 35x25 y salen 24 stickers"></td>     
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TIRAJE TOTAL DE PIEZAS GRAFICAS :</td>
+                  <td class="cuadro"><input type="number" min="1" value="1000"></td>  
+                </tr>
+                <tr>
+                  <td class="green-text font-weight-bold text-right"># DE PAGINAS :</td>
+                  <td  class="cuadro"><input type="number" disabled min="0" data-toggle="tooltip" data-placement="right" title="INDICAR EL NUMERO DE PAGINAS CUANDO SE TRATA DE UN LIBRO, REVISTA O SIMILAR"></td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right"># DE PIEZAS GRAFICAS POR P/M :</td>
+                  <td class="cuadro"><input type="number" value="1" min="1"></td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right"># DE PLIEGOS DE MAQUINA DEL TRABAJO :</td>
+                  <td class="cuadro"><input type="number" value="1" min="1"></td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TIPO DE IMPRESION :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="2">T/R APARTE</option>
+                      <option value="1">SOLO TIRA</option>
+                      <option value="3">T/R JUNTA</option>
+                    </select>
+                  </td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right"># DE COLORES :</td>
+                  <td class="cuadro"><input type="number" max="10" value="4" min="1"></td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TIPO DE PAPEL :</td>
+                  <td class="cuadro">
+                    <select id="" data-toggle="tooltip" data-placement="right" title="Para Papel Autocopiativo poner COPY
+            Para Papel Autoadhesivo poner ADHESIVO
+            y se refiere al P4 y en gramaje poner 165 (gramos) 
+            y en Tamaño poner 70 (70x100)">
+                      <option value="COUC">COUCHE</option>
+                      <option value="BOND">BOND</option>
+                      <option value="FOLK">FOLKOTE</option>
+                      <option value="DUPL">DUPLEX</option>
+                      <option value="COPY">COPY</option>
+                      <option value="PERI">PERIODICO</option>
+                      <option value="ADHE">ADHESIVO</option>
+                      <option value="LYNE">LYNER</option>
+                    </select>
+                  </td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">QUALITY PAPEL :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="NO">NO</option>
+                      <option value="SI">SI</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">CONTRATO MARCO PARA TELEFONICA :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="NO">NO</option>
+                      <option value="SI">SI</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">GRAMAJE DE PAPEL EJ 90; 115; 150; 300 :</td>
+                  <td class="cuadro" style="border-width: 4px 4px 4px 4px;border-color: red;"><input type="number" max="500" min="50"></td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TAMAÑO DEL PAPEL 61, 69, 70, 72 :</td>
+                  <td class="cuadro" style="border-width: 4px 4px 4px 4px;border-color: red;"><input type="number" max="500" min="0" data-toggle="tooltip" data-placement="right" title="Si se usa una medida convertida de bobina se pone defrente la medida exacta. Ejemplo :se pone =0.70*0.72 si se usa un pliego de 70x72 cmts."></td> 
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">PRUEBA DE COLOR? :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="SI">SI</option>
+                      <option value="NO">NO</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">MENSAJERIAS :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="SI">SI</option>
+                      <option value="NO">NO</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TIPO DE PLASTIFICADO O BARNIZADO :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="">-</option>
+                      <option value="UV-B">UV Brillante</option>
+                      <option value="UV-M">UV Mate</option>
+                      <option value="UVSB">UV Sectorizado Brillante</option>
+                      <option value="UVSM">UV Sectorizado Mate</option>
+                      <option value="UV-B-2C">UV Brillante 2C</option>
+                      <option value="UV-M-2C">UV Mate 2C</option>
+                      <option value="UVSB-2C">UV Sectorizado Brillante 2C</option>
+                      <option value="UVSM-2C">UV Sectorizado Mate 2C</option>
+                      <option value="OFFB">OFF BRILLANTE</option>
+                      <option value="OFFM">OFF MATE</option>
+                      <option value="OFFB-2C">OFF BRILLANTE 2C</option>
+                      <option value="OFFM-2C">OFF MATE 2C</option>
+                      <option value="ACRB">ACR BRILLANTE</option>
+                      <option value="ACRM">ACR MATE</option>
+                      <option value="ACRB-2c">ACR BRILLANTE 2C</option>
+                      <option value="ACRM-2C">ACR MATE 2C</option>
+                      <option value="PL-B">PLAST Brillante</option>
+                      <option value="PL-M">PLAST Mate</option>
+                      <option value="PL-B-2C">PLAST Brillante 2C</option>
+                      <option value="PL-M-2C">PLAST Mate 2C</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TIPO DE PLASTIFICADO O BARNIZADO ADICIONAL 1 :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="">-</option>
+                      <option value="UV-B">UV Brillante</option>
+                      <option value="UV-M">UV Mate</option>
+                      <option value="UVSB">UV Sectorizado Brillante</option>
+                      <option value="UVSM">UV Sectorizado Mate</option>
+                      <option value="UV-B-2C">UV Brillante 2C</option>
+                      <option value="UV-M-2C">UV Mate 2C</option>
+                      <option value="UVSB-2C">UV Sectorizado Brillante 2C</option>
+                      <option value="UVSM-2C">UV Sectorizado Mate 2C</option>
+                      <option value="OFFB">OFF BRILLANTE</option>
+                      <option value="OFFM">OFF MATE</option>
+                      <option value="OFFB-2C">OFF BRILLANTE 2C</option>
+                      <option value="OFFM-2C">OFF MATE 2C</option>
+                      <option value="ACRB">ACR BRILLANTE</option>
+                      <option value="ACRM">ACR MATE</option>
+                      <option value="ACRB-2c">ACR BRILLANTE 2C</option>
+                      <option value="ACRM-2C">ACR MATE 2C</option>
+                      <option value="PL-B">PLAST Brillante</option>
+                      <option value="PL-M">PLAST Mate</option>
+                      <option value="PL-B-2C">PLAST Brillante 2C</option>
+                      <option value="PL-M-2C">PLAST Mate 2C</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TIPO DE PLASTIFICADO O BARNIZADO ADICIONAL 2 :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="">-</option>
+                      <option value="UV-B">UV Brillante</option>
+                      <option value="UV-M">UV Mate</option>
+                      <option value="UVSB">UV Sectorizado Brillante</option>
+                      <option value="UVSM">UV Sectorizado Mate</option>
+                      <option value="UV-B-2C">UV Brillante 2C</option>
+                      <option value="UV-M-2C">UV Mate 2C</option>
+                      <option value="UVSB-2C">UV Sectorizado Brillante 2C</option>
+                      <option value="UVSM-2C">UV Sectorizado Mate 2C</option>
+                      <option value="OFFB">OFF BRILLANTE</option>
+                      <option value="OFFM">OFF MATE</option>
+                      <option value="OFFB-2C">OFF BRILLANTE 2C</option>
+                      <option value="OFFM-2C">OFF MATE 2C</option>
+                      <option value="ACRB">ACR BRILLANTE</option>
+                      <option value="ACRM">ACR MATE</option>
+                      <option value="ACRB-2c">ACR BRILLANTE 2C</option>
+                      <option value="ACRM-2C">ACR MATE 2C</option>
+                      <option value="PL-B">PLAST Brillante</option>
+                      <option value="PL-M">PLAST Mate</option>
+                      <option value="PL-B-2C">PLAST Brillante 2C</option>
+                      <option value="PL-M-2C">PLAST Mate 2C</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">TROQUELADO? :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="NO">-</option>
+                      <option value="RAYA">RAYA</option>
+                      <option value="TROQ">TROQ</option>
+                      <option value="GRND">GRND</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">DOBLADO Y ALZE? :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="NO">-</option>
+                      <option value="REVI">REVISTA</option>
+                      <option value="DIPT">DIPTICO</option>
+                      <option value="TRIP">TRIPTICO</option>
+                      <option value="CUAD">CUADRIPTICO</option>
+                      <option value="CRUZ">CRUZ</option>
+                      <option value="MAN1">MAN1</option>
+                      <option value="MAN2">MAN2</option>
+                      <option value="MAN3">MAN3</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">COSIDO HILO, ENCOLADO O ENGRAPADO :</td>
+                  <td class="cuadro">
+                    <select id="">
+                      <option value="NO">-</option>
+                      <option value="HILO">HILO</option>
+                      <option value="COLA">COLA</option>
+                      <option value="GRAP">GRAPA</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="enfasis2-text font-weight-bold text-right">EMPAQUETADO O ENCAJONADO :</td>
+                  <td class="cuadro"><input type="text" data-toggle="tooltip" data-placement="right" title="CAJA    o
+            PAQUete
+            El default es PAQUETE
+
+            SI ES PAQUETE INGRESAR EL # DE UNIDADES GRAFICAS EN CADA PAQUETE"></td> 
+                </tr>
+
+                <tr><td style="height: 25px;"></td></tr>
+
+              <!--OTROS ACABADOS-->
+                <tr>
+                  <td colspan="2" class="black text-white h6 font-weight-bold">OTROS ACABADOS</td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">COSTO DEL PLASTICO A <span class="red-text">$0.06 el cmt2</span> : $</td>
+                  <td class="cuadro"><input type="number" value="0"  min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">COSTO DEL SERV. DE PLASTIFICADO A <span class="red-text">S/.35 el millar</span> : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">ADICIONAL X CAJAS : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">ENCOLADO Y FORRADO : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">DEGOLLADO Y CORTE : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">ARMADO Y PEGADO DE BOLSILLO : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">PUESTA DE OJALILLOS : $</td>
+                  <td class="cuadro"><input type="number"  value="0"min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">NYLON <span class="red-text">0.7mm</span> : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">PUESTA DE NYLON : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+                <tr>
+                  <td class="enfasis1 text-right font-weight-bold">EXTRAS : $</td>
+                  <td class="cuadro"><input type="number" value="0" min="0"></td>
+                </tr>
+
+              </table>
+            </td>
+
+            <!--TOTAL Y PRECIOS GENERALES-->
+            <td colspan="2" style="width: 50%; vertical-align: top;">
+              <table class="mt-2">
+
+               <!--FACTURACION-->
+                <tr>
+                    <td class="py-2" colspan="2" style="border-width: 5px 0px 0px 5px; border-style: solid ; border-color: red;">
+                      <input type="checkbox" id="dolares" style="padding: 0; margin: 0; width: 35px; height: 35px;" class=" mx-3 w-25">
+                      <p class="mx-3 w-25 h3" style="float: left; padding: 0; margin: 0;">$ </p>
+                    </td>
+                    <td class="py-2" colspan="2" style="border-width: 5px 5px 0px 0px; border-style: solid ; border-color: red;">
+                      <input type="checkbox" checked id="soles" style="padding: 0; margin: 0; width: 35px; height: 35px;" class= "mx-3 w-25">
+                      <p class="mx-3 w-25 h3" style="float: left; padding: 0; margin: 0;">S/ </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-2 h4-responsive font-weight-bold" style="border-width: 0px 0px 5px 5px; border-style: solid ; border-color: red;">MONTO</td>
+                    <td class="py-2 pr-3" colspan="3" style="border-width: 0px 5px 5px 0px; border-style: solid ; border-color: red;"><input class="formulario" type="number" min="1" id="facturacion" onchange="verificar()"></td>
+                </tr>
+
+                <tr><td style="height: 60px;"></td></tr>
+
+               <!--TOTAL-->
+                <tr>
+                  <td colspan="3" class="strong h3 font-weight-bold">TOTAL</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">PRECIO EN DOLARES :</td>
+                  <td colspan="2" class="cuadro strong"><input readonly class="strong" type="text" value="$0.00"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">PRECIO EN SOLES :</td>
+                  <td colspan="2" class="cuadro strong"><input readonly class="strong" type="text" value="S/.0.00"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">PRECIO X MILLAR :</td>
+                  <td colspan="2" class="cuadro strong"><input readonly class="strong" type="text" value="S/.0.00"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">PRECIO UNITARIO :</td>
+                  <td colspan="2" class="cuadro strong"><input readonly class="strong" type="text" value="S/.0.00"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">PRECIO X PQTE 500 HJS :</td>
+                  <td colspan="2" class="cuadro strong"><input readonly class="strong" type="text" value="S/.0.00"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+
+                <tr><td style="height: 60px;"></td></tr>
+
+              <!--RANGO DE PRECIOS-->
+                <tr>
+                  <td colspan="3" class="enfasis3 h3 font-weight-bold">RANGO DE PRECIOS</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">F1810 :</td>
+                  <td class="cuadro"><input readonly class="enfasis3" type="text" value="$0.00" id="Fdolares"></td>
+                  <td class="cuadro"><input readonly class="enfasis3" type="text" value="S/.0.00" id="Fsoles"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">NORMAL :</td>
+                  <td class="cuadro"><input readonly class="enfasis3" type="text" value="$0.00" id="Ndolares"></td>
+                  <td class="cuadro"><input readonly class="enfasis3" type="text" value="S/.0.00" id="Nsoles"></td>
+                  <td class="red-text font-weight-bold text-left">(+IGV)</td>
+                </tr>
+
+                <tr><td style="height: 100px;"></td></tr>
+
+              <!--PRECIOS GENERALES-->
+                <tr>
+                  <td colspan="3" class="strong3 h3 font-weight-bold">PRECIOS GENERALES</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold text-right">INSUMOS :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong2" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold text-right">TALLERES :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong2" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold text-right">EMB/FLETE :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong2" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold text-right">GG :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong2" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold text-right">MARGEN :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong2" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">TOTAL NETO :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong3" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold text-right">IMPUESTOS :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong2" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">TOTAL :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong3" type="text" value="S/.0.00"></td>
+                </tr>
+                <tr>
+                  <td class="red-text font-weight-bold text-right">PREC. UNIT :</td>
+                  <td colspan="2" class="cuadro strong2"><input readonly class="strong3" type="text" value="S/.0.00"></td>
+                </tr>
+
+              </table>
+              <button class="btn principal" id="retroceder" onclick="return false">RETROCEDER</button>
+              <input type="hidden" id="codigoactualizar">
+            </td>
+
+            </tr>
+
+          </tbody></table></form>
+        </div>
+        
+        <!--MODAL 2 : MEDIDAS DEL ITEM - PPTO-->
+        <div class="modal fade" id="medidasItem-P" tabindex="-1" role="dialog" aria-labelledby="medidasItem-P"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document" id="mdialTamanio">
+            <div class="modal-content">
+
+              <div class="modal-header principal">
+                <h5 class="modal-title white-text font-weight-bold">INGRESAR MEDIDAS DEL ITEM</h5>
+              </div>
+              <div class="modal-body">
+                  <table  class="w-100">
+                      <thead >
+                        <tr><td class="font-weight-bold" style="margin-left: 10%" >MEDIDAS :</td></tr>
+                        <tr><td><input class="form-control" type="text" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" id="medidasItem" placeholder="21 x 18 cm"></td></tr>
+                      </thead>
+                      <tfoot>
+                        <tr><td><input class="btn btn-titulo principal white-text" value="GUARDAR" style="margin-left: 30%" data-dismiss="modal"></td></tr>
+                      </tfoot>
+                  </table>
+              </div>
+            </div>   
+          </div>
+        </div>
+
+      <!-- F1810 - PRINCIPAL  -->
+        <div class="carousel-item">
+          <table id="F1810" style="width: 100%;">
+            
+            <!--DATOS GENERALES-->
+            <tr>
+              <td class="white-text font-weight-bold text-right">:</td>
+              <td class="red-text font-weight-bold" style="font-size:18px; font-variant: small-caps;">DATOS</td>
+              <td class="red-text font-weight-bold" style="font-size:18px; font-variant: small-caps;">VALOR</td>
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">VENDEDOR :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td>
+              <td class="brown-text font-weight-bold text-left">TASA COMISION</td>
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">MAQUINA :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td>
+              <td class="brown-text font-weight-bold text-left">VALOR</td>
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TAMAÑO DEL PLIEGO DE MAQUINA :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td>
+            </tr>
+            <tr>
+              <td class="green-text font-weight-bold text-right"># DE P/M's POR HOJA/RESMA :</td>
+              <td class="cuadro verde"></td>
+              <td class="cuadro2"></td>     
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TIRAJE TOTAL DE PIEZAS GRAFICAS :</td>
+              <td class="cuadro"></td>  
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">TIRAJE TOTAL EN HOJAS RESMAS</td>
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right"># DE PIEZAS GRAFICAS POR P/M :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">AREA C/ HOJA PAPEL</td>
+            </tr>
+
+            <tr>
+              <td class="white-text font-weight-bold text-right">:</td>
+              <td></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">MTS CUADRADOS DE PAPEL</td>
+            </tr>
+
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TIRAJE DEL TRABAJO EN P/M :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td>
+              <td class="brown-text font-weight-bold text-left">KGS DE PAPEL</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">DEMASIA DEL TRABAJO EN P/M :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left"># DE PLACAS</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right"># DE PLIEGOS DE MAQUINA DEL TRABAJO :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">PLACAS</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TIPO DE IMPRESION :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">PAPEL</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right"># DE COLORES :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2 rojo"></td> 
+              <td class="white-text red font-weight-bold text-left">FOTOLITOS</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TIPO DE PAPEL :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">REPOSICION DE PLACA</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">GRAMAJE DE PAPEL EJ 90; 115; 150; 300 :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">FORMULA TINTA SEGUN EL TIPO DE PAPEL</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TAMAÑO DEL PAPEL 61, 69, 70, 72 :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">VERIFICAR FORMULA TINTA</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">PRUEBA DE COLOR? :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">PRUEBA DE COLOR?</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">MENSAJERIAS :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">MENSAJERIA?</td> 
+            </tr>
+            <tr>
+              <td class="purple-text font-weight-bold text-right">TIPO DE PLASTIFICADO O BARNIZADO :</td>
+              <td class="cuadro purple-text"></td>
+              <td class="cuadro2" onchange="slider3.valoresIniciales(); slider1.F1810_Calcular();"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO PLST O BARNZ</td> 
+            </tr>
+            <tr>
+              <td class="purple-text font-weight-bold text-right">TIPO DE PLASTIFICADO O BARNIZADO ADICIONAL 1 :</td>
+              <td class="cuadro purple-text"></td>
+              <td class="cuadro2" onchange="slider3.valoresIniciales(); slider1.F1810_Calcular();"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO PLST O BARNZ ADIC 1</td> 
+            </tr>
+            <tr>
+              <td class="purple-text font-weight-bold text-right">TIPO DE PLASTIFICADO O BARNIZADO ADICIONAL 2 :</td>
+              <td class="cuadro purple-text"></td>
+              <td class="cuadro2" onchange="slider3.valoresIniciales(); slider1.F1810_Calcular();"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO PLST O BARNZ ADIC 2</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TROQUELADO? :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2 rojo"></td> 
+              <td class="white-text red font-weight-bold text-left">SACAR BIEN EL COSTO</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">DOBLADO Y ALZE? :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO DOBLADO Y ALZE? </td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">DOBLADO EN MAQUINA :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO DOBLADO EN MAQUINA</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">DOBLADO MANUAL :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO DOBLADO MANUAL</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">ALZE :</td>
+              <td class=""></td>
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">MONTO ALZE (REVISTA)</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">COSIDO HILO, ENCOLADO O ENGRAPADO :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2 rojo"></td> 
+              <td class="white-text red font-weight-bold text-left">REVISAR COSTOS</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">EMPAQUETADO O ENCAJONADO :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">MOVILIDAD O DESPACHO ($$$) :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+            </tr>
+
+            <tr><td style="height: 25px;"></td></tr>
+
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">SERVICIOS DE TERCEROS($$$) :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">TRABAJAR EL NUMERADO</td> 
+            </tr>
+            <tr>
+              <td class="purple-text font-weight-bold text-right">VELOCIDAD DE MAQUINA :</td>
+              <td class="cuadro purple-text"></td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">HORAS/IMPRESORA PREVISTAS :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2 rojo"></td>
+              <td class="white-text red font-weight-bold text-left">TODO TRABAJO DEBE PAGAR 1H</td>  
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">HORAS DE GUILLOTINA PREVISTAS :</td>
+              <td class="cuadro"></td> 
+              <td class="cuadro2"></td> 
+              <td class="brown-text font-weight-bold text-left">CORTE INICIAL</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">HORAS DE GUILLOTINA PREVISTAS :</td>
+              <td class="cuadro"></td>
+              <td class="cuadro2"></td>  
+              <td class="brown-text font-weight-bold text-left">CORTE POSTPRENSA</td> 
+            </tr>
+
+            <tr>
+              <td class="white-text font-weight-bold text-right">:</td>
+              <td colspan="2" class="cuadro white" style="border-color: red;"></td>
+            </tr>
+
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TOTAL SEGUN ESCALA :</td>
+              <td class="cuadro"></td>
+              <td colspan="2" class="white-text red font-weight-bold text-left">Bolsas, Cajas, Estuches, Fixtures, Colgantes, Jalavistas</td>  
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">GASTOS GENERALES 18% :</td>
+              <td class="cuadro"></td> 
+              <td class="brown-left font-weight-bold text-left">PAPEL TINTA Y REVES</td>
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">UTILIDADES Y REINVERSIONES 10% :</td>
+              <td class="cuadro"></td> 
+              <td class="brown-left font-weight-bold text-left">X10%</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TOTAL NETO :</td>
+              <td class="cuadro"></td> 
+              <td class="brown-left font-weight-bold text-left">NETO</td> 
+            </tr>
+            <tr>
+              <td class="enfasis2-text font-weight-bold text-right">TOTAL INC COMISION :</td>
+              <td class="cuadro"></td> 
+              <td class="brown-left font-weight-bold text-left">C/COMISION</td> 
+            </tr>
+            
+          </table>
+        </div>
+
+      <!-- F1810 - MAQUINAS  -->
+        <div class="carousel-item">
+          <table id="F1810MAQUINAS" style="width: 100%;">
+          
+           <!-- DATOS DINAMICOS 1   -->  
+           <tr>
+            <!-- TIPO DE CAMBIO/ #HS MENSUALES   -->
+             <td class="p-2" style="min-width: 370px; max-width: 370px;">
+               <table border class="w-100">
+                  <tr>
+                    <td class="secundario" >Tipo de Cambio :</td>
+                    <td><input id="cambio" type="number" step="any" min="0" value="3.40" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" ># Hs Mensuales de un Operario :</td>
+                    <td><input id="hsOperario" type="number" step="any" min="0" value="192" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" ># Hs Mensuales de Máquina Auxiliar :</td>
+                    <td><input id="hsMaqAux" type="number" step="any" min="0" value="700" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" ># Hs Mensuales de Máquina Impresora :</td>
+                    <td><input id="hsMaqImp" type="number" step="any" min="0" value="580" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+               </table>
+             </td>
+
+            <!-- SUPERVISOR -CPOS   -->
+             <td class="p-2">
+               <table border class="w-100">
+                  <tr>
+                    <td class="secundario" >SUPERVISOR PRECIO :</td>
+                    <td><input id="supervisor" type="number" step="any" min="0" value="3000" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >CPOS-R700 :</td>
+                    <td><input id="CPOS-R700" type="number" step="any" min="0" value="24" oninput="slider2.CPOS_TOTAL()" onchange="slider2.calcular()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >CPOS-SM :</td>
+                    <td><input id="CPOS-SM" type="number" step="any" min="0" value="8" oninput="slider2.CPOS_TOTAL()" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>  
+                  <tr>
+                    <td class="secundario" >CPOS-GTO :</td>
+                    <td><input id="CPOS-GTO" type="number" step="any" min="0" value="4" oninput="slider2.CPOS_TOTAL()" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr> 
+                  <tr>
+                    <td class="strong3" >CPOS TOTAL :</td>
+                    <td><input id="CPOS-TOTAL" type="number" step="any" min="0"></td>
+                  </tr> 
+               </table>
+             </td>
+
+            <!-- COSTO DE TINTA/BARNIZ   -->
+             <td class="p-2">
+               <table border class="w-100">
+                  <tr>
+                    <td class="secundario" >Costo de Tinta para 1 Millar 72*102 :</td>
+                    <td><input id="tinta72" type="number" step="any" min="0" value="8.0784" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >Costo de Tinta para 1 Millar 61*86 :</td>
+                    <td><input id="tinta61" type="number" step="any" min="0" value="5.7706" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >Costo de Barniz para 1 Millar 72*102 :</td>
+                    <td><input id="barniz72" type="number" step="any" min="0" value="10.41012" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >Costo de Barniz para 1 Millar 61*86 :</td>
+                    <td><input id="barniz61" type="number" step="any" min="0" value="7.436205" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+               </table>
+             </td>
+           </tr>
+          
+           <!-- DATOS DINAMICOS 2   -->
+           <tr>
+            <!-- HORAS EXTRAS / DECIMAL   -->
+             <td class="p-2" style="min-width: 370px; max-width: 370px;">
+               <table border class="w-100">
+                  <tr>
+                    <td class="secundario" >HORAS EXTRAS DOBLES :</td>
+                    <td><input id="hExtras" type="number" step="any" min="0" value="40" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >DECIMAL 1 :</td>
+                    <td><input id="d1" type="number" step="any" min="0" value="1.445" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >DECIMAL 2 :</td>
+                    <td><input id="d2" type="number" step="any" min="0" value="1.43" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>  
+               </table>
+             </td>
+
+            <!-- PRECIO X HORA   -->
+             <td class="p-2">
+               <table border class="w-100">
+                  <tr>
+                    <td colspan="2" class="secundario text-center" >PRECIO X HORA :</td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >AGREGADO 1 :</td>
+                    <td><input id="a1" type="number" step="any" min="0" value="1.2904" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >AGREGADO 2 :</td>
+                    <td><input id="a2" type="number" step="any" min="0" value="1.14" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr> 
+               </table>
+             </td>
+
+            <!-- AMORTIZACION   -->
+             <td class="p-2">
+               <table border class="w-100">
+                  <tr>
+                    <td colspan="2" class="secundario text-center" >AMORTIZACION :</td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >P1 :</td>
+                    <td><input id="p1" type="number"step="any" min="0" value="120" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario" >P2 :</td>
+                    <td><input id="p2" type="number"step="any" min="0" value="500" onchange="slider2.calcular(); slider3.valoresIniciales()"></td>
+                  </tr> 
+               </table>
+             </td>
+           </tr>
+
+           <!-- DATOS DE LAS MAQUINAS   -->
+           <tr>
+
+            <!-- NOMBRES DE IMPRESORAS   -->
+             <td style="min-width: 370px; max-width: 370px;">
+               <table border class="w-100 mb-3">
+                 <tr><td class="strong4 text-left pl-2 strong4-text">NA</td></tr>
+                 <tr><td class="strong4 text-left pl-2 strong4-text">NA</td></tr>
+                 <tr><td class="strong4 text-left pl-2 strong4-text">NA</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Impresora Roland 700</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Impresora Speed Master</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Impresora GTO y KBA</td></tr>
+                 <tr><td class="strong4 text-left pl-2 red-text">Imp. Digital CP1000 (COSTS X COPY A3) Solo 1 cara</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Guillotina Wholemberg 115</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Troqueladora Atenas</td></tr>
+                 <tr><td class="strong3 text-left pl-2 strong3-text">NA</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Barnizadora Invicta 33</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Barnizadora Adast Dominant 724</td></tr>
+                 <tr><td class="strong4 text-left pl-2 strong4-text">NA</td></tr>
+                 <tr><td class="strong4 text-left pl-2 strong4-text">NA</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Dobladora Stahl</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Dobladora Horizon</td></tr>
+                 <tr><td class="strong4 text-left pl-2">Encuadernadora Pony</td></tr>
+
+               </table>
+             </td>
+
+            <!-- CUADRO DE DATOS   -->
+             <td colspan="2">
+              <div style="max-width: 920px; overflow-x: scroll;">
+               <table id="MAQ" border style="width: 100%;">
+
+                <!-- PRIMER GRUPO DE DATOS   -->
+                 <tr>
+                   <td class="strong4 text-center">Real Estate</td>
+                   <td class="strong4 text-center">Amortizacion</td>
+                   <td class="strong4 text-center">Mantenimiento</td>
+                   <td class="strong4 text-center">Pzas/Recambiables</td>
+                   <td class="strong4 text-center">Pzas/Diarias</td>
+                   <td class="strong4 text-center">M/Obra Std</td>
+                   <td class="strong4 text-center">Fctor H.Xtras</td>
+                   <td class="strong4 text-center">Total US$</td>
+                   <td class="strong4 text-center">Total SOLES</td>
+                   <td class="strong4 text-center">Total US$</td>
+                   <td class="strong4 text-center">Total US$</td>
+                   <td class="strong4 text-center"></td>
+                   <td class="strong text-center">8000</td>
+                   <td class="strong text-center">8500</td>
+                   <td class="strong text-center">8000</td>
+                   <td class="strong text-center">7000</td>
+                   <td class="strong text-center">6000</td>
+                 </tr>
+                 <tr>
+                   <td class="strong4 text-center red-text">x mt2 al mes</td>
+                   <td class="strong4 text-center red-text">$1534 mensual</td>
+                   <td class="strong4 text-center red-text">$100 mensuales</td>
+                   <td class="strong4 text-center red-text">Cuchilla dura 6 meses</td>
+                   <td class="strong4 text-center red-text">Afilado cada 16 horas</td>
+                   <td class="strong4 text-center red-text">1 Operario de S/xxxx</td>
+                   <td class="strong4 text-center red-text">20hs dobles/mes</td>
+                   <td class="strong4 text-center red-text">Costo x hora</td>
+                   <td class="strong4 text-center red-text">Costo x hora</td>
+                   <td class="strong4 text-center red-text">Precio x hora</td>
+                   <td class="strong4 text-center red-text">Tarifa x miilar CMYK</td>
+                   <td class="strong4 text-center"></td>
+                   <td colspan="3" class="strong text-center">PRECIOS X MILLAR</td>
+                   <td class="strong text-center"></td>
+                   <td class="strong text-center"></td>
+                 </tr>
+                 <tr>
+                   <td class="strong2 text-center">$10.00</td>
+                   <td class="strong2 text-center">$1534</td>
+                   <td class="strong2 text-center">$100.00</td>
+                   <td class="strong2 text-center">$380.00</td>
+                   <td class="strong2 text-center">$10.00</td>
+                   <td class="strong2 text-center"></td>
+                   <td class="strong2 text-center">$0.00</td>
+                   <td class="strong2 text-center"></td>
+                   <td class="strong2 text-center"></td>
+                   <td class="strong2 text-center"></td>
+                   <td class="strong2 text-center"></td>
+                   <td class="strong2 text-center">PRECIO X HORA</td>
+                   <td class="strong2 text-center">75-90g</td>
+                   <td class="strong2 text-center">100-115g</td>
+                   <td class="strong2 text-center">120-170g</td>
+                   <td class="strong2 text-center">200-290g</td>
+                   <td class="strong2 text-center">300-420g</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center" onchange="slider1.F1810_Calcular()"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$160.00</td>
+                   <td class="text-center">$20.00</td>
+                   <td class="text-center"></td>
+                   <td class="text-center">$17.73</td>
+                   <td class="text-center">$16.68</td>
+                   <td class="text-center">$17.73</td>
+                   <td class="text-center">$20.26</td>
+                   <td class="text-center">$23.63</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center" onchange="slider1.F1810_Calcular()"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$80.00</td>
+                   <td class="text-center">$10.00</td>
+                   <td class="text-center"></td>
+                   <td class="text-center">$7.17</td>
+                   <td class="text-center">$6.75</td>
+                   <td class="text-center">$7.17</td>
+                   <td class="text-center">$8.20</td>
+                   <td class="text-center">$9.56</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center" onchange="slider1.F1810_Calcular()"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$40.00</td>
+                   <td class="text-center">$7.00</td>
+                   <td class="text-center"></td>
+                   <td class="text-center">$8.44</td>
+                   <td class="text-center">$7.59</td>
+                   <td class="text-center">$8.44</td>
+                   <td class="text-center">$10.85</td>
+                   <td class="text-center">$12.65</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text strong5">$40.00</td>
+                   <td class="text-center red-text">$7.00</td>
+                   <td class="text-center red-text"></td>
+                   <td class="text-center red-text">$8.44</td>
+                   <td class="text-center red-text">$7.59</td>
+                   <td class="text-center red-text">$8.44</td>
+                   <td class="text-center red-text">$10.85</td>
+                   <td class="text-center red-text">$12.65</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center" onchange="slider1.F1810_Calcular()"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$30.00</td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center" onchange="slider1.F1810_Calcular()"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$20.00</td>
+                   <td class="text-center">$6.06</td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                 </tr>
+
+                <!-- SEGUNDO GRUPO DE DATOS   -->
+                 <tr>
+                   <td class="strong4 text-center strong4-text"></td>
+                   <td class="strong4 text-center strong4-text">NA</td>
+                   <td class="strong4 text-center strong4-text">NA</td>
+                   <td class="strong4 text-center">Rodillos duran 1 año</td>
+                   <td class="strong4 text-center strong4-text">NA</td>
+                   <td class="strong4 text-center">1 Operario de S/1200</td>
+                   <td class="strong4 text-center">20 hs dobles/mes</td>
+                   <td class="strong4 text-center">Costo x hora</td>
+                   <td class="strong4 text-center">Costo x hora</td>
+                   <td class="strong4 text-center">Total US$</td>
+                   <td class="strong4 text-center">Total US$</td>
+                 </tr>
+                 <tr>
+                   <td class="strong2 text-center"></td>
+                   <td class="strong2 text-center">$1534.00</td>
+                   <td class="strong2 text-center">$100.00</td>
+                   <td class="strong2 text-center">$1176.47</td>
+                   <td class="strong2 text-center strong2-text">NA</td>
+                   <td class="strong2 text-center">$561.00</td>
+                   <td class="strong2 text-center">$116.88</td>
+                   <td class="strong2 text-center strong2-text">NA</td>
+                   <td class="strong2 text-center strong2-text">NA</td>
+                   <td class="strong4 text-center red-text">Precio x hora</td>
+                   <td class="strong4 text-center red-text">Tarifa x millar CMYK</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center" onchange="slider1.F1810_Calcular()"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$20.00</td>
+                   <td class="text-center">$1.50</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$40.00</td>
+                   <td class="text-center">$2.50</td>
+                 </tr>
+                 <tr>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center"></td>
+                   <td class="text-center strong5">$25.00</td>
+                   <td class="text-center">$15.15</td>
+                 </tr>
+
+               </table>
+               </div>
+             </td>
+           </tr>
+  
+          </table>
+        </div>
+
+      <!-- F1810 - INSUMOS  -->
+        <div class="carousel-item">
+          <table id="F1810INSUMOS" style="width: 100%;">
+            
+            <!-- DATOS DINAMICOS 1 -->
+            <tr>
+                <td class="secundario cuadro font-weight-bold align-middle">TIPO CAMBIO (S/.) :</td>
+                <td class="cuadro align-middle"><input step="any" min="0" type="number" onchange="slider3.resultado(); slider2.calcular()" id="tipocambio" value="3.33"></td> 
+                
+                <td class="secundario cuadro font-weight-bold align-middle">FACTOR SOBRE COSTOS DIRECTOS DE SERVICIOS :</td>
+                <td class="cuadro align-middle"><input step="any" min="0" type="number" onchange="slider3.resultado()" id="factor" value="1.24"></td>
+                
+                <td class="secundario cuadro font-weight-bold align-middle">COST/H MILSOLCISTA ($) :</td>
+                <td class="cuadro align-middle"><input step="any" min="0" type="number" onchange="slider3.resultado()" id="milsolcista" value="2.74"></td>
+            </tr>
+
+            <!-- TABLAS DE DATOS GENERALES -->
+            <tr>
+             
+              <!-- TABLA DE CALIDAD DE PAPEL--> 
+              <td colspan="3">  
+                <table id="papel" border class="my-2" style="width: 100%;"><tbody>
+
+                  <tr>
+                    <td class="sub text-white text-center py-2 align-middle">CLASE DE PAPEL/CALIDAD DE PAPEL </td>
+                    <td class="sub text-white text-center py-2 align-middle">CHINESE </td>
+                    <td class="sub text-white text-center py-2 align-middle">QUALITY  </td>
+                  </tr>
+                  <tr>
+                    <td class="secundario text-left">KG DE COUCHE 90 GRS</td>
+                    <td class="cuadro" ><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.0000"></td>
+                    <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="0.8800"></td>
+                  </tr>
+                  <tr>
+                    <td class="secundario text-left">KG DE COUCHE 100-250 GRS</td>
+                    <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.9800"></td>
+                    <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="0.8765"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">KG DE COUCHE 300-350 GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.0000"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="0.9322"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">KG. DE BOND DE 75 A 120 GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.0850"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">KG. DE BOND DE 56 GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.2500"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">KG. DE GRAPHICS RB CAL 12' 205 GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.20"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">KG. DE GRAPHICS RB CAL 14'-15' 225-240 GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.15"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">KG. MAULE GRAPHICS RB CAL 16' O 286 UP GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.3000"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">FOLKOTE</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.5500"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">DUPLEX DE GRAMAJE MENOR A 286 GRS</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.1500"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">AUTOCOPIATIVO: PESO PROMEDIO DE 53 GRS Y PRECIO DEL MAS ALTO CFB</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="2.2500"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" onchange="slider3.resultado()"tep="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">CARTULINA LYNER</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.92"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">PAPEL PERIODICO</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.05"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                  </tr>
+                  <tr>
+                   <td class="secundario text-left">ADHESIVO P4</td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="3.8"></td>
+                   <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" ></td>
+                  </tr>
+                  
+                </tbody></table>        
+              </td>
+
+              <!-- TABLA DE PLACAS + OPERARIO + ITEM-->  
+              <td colspan="3"> 
+
+                  <!-- TABLA DE COSTO X PLACAS--> 
+                  <table border id="placas" class="m-2"><tbody>
+                      <tr>
+                          <td colspan="5" class="text-center strong3">PRECIO DE PLACAS</td>
+                      </tr>
+                      <tr>
+                          <td class="sub text-white align-middle text-center">MÁQUINA</td>
+                          <td class="sub text-white align-middle text-center">DEPRECIACION Y MANTENIMIENTO</td>
+                          <td class="sub text-white align-middle text-center">CD + MERMA+ PROD AUX</td>
+                          <td class="sub text-white align-middle text-center">MANO DE OBRA</td>
+                          <td class="sub text-white align-middle text-center">COSTO TOTAL</td>
+                      </tr>
+                      <tr>
+                          <td class="secundario text-center">GTO</td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number"  ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>          
+                      </tr>
+                      <tr>
+                          <td class="secundario text-center">SM</td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>          
+                      </tr>
+                      <tr>
+                          <td class="secundario text-center">R700</td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number"  ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  class="green" type="number" ></td>
+
+                      </tr>
+                  </tbody></table>
+
+                  <!-- TABLA DE DETALES DE PLACAS--> 
+                  <table border  id="dplacas" class="m-2"><tbody>
+                      <tr>
+                          <td  colspan="6" class="text-center strong3">DETALLES DE PLACAS X HORA</td>
+                      </tr>
+                      <tr>
+                          <td class="sub text-white text-center">TIEMPO X MANTENIMIENTO</td>
+                          <td class="sub text-white text-center">DEPRECIACION </td>
+                          <td class="sub text-white text-center">GASTO MANTENIMIENTO</td>
+                          <td class="sub text-white text-center">MERMA 10%</td>
+                          <td class="sub text-white text-center">PRODUCTO AUXILIAR</td>
+                          <td class="sub text-white text-center">DECIMAL 3</td>
+
+                      </tr>
+                      <tr>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.25"></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="7.440"></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="4.00"></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="1.1"></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="1.2324"></td>
+                          <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" value="1.25"></td>     
+                      </tr>
+                  </tbody></table>
+                  
+                  <!-- TABLAS GENERALES--> 
+                  <div class="row m-0">
+                   <div class="col-6 m-0 p-0">
+
+                    <!-- TABLA DE PLACAS X MAQUINA -->
+                    <table border id="mplacas" class="m-2"><tbody>
+                        <tr>
+                            <td  colspan="3" class="text-center strong3">DETALLES DE PLACAS X MAQUINA</td>
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">MAQUINA</td>
+                            <td class="sub text-white text-center">COSTO DIRECTO </td>
+                            <td class="sub text-white text-center">JUEGO DE PLACAS (TIME)</td>
+                        </tr>
+                        <tr>
+                            <td class="secundario text-center">GTO</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.73"></td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.5"></td>
+                        </tr>
+                        <tr>
+                            <td class="secundario text-center">SM</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.8"></td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.75"></td>
+                        </tr>
+                        <tr>
+                            <td class="secundario text-center">R700</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="3.25"></td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1"></td>
+                        </tr>
+                    </tbody></table>
+
+                    <!-- TABLA DEL OPERARIO -->
+                    <table border id="operario" class="m-2"><tbody>
+                        <tr>
+                            <td  colspan="3" class="text-center strong3">DETALLES DEL OPERARIO</td>
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">PAGO MENSUAL S/</td>
+                            <td class="sub text-white text-center">HORAS MENSUALES </td>
+                        </tr>
+                        <tr>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1200.00"></td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="192"></td>
+                        </tr>
+                    </tbody></table>
+
+                   </div>
+                   <div class="col-6 m-0 p-0">
+ 
+                    <!-- TABLA DE VALOR AGREGADO DEL ITEM -->
+                    <table border id="vitem" class="m-2"><tbody>
+                        <tr>
+                            <td  colspan="3" class="text-center strong3">VALOR AGREGADO DEL ITEM</td>
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">UV-B</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.033855"></td>       
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">OFFB</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.010978"></td>     
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">OFFM</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.012807"></td>     
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">ACRB</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0098"></td>     
+                        </tr>
+                        <tr>
+                            <td class="sub text-white text-center">ACRM</td>
+                            <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0098"></td>     
+                        </tr>
+                    </tbody></table>   
+                    
+                   </div> 
+                  </div>
+
+              </td>            
+
+            </tr>
+              
+            <!-- TABLA DE BARNICES O REVESTIMIENTOS -->
+            <tr><td colspan="6" class="pt-2 mx-2">
+              <table id="item" border style="width: 100%" class="my-2"><tbody>
+
+                    <tr>
+                        <td  colspan="7" class="text-center strong3">TABLA DE BARNICES O REVESTIMIENTOS</td>                    
+                    </tr>
+                    <tr>
+                        <td class="sub text-white text-center py-2">ITEM</td>
+                        <td class="sub text-white text-center py-2">PRECIO X MT2</td>
+                        <td class="sub text-white text-center py-2">COSTO MAQ</td>
+                        <td class="sub text-white text-center py-2">COSTO INSUMO POR MT2</td>
+                        <td class="sub text-white text-center py-2">INSUMO</td>
+                        <td class="sub text-white text-center py-2">PRECIO INSUMO</td>
+                        <td class="sub text-white text-center py-2">REND X MT2</td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UV-B</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="uvb" class="green" type="number" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.030"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.025"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  value="BARNIZ UV-BRILLO"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="7.00"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0035"></td>
+
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UV-B-2C</td>
+                        <td class="cuadro "><input id="uvbc" onchange="slider3.resultado()" step="any" min="0"  class="green" type="number"  value="0"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UV-M</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.125"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.030"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.038" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  value="BARNIZ UV-MATE"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="15.000"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0025"></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UV-M-2C</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="uvmc" class="green" type="number"  value="0"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UVSB</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.240"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UVSB-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.480"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0" type="number"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UVSM</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.240"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">UVSM-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.480"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">OFFB</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="offb" class="green" type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.01"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  value="Tinta Transparente Brillante"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">OFFB-2C</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="offbc" class="green" type="number" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">OFFM</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="offm" class="green" type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0015"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text" value="Tinta Transparente Mate" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">OFFM-2C</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="offmc" class="green" type="number"  value="0"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">ACRB</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="acrb"  class="green" type="number"  value="0"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.009625"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text" value="B. Acrilico Brillante" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="2.750"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0035"></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">ACRB-2C</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="acrbc" class="green" type="number" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">ACRM</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="acrm" class="green" type="number"  value="0"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.009625"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text" value="B. Acrilico Mate" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="2.750"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.0035"></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">ACRM-2C</td>
+                        <td class="cuadro "><input onchange="slider3.resultado()" step="any" min="0" id="acrmc" class="green" type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">PL-B</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.080"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">PL-B-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.160"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">PL-M</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.100"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">PL-M-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.200"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">PL-H</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.204"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">PL-H-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.407"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">ESCH</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.550"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">ESCH-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.100"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">HOST</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="0.857"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>
+                    <tr>
+                        <td class="secundario text-center">HOST-2C</td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  value="1.714"></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number" ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="text"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                        <td class="cuadro"><input onchange="slider3.resultado()" step="any" min="0"  type="number"  ></td>
+                    </tr>   
+
+              </tbody></table>
+            </td> </tr>
+
+          </table>
+        </div>
+        
+      </div>
+    </div>
+   </td></tr>
+ </tbody>
+ 
+</table>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModPresupuesto/F1810.js"></script>
+<script type="text/javascript" src="Modulos/ModPresupuesto/VistaPresupuesto.js"></script>
+<script type="text/javascript" src="Modulos/ModPresupuesto/jspdf.js"></script>
+<script  type="text/javascript" src="Modulos/ModPresupuesto/jquery.wordexport.js"></script>
+
+<script>
+
+var pagina="f1810";
+var aceptado="NO";
+var cantidadDiv=1;
+var codigoparapresupuesto=0; 
+//slider4.cargarDatos(1);
+slider4.cargarItem(0);
+datos.mostrarCliente();
+keydown(1);
+
+$("#facturacion").on('keydown', function(e) {
+  if (e.which == 13) {
+      verificar();
+      if(aceptado=="SI"){
+        
+        if(pagina=="f1810"){
+          $("#GUARDAR").trigger('click');
+        }else{
+          $("#actualizarButton").trigger('click');
+        }   
+      }
+      return false;
+  }
+});
+
+$("#retroceder").click(function(){
+    if(pagina == "f1810"){
+      $("#btnRetroceder").click();
+    }else{
+      slider4.enviarActualizar();
+    }
+});
+  
+if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
+    (function($) {
+        $.fn.wordExport = function(fileName) {
+            fileName = typeof fileName !== 'undefined' ? fileName : "jQuery-Word-Export";
+            var static = {
+                mhtml: {
+                    top: "Mime-Version: 1.0\nContent-Base: " + location.href + "\nContent-Type: Multipart/related; boundary=\"NEXT.ITEM-BOUNDARY\";type=\"text/html\"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset=\"utf-8\"\nContent-Location: " + location.href + "\n\n<!DOCTYPE html>\n<html>\n_html_</html>",
+                    head: "<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<style>\n_styles_\n</style>\n</head>\n",
+                    body: "<body>_body_</body>"
+                }
+            };
+            var options = {
+                maxWidth: 624
+            };
+            // Clone selected element before manipulating it
+            var markup = $(this).clone();
+
+            // Remove hidden elements from the output
+            markup.each(function() {
+                var self = $(this);
+                if (self.is(':hidden'))
+                    self.remove();
+            });
+
+            // Embed all images using Data URLs
+            var images = Array();
+            var img = markup.find('img');
+            for (var i = 0; i < img.length; i++) {
+                // Calculate dimensions of output image
+                var w = Math.min(img[i].width, options.maxWidth);
+                var h = img[i].height * (w / img[i].width);
+                // Create canvas for converting image to data URL
+                var canvas = document.createElement("CANVAS");
+                canvas.width = w;
+                canvas.height = h;
+                // Draw image to canvas
+                var context = canvas.getContext('2d');
+                context.drawImage(img[i], 0, 0, w, h);
+                // Get data URL encoding of image
+                var uri = canvas.toDataURL("image/png");
+                $(img[i]).attr("src", img[i].src);
+                img[i].width = w;
+                img[i].height = h;
+                // Save encoded image to array
+                images[i] = {
+                    type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+                    encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+                    location: $(img[i]).attr("src"),
+                    data: uri.substring(uri.indexOf(",") + 1)
+                };
+            }
+
+            // Prepare bottom of mhtml file with image data
+            var mhtmlBottom = "\n";
+            for (var i = 0; i < images.length; i++) {
+                mhtmlBottom += "--NEXT.ITEM-BOUNDARY\n";
+                mhtmlBottom += "Content-Location: " + images[i].location + "\n";
+                mhtmlBottom += "Content-Type: " + images[i].type + "\n";
+                mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
+                mhtmlBottom += images[i].data + "\n\n";
+            }
+            mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
+
+            //TODO: load css from included stylesheet
+            var styles = "";
+
+            // Aggregate parts of the file together
+            var fileContent = static.mhtml.top.replace("_html_", static.mhtml.head.replace("_styles_", styles) + static.mhtml.body.replace("_body_", markup.html())) + mhtmlBottom;
+
+            // Create a Blob with the file contents
+            var blob = new Blob([fileContent], {
+                type: "application/msword;charset=utf-8"
+            });
+            saveAs(blob, 'Ppto. '+codigoparapresupuesto+' '+$("#clienteEmpresa").html()+ ".doc");
+        };
+    })(jQuery);
+} 
+else {
+    if (typeof jQuery === "undefined") {
+        console.error("jQuery Word Export: missing dependency (jQuery)");
+    }
+    if (typeof saveAs === "undefined") {
+        console.error("jQuery Word Export: missing dependency (FileSaver.js)");
+    }
+}
+  
+/*EXPORTAR DOCUMENTO A WORD*/
+jQuery(document).ready(function($) {
+  $("button.word-export").click(function(event) {
+    $("#PrespuestoImprenta").wordExport();
+    return false;
+  });
+});
+
+/*=============================================
+    CARGAR FECHA ACTUAL
+=============================================*/
+
+$("#fechaRegistroModal").html(datos.HoyDia());
+
+
+</script>

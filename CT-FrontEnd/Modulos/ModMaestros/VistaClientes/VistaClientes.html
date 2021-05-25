@@ -1,0 +1,141 @@
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="menuCliente" class="menu">
+
+  <!--OPCIONES GENERALES DE LA VISTA-->
+  <section id="menuCliente-Generales"> 
+    <div class="w-responsive mx-auto my-3">
+
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion">FUNCIONES GENERALES</div>
+
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION NUEVO CLIENTE-->
+        <div class="col"><button class="btn btn-lg btnGeneral" onclick="RegistrarClientes();return false"><i class="fas fa-user-plus fa-4x"></i><br>Registrar Nuevo Cliente</button></div>
+
+        <!--OPCION ACTUALIZAR CLIENTE-->
+        <div class="col"><button id="actualizarCliente" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#listadoClientes"><i class="fas fa-user-edit fa-4x"></i><br>Actualizar Cliente</button></div>
+
+        <!--OPCION NUEVO CLIENTE C/ CREDITO-->
+        <div class="col"><button id="nuevoClienteCredito" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#listadoClientes"><i class="fas fa-user-check fa-4x"></i><br>Nuevo Cliente c/ Credito</button></div>
+
+        <!--OPCION LISTAR TODO LOS CLIENTES-->
+        <div class="col"><button class="btn btn-lg btnGeneral" onclick="ListarClientes();return false"><i class="fas fa-users fa-4x"></i><br>Listar Todos los Clientes</button></div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MODAL LISTAR CLIENTES -->
+  <div class="modal fade" id="listadoClientes" tabindex="-1" role="dialog" aria-labelledby="listadoClientesTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Elegir Cliente</h5>
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <select name="clientes" id="clientes" class="w-responsive"></select>
+          <button id="opCliente" data-dismiss="modal">Buscar</button>
+        </div>
+
+      </div>
+
+  </div>
+  </div>
+
+</section>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaClientes/VistaClientes.js"></script>
+
+<script>
+    
+/*=============================================
+    CARGAR CLIENTES
+=============================================*/
+    
+mostrarClientes();    
+    
+function mostrarClientes(){
+    var boxClientes="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarTodosClientes.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxClientes+="<option value='' selected>Elegir Cliente</option>";
+            $("#clientes").html(boxClientes);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxClientes+="<option value='' selected>Elegir Cliente</option>";
+                $("#clientes").html(boxClientes);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxClientes+="<option value='' selected>Elegir Cliente</option>";
+                    }
+                    boxClientes+="<option value='"+datos[i].CLIENCODIGO+"'>"+datos[i].CLIENRAZON_SOCIAL+"</option>";
+                }
+                $("#clientes").html(boxClientes);
+            }
+        }
+    });  
+    
+} 
+
+/*=============================================
+   BUSCAR X NOMBRE DEL CLIENTE
+=============================================*/
+    
+var opCliente=0;
+var buscar="NO";
+var cliente;
+    
+$("#actualizarCliente").click(function(){
+    opCliente=1;
+});
+
+$("#nuevoClienteCredito").click(function(){
+    opCliente=2;
+}); 
+    
+$("#opCliente").click(function(){
+    buscar="SI";
+    cliente=$("#clientes").val();
+}); 
+    
+$("#listadoClientes").on('hidden.bs.modal', function(){
+    if (opCliente != 0 && buscar=="SI" && $("#clientes option:selected").text() != "Elegir Cliente"){
+        switch(opCliente){
+            case 1: ActualizarClientes(cliente); break;
+            case 2: NuevoClienteCredito(cliente); break;
+        }
+    }
+}); 
+ 
+
+</script>

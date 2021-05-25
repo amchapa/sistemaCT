@@ -1,0 +1,264 @@
+<form>
+
+<!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 id="tituloRegistro" class="h3-responsive titulo font-weight-bold">REGISTRO DE SALIDA DE PRODUCTO</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="form-row" style="margin-left: 5%;margin-right: 5%">
+         <div class="col-6 col-md-6 form-group">
+          <label class='font-weight-bold' for="centrocostos">CENTRO DE COSTOS</label>
+          <select required id="centrocostos" onchange="mostrarAreaModal()" class="form-control" aria-describedby="centrocostosHelp">
+           <option value="0" selected disabled>Elegir método</option>
+           <option value="PRODUCCION">PRODUCCION</option>
+           <option value="VENTAS">VENTAS</option>
+           <option value="ADMINISTRACION">ADMINISTRACIÓN</option>
+           <option value="DISTRIBUCION">DISTRIBUCIÓN</option>
+           </select>
+          <small id="centrocostosHelp" class="form-text text-muted">Campo obligatorio</small>
+        </div>
+
+        <div class="col-6 col-md-6 form-group">
+          <label class='font-weight-bold' for="area">ÁREA</label>
+          <select required id="area"  onchange="mostrarOpciones()" class="form-control" aria-describedby="areaHelp">
+            <option value="0" >-- Elegir Centro de Costos</option>
+          </select>
+          <small id="areaHelp" class="form-text text-muted">Campo obligatorio</small>
+        </div>
+
+        <div id="cuadroOT" class="col-6 col-md-6 form-group" style="margin-left: 35%;margin-right: 35%">
+          <label class='text-center font-weight-bold' for="ordenDeTrabajo">CODIGO OT</label>
+          <div class="form-inline">
+            <input id='ordenDeTrabajo' onchange="BusquedaOrden()" class="form-control" aria-describedby="ordenDeTrabajoHelp" style="width: 50%">
+          </div>
+          <small id="ordenDeTrabajoHelp" class="form-text text-left">Ejemplo: 190101001</small>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+    <!--DATOS DEL PRODUCTO-->
+  <div id="datosOrden" style="display: none" class="card text-center" style="margin-left: 10%;margin-right: 10%">
+    <h5 class="card-header h5">Datos de Orden</h5>
+    <div class="card-body form-inline justify-content-center">
+        <table id='tablaOrden' class="mx-4">
+          <thead id="tituloColumnas"></thead>
+          <tbody id="tablaDatos"></tbody>
+        </table>
+    </div>
+  </div>
+  
+      <!--ELEGIR PRODUCTO-->
+  <div class="card text-center" style="margin-left: 10%;margin-right: 10%">
+    <h5 class="card-header h5">SELECCIONAR PRODUCTO</h5>
+    <div class="card-body form-inline justify-content-center">
+        <select required class="form-control" id="tipoProducto" onchange="mostrarOpciones();mostrarAgregarDetalleProducto();return false" aria-describedby="personalHelp"></select>
+        <select required class="form-control" id="producto" onchange="mostrarAgregarDetalleProducto();return false" aria-describedby="personalHelp">
+      <option value="0" >--Elegir tipo producto</option></select>
+        <button id="agregandoProducto" class="btn btn-reset" onclick="agregarProducto();return false" >+</button>
+    </div>
+  </div>
+  
+  <!--DATOS DEL PRODUCTO-->
+  <div class="card text-center" style="margin-left: 5%;margin-right: 5%">
+    <h5 class="card-header h5">Datos Principales</h5>
+    <input id='codigoProductoPrincipal' type="hidden">
+    <div class="card-body form-inline justify-content-center">
+        <div id='resumen1' class="mx-4"></div>
+        <div id='resumen2' class="mx-4"></div>
+        <div id='resumen3' class="mx-4"></div>
+        <div id='resumen4' class="mx-4"></div>
+    </div>
+  </div>
+  <div id="datosdeSalida">
+     <!-- DATOS DE SALIDA-->
+    <div class="card" style="margin-left: 5%; margin-right: 5%">
+      <h5 class="card-header h5">Datos de Salida</h5>
+      <div class="card-body">
+        <div class="form-row">
+
+         <!--NRO GUIA-->
+          <div class="col-12 col-md-6 form-group">
+            <label class='font-weight-bold' for="personal">PERSONAL ENTREGADO</label>
+            <select required class="form-control" id="personal" style="width: 100%" aria-describedby="personalHelp"></select>
+            <small id="personalHelp" class="form-text text-muted">Ejemplo: 000-0000000</small>
+          </div>
+
+          <!--PROVEEDOR-->
+          <div class="col-12 col-md-6 form-group">
+            <label class='font-weight-bold' for="tiptrabajo">TIPO DE TRABAJO</label>
+            <select required id="tiptrabajo" class="form-control" aria-describedby="tiptrabajoHelp">
+            <option id="NORMAL" selected>NORMAL</option>
+            <option id="REIMPRESION">REIMPRESION</option>
+            </select>
+            <small id="tiptrabajoHelp" class="form-text text-muted">Campo obligatorio</small>
+          </div>
+
+          <!--CANTIDAD-->
+          <div class="col-12 col-md-6 form-group">
+            <label class='font-weight-bold' for="cantidad">CANTIDAD</label>
+            <input required type="number" class="form-control" id="cantidad" aria-describedby="cantidadHelp" >
+            <small id="cantidadHelp" class="form-text text-muted">Ejemplo: 50</small>
+          </div>
+
+          <!--PROVEEDOR-->
+          <div class="col-12 col-md-6 form-group">
+            <label class='font-weight-bold' for="empresa">EMPRESA</label>
+            <select required id="empresa" class="form-control" aria-describedby="empresaHelp"></select>
+            <small id="empresaHelp" class="form-text text-muted">Campo obligatorio</small>
+          </div>
+
+          <!--OBSERVACIONES-->
+          <div class="col-12 col-md-6 form-group">
+            <label class='font-weight-bold' for="observaciones">OBSERVACIONES</label>
+            <input type="text" class="form-control" id="observaciones" aria-describedby="observacionesHelp" onkeyup="javascript:this.value=this.value.toUpperCase();">
+            <small id="observacionesHelp" class="form-text text-muted">Ejemplo: FALTA DE MATERIALES</small>
+          </div>
+
+      </div>
+    </div>
+    </div>
+    <div id="opcionesFormulario" class="form-inline justify-content-center">
+      <button id="registrarSalidaAprobada" type="button"  class="btn btn-guardar" onclick="validar();return false">Guardar</button>
+      <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+    </div>
+  </div>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+  <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+</form>
+  
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+
+<script type="text/javascript">
+
+mostrarPersonal('personal');
+mostrarEmpresa('empresa');
+mostrarFamiliaProductos('tipoProducto');
+document.getElementById("datosdeSalida").style.display='none';
+  
+function agregarProducto(){
+  if($("#producto").val()=="0"){
+    mostrarMensaje("error","SELECCIONAR PRODUCTO");
+    document.getElementById("datosdeSalida").style.display='none';
+  }else{
+    mostrarProductoDetalles($("#producto").val());
+    document.getElementById("datosdeSalida").style.display=null;
+  }
+}  
+
+function BusquedaOrden(){
+  var $datos={
+      '_dato': $("#ordenDeTrabajo").val(),
+    }  
+
+  $.ajax({
+      url:"../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenXCodigo.php",
+      type: 'POST',
+      data:$datos,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error","ORDEN INGRESADA NO ENCONTRADA");
+              document.getElementById("ordenDeTrabajo").style.border='2px solid red'
+          }else{
+             mostrarMensaje("exito", "ORDEN INGRESADA ENCONTRADA");
+              document.getElementById("ordenDeTrabajo").style.border='2px solid green'
+           }
+          
+      }
+  }); 
+}
+  
+function validar(){
+  
+  var R1 = $("#personal").val();
+  var R2 = $("#empresa").val();
+  var R3 = $("#cantidad").val();
+  
+  if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+      $('advertencia',"SELECCIONAR PERSONAL");  
+      $("#personal").focus();
+    }else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+      $('advertencia',"SELECCIONAR EMPRESA");  
+      $("#personal").focus();    
+    }else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+      $('advertencia',"LLENAR CANTIDAD");  
+      $("#cantidad").focus();       
+    }else if($("#cantidad").val()>$("#stockDisponible").html()){
+      mostrarMensaje('error',"LA CANTIDAD DE SALIDA NO PUEDE EXCEDER A LA CANTIDAD DISPONIBLE");
+      $("#cantidad").focus();
+    }else{
+      registrarSalidaProducto();
+    }
+}
+  
+function registrarSalidaProducto(){
+  
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+
+  var $datos={
+      '_fecha':fecharegistro,
+      '_opcodigo': $("#ordenDeTrabajo").val(),
+      '_personal': $("#personal").val(),
+      '_cantidad': $("#cantidad").val(),
+      '_tipotrabajo': $("#tiptrabajo").val(),
+      '_empresa': $("#empresa").val(),
+      '_producto': $("#codigoProductoPrincipal").val(),
+      '_observaciones': $("#observaciones").val(),
+      '_familia': $("#centrocostos").val(),
+      '_subfamilia': $("#area").val(),
+      '_usuario': USUACODIGO
+    }  
+
+  $.ajax({
+      url:"../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_RegistrarSalidaProducto.php",
+      type: 'POST',
+      data:$datos,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error","" + datos.message);
+          }else{
+             mostrarMensaje("exito", "REGISTRO DE SALIDA EJECUTADO CORRECTAMENTE");
+            if($("#OPCODIGO").val()!=""){
+              sumarStockAccion($("#codigoProductoPrincipal").val(),"SALIDASOT")
+            }else{
+              sumarStockAccion($("#codigoProductoPrincipal").val(),"SALIDAS")
+            }
+          }
+      }
+  }); 
+}
+
+</script>

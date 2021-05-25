@@ -1,0 +1,633 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form class="form2">
+ 
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">RENOVAR CONTRATO</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">
+         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          
+        </div>
+        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">
+          
+          <!--F. INGRESO A LA EMPRESA-->
+          <label for="fIngreso">Fecha de Ingreso</label>
+          <input readonly type="date" class="form-control" id="fIngreso">
+          
+          <!--EMPRESA ASIGNADA-->
+          <label for="empresa">Empresa</label>
+          <input readonly type="text" class="form-control" id="empresa">
+          
+        </div>
+
+      </div>
+   
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES--> 
+  <div class="card">
+    <h5 class="card-header h5">Datos Personales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--APELLIDOS-->
+        <div class="col-12 col-md form-group">
+          <label for="apellido">Apellidos</label>
+          <input readonly type="text" class="form-control" id="apellido">
+        </div>
+
+        <!--NOMBRE-->
+        <div class="col-12 col-md form-group">
+          <label for="nombre">Nombres</label>
+          <input readonly type="text" class="form-control" id="nombre">
+        </div>
+
+       <div class="w-100"></div>
+       
+        <!--AREA-->
+        <div class="col-12 col-md form-group">
+          <label for="area">Area</label>
+          <input readonly type="text" class="form-control" id="area">
+        </div>
+
+        <!--ESPECIALIDAD-->
+        <div class="col-12 col-md form-group">
+          <label for="especialidad">Especialidad</label>
+          <input readonly type="text" class="form-control" id="especialidad">
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--TIPO DE HORARIO-->
+        <div class="col-12 col-md form-group">
+          <label for="tHorario">Tipo de horario</label>
+          <input readonly type="text" class="form-control" id="tHorario">
+        </div>
+        
+        <!--TURNO O GRUPO-->
+        <div class="col-12 col-md form-group">
+          <label for="turno">Turno o Grupo</label>
+          <input readonly type="text" class="form-control" id="turno">
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS CONTRATO VIGENTE-->
+  <div class="card">
+    <h5 class="card-header h5">Contrato vigente</h5>
+    <span id="codigoOculto"></span>
+    <div class="card-body">
+
+      <div class="form-row">
+        
+        <!--FECHA DE CONTRATACION-->
+        <div class="col-12 col-md form-group">
+          <label for="contratofecha">Fecha de contratacion</label>
+          <input type="date" class="form-control" id="contratofecha" readonly>
+        </div>
+
+        <!--TIEMPO DE CONTRATACION-->
+        <div class="col-12 col-md form-group">
+          <label for="contratotiempo">Tiempo de contratacion</label>
+          <input type="number" min="0" class="form-control" id="contratotiempo" readonly>
+        </div>
+
+        <!--PERIODO DE CONTRATACION-->
+        <div class="col-12 col-md form-group">
+          <label for="contratoVigente">Periodo de contratacion</label>
+          <input type="text" class="form-control" id="contratoVigente" readonly>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS NUEVO CONTRATO-->
+  <div class="card">
+    <h5 class="card-header h5">Nuevo contrato <button class="btn btn-titulo" onclick="analisisAños();return false">RENOVAR</button></h5>
+    <div class="card-body">
+
+      <div class="form-row">
+        
+        <!--FECHA DE CONTRATACION-->
+        <div class="col-12 col-md form-group">
+          <label for="fContrato">Fecha de contratacion</label>
+          <input type="date" class="form-control" id="fContrato" aria-describedby="fContratoHelp" onchange="mostrarPeriodo()">
+          <small id="fContratoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--TIEMPO DE CONTRATACION-->
+        <div class="col-12 col-md form-group">
+          <label for="tiempo">Tiempo de contratacion</label>
+          <input type="number" min="0" class="form-control" id="tiempo" aria-describedby="tiempoHelp" onchange="mostrarPeriodo()">
+          <small id="tiempoHelp" class="form-text text-muted">Ingresar el tiempo de duracion del contrato (meses).</small>
+        </div>
+
+        <!--PERIODO DE CONTRATACION-->
+        <div class="col-12 col-md form-group">
+          <label for="periodoContrato">Periodo de contratacion</label>
+          <input type="text" class="form-control" id="periodoContrato" aria-describedby="periodoContratoHelp" readonly>
+          <small id="periodoContratoHelp" class="form-text text-muted">Este campo se genera automaticamente. Es necesario ingresar la fecha y tiempo de contratacion. </small>
+        </div>
+
+      </div>
+        <div class="col-12 col-md form-group">
+                <label for="liquidar">Liquidar</label>
+                <input id="liquidar" value="0" type="checkbox" style="width:20px;height:20px;" aria-describedby="tiempoHelp"  >
+                <small id="tiempoHelp" class="form-text text-muted">Al hacer click aqui, será el ultimo contrato que tendrá el personal</small>
+            </div> 
+    </div>
+  </div>
+  
+  <!--HISTORIAL LABORAL-->   
+ <table class="table my-2">
+   <thead>
+      <tr>
+        <th colspan="8">HISTORIAL LABORAL</th>   
+      </tr>
+      <tr>
+          <th>#</th>
+          <th>Periodo</th>
+          <th>Fecha de Contratacion</th>
+          <th>Fecha final del contrato</th>
+          <th>Vigencia</th>
+          <th>Codigo Contrato</th>
+          <th>Accion</th>
+      </tr>
+   </thead>
+   <tbody id="historial">
+   </tbody>
+ </table> 
+ 
+ <!-- MODAL MENSAJE DE RENOVACION -->
+ <div class="modal fade" id="mensajeRenovacion" tabindex="-1" role="dialog" aria-labelledby="mensajeRenovacionTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Mensaje Renovacion</h5>
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         ERROR - Por Necesidad de Mercado, no puede superar los 5 años
+         ¿Desea Renovar Contrato?
+         <div class="text-center">
+         <button id="afirmar" data-dismiss="modal">SI</button>
+         <button  data-dismiss="modal" aria-label="Close">NO</button>
+          </div>
+        </div>
+      </div>
+
+  </div>
+ </div> 
+
+  <!-- MODAL CONTRATO PERSONAL -->
+  <div class="modal fade" id="ModalContrato" tabindex="-1" role="dialog" aria-labelledby="listadoPersonalTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Actualizar Contrato</h5>
+            <input id="CodigoContrato" type="hidden" >
+            <input id="fContratoInicial" type="hidden" >
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+            
+                
+                <div class="col-12 form-group">
+                  <label for="mfContrato">Fecha de Contrato</label>
+                  <input  id="mfContrato" type="date" class="form-control" onchange="mostrarPeriodoModal()"  >
+                </div>
+                
+                <div class="col-12 form-group">
+                  <label for="mtiempo">Tiempo</label>
+                  <input  id="mtiempo" type="number" class="form-control" onchange="mostrarPeriodoModal()">
+                </div>
+                
+                <div class="col-12 form-group">
+                  <label for="mperiodoContrato">Periodo</label>
+                  <input readonly id="mperiodoContrato" type="text" class="form-control" onchange="mostrarPeriodoModal()" >
+                </div>
+                
+                <div class="col-12 form-group">
+                  <label for="mliquidar">Liquidar</label>
+                  <input  id="mliquidar" type="checkbox" style="width:20px; height:20px;" class="form-control" >
+                </div>
+                
+                
+                <button class="btn btn-block principal" onclick="editarcontrato();return false" data-dismiss="modal">GUARDAR</button>
+                
+            
+            </div>
+
+    
+        </div>
+
+      </div>
+
+  </div>
+</div>    
+    
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script>
+vPersonal.cargarDatos(personal);
+
+// -- MOSTRAR PERIODO MODAL
+function mostrarPeriodoModal(){
+   var periodo= vPersonal.fechaContratacion($("#mfContrato").val(),$("#mtiempo").val())
+   $("#mperiodoContrato").val(periodo);
+}   
+    
+// -- MOSTRAR PERIODO     
+function mostrarPeriodo(){
+   var periodo= vPersonal.fechaContratacion($("#fContrato").val(),$("#tiempo").val())
+   $("#periodoContrato").val(periodo);
+}
+    
+//--CARGAR CONTRATO
+function cargarContrato(contrato){
+    contrato = contrato.split("*")
+    var codigo = (contrato[0]);
+    var $personal = {
+        '_personal': personal
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalContratado.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                for(var i=0;i<datos.length;i++){
+                    if(codigo == datos[i].DETCONTRCODIGO){
+                        $("#CodigoContrato").val(datos[i].DETCONTRCODIGO );
+                        $("#fContratoInicial").val(datos[i].DETCONTRFECHA_CONTRATACION );
+                        $("#mfContrato").val(datos[i].DETCONTRFECHA_CONTRATACION );
+                        $("#mtiempo").val(datos[i].DETCONTRTIEMPO);
+                        $("#mperiodoContrato").val(vPersonal.fechaContratacion(datos[i].DETCONTRFECHA_CONTRATACION,datos[i].DETCONTRTIEMPO));
+                        if( datos[i].DETCONTRLIQUIDACION=="SI"){
+                            document.getElementById('mliquidar').checked=true;
+                        }else{
+                            document.getElementById('mliquidar').checked=false;
+                            document.getElementById('mliquidar').disabled=true;
+                        }
+                        if($("#codigoOculto").val()==codigo){
+                            document.getElementById('mliquidar').disabled=false;
+                        }
+                    }
+                }          
+            }
+        }
+    });
+}
+       
+/*=============================================
+    ALERTA ELIMINAR CONTRATO
+=============================================*/  
+
+function alerta(cod){
+    var mensaje;
+    var opcion = confirm("¿Desea Eliminar este Contrato?");
+    if (opcion == true) {
+       eliminarcontrato(cod);
+	}
+}
+    
+/*=============================================
+    EDITAR CONTRATO DEL PERSONAL
+=============================================*/     
+
+function editarcontrato(){
+    var liquidar,grabar="NO";
+    var isChecked = document.getElementById('mliquidar').checked;
+    if(isChecked){
+        liquidar ="SI";
+    }else{
+        liquidar = "NO";
+    }
+    for(var i=0;i<$("#historial tr").length ; i++){
+        
+        grabar = vPersonal.rangoFechas($("#mfContrato").val(),$("#mtiempo").val(),$("#historial tr:eq("+i+") td:eq(2)").html(),parseInt($("#historial tr:eq("+i+") td:eq(4)").html().split("meses")[0]));
+        if(grabar=="NO"){
+            i== $("#historial tr").length;
+        }
+    }
+    if($("#mfContrato").val()==$("#fContratoInicial").val()){
+        grabar="SI";
+    }
+    if(grabar=="SI"){
+        vPersonal.editarContrato($("#CodigoContrato").val(),$("#mfContrato").val(),$("#mtiempo").val(),liquidar,"53");
+        vPersonal.cargarDatos(personal);
+    }else{
+        alert("LA FECHA DE CONTRATACION COINCIDE CON UN CONTRATO EXISTENTE, ELEGIR OTRA FECHA");
+    }
+
+    
+}  
+    
+/*=============================================
+    ELIMINAR CONTRATO DEL PERSONAL
+=============================================*/      
+   
+function eliminarcontrato(codigo){
+   var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalContratado.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                eliminarcontrato2(codigo);
+                if($("#historial tr").length==1){
+                    eliminarcontratoprincipal(datos[0].CONTRCODIGO,datos[0].PERSCODIGO);
+                    $("#historial").html("");
+                    $("#contratoVigente").val("SIN CONTRATO");
+                    $("#contratofecha").val(""); 
+                    $("#contratotiempo").val("");
+                    $("#resultado").text("CONTRATO ELIMINADO - REINICIAR");
+                }
+                
+            } 
+        }
+    });
+    
+}
+    
+    
+/*=============================================
+    ELIMINAR CONTRATO PRINCIPAL DEL PERSONAL
+=============================================*/   
+    
+function eliminarcontratoprincipal(cod,personal){
+    var $codigoc={
+        '_codigoc' : cod
+   } 
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_EliminarContratoPrincipal.php',
+        type: 'POST',
+        data: $codigoc,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                vPersonal.actualizarCondicionPersonal(personal,$("#empresa").val(),"ReciboxHonorarios");
+                mostrarMensaje("exito",'CONTRATO ELIMINADO EXITOSAMENTE');
+            } 
+        }
+    });
+}  
+    
+
+/*=============================================
+    ELIMINAR DETALLE CONTRATO DEL PERSONAL
+=============================================*/      
+    
+function eliminarcontrato2(codigo){
+    var $codigoc={
+        '_codigoc' : codigo
+   } 
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_EliminarContrato.php',
+        type: 'POST',
+        data: $codigoc,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{   
+                mostrarMensaje("exito",'CONTRATO ELIMINADO EXITOSAMENTE');
+                vPersonal.cargarDatos(personal);
+            } 
+        }
+    }); 
+    
+}    
+  
+/*=============================================
+    TIEMPO DE CONTRATO = MAX 5 AÑOS
+=============================================*/  
+
+function analisisAños(){
+    var liquidar;
+    var isChecked = document.getElementById('liquidar').checked;
+    if(isChecked){
+        liquidar ="SI";
+    }else{
+        liquidar = "NO";
+    };
+    var $personal={
+        '_personal' : personal
+   }    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalContratado.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                var grabar="NO";
+                var meses=0;
+                for (var i=0;i<datos.length;i++){
+                    grabar =(vPersonal.rangoFechas($("#fContrato").val(),$("#tiempo").val(),datos[i].DETCONTRFECHA_CONTRATACION,datos[i].DETCONTRTIEMPO));
+                    if(grabar=="NO"){
+                        i=datos.length-1;
+                    }
+                    meses= meses + parseInt(datos[i].DETCONTRTIEMPO);                  
+                }
+                if(grabar=="SI"){
+                    meses= meses+ parseInt($("#tiempo").val());
+                    if (meses>60){
+                        $('#mensajeRenovacion').modal('show');
+                    }else{
+                        for (var i=0;i<datos.length;i++){
+                            if(datos[i].DETCONTRLIQUIDACION=="SI"){
+                                vPersonal.editarContrato(datos[i].DETCONTRCODIGO,datos[i].DETCONTRFECHA_CONTRATACION,datos[i].DETCONTRTIEMPO,"NO","55");//55
+                            }    
+                        }
+                        if(meses==60){
+                           liquidar="SI" 
+                        }
+                        renovarContrato(datos,personal,liquidar);
+                    }    
+                }else{
+                    alert("LA FECHA DE CONTRATACION COINCIDE CON UN CONTRATO EXISTENTE, ELEGIR OTRA FECHA");
+                }                
+            }
+        }
+    }); 
+}
+    
+/*=============================================
+    NUEVO CODIGO DEL CONTRATO
+=============================================*/  
+function renovarContrato(datos,personal,liquidar){
+
+    var R1 =$("#fContrato").val();
+    var R2 =$("#tiempo").val();
+
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#fContrato").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#tiempo").focus();
+    }else{
+        var nuevocontrato=0;
+
+        if (datos[0].CONTRCODIGO.length == 2){
+             nuevocontrato = datos[datos.length-1].DETCONTRCODIGO.substr(0,3)+(parseInt(datos[datos.length-1].DETCONTRCODIGO.substr(3))+1);
+        }else if(datos[0].CONTRCODIGO.length == 3){
+           nuevocontrato = datos[datos.length-1].DETCONTRCODIGO.substr(0,4)+(parseInt(datos[datos.length-1].DETCONTRCODIGO.substr(4))+1); 
+        }else{
+            nuevocontrato = datos[datos.length-1].DETCONTRCODIGO.substr(0,5)+(parseInt(datos[datos.length-1].DETCONTRCODIGO.substr(5))+1);
+        }
+        var contrcodigo = datos[0].CONTRCODIGO; 
+        
+        agregarcontrato(nuevocontrato,contrcodigo,liquidar);
+    }
+}
+    
+/*=============================================
+    AGREGAR CONTRATO AL PERSONAL
+=============================================*/  
+    
+function agregarcontrato(nuevocontrato,contrcodigo,liquidar){
+    
+     var $detalles={
+        '_codigoDetalle': nuevocontrato,
+        '_fContratacion': $("#fContrato").val(),
+        '_cantidadIngresada': $("#tiempo").val(),
+        '_estado' : 53,         
+        '_codigo': contrcodigo,
+        '_liquidar': liquidar
+   }
+
+    $.ajax({
+            url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_RegistrarDetallesContrato.php',
+            type: 'POST',
+            data: $detalles,
+            dataType: 'json',
+            error: function(error){
+                if(error.status == 401){
+                    mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+                }
+                else{
+                    mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+                }
+            },
+            success: function(datos){
+                if(datos.response == 0){
+                   mostrarMensaje("error","REGISTRO INCORRECTO! "+datos.message);
+                }
+                else{
+                    mostrarMensaje("exito",'CONTRATO RENOVADO EXITOSAMENTE');
+                    vPersonal.cargarDatos(personal); 
+                }
+            }
+    }); 
+}        
+  
+/*=============================================
+    MENSAJE DEL BOTON RENOVAR
+=============================================*/  
+
+var opcion,enviar;
+    
+$("#afirmar").click(function(){
+    opcion="condicionLaboral";
+    enviar="SI";
+}); 
+$("#mensajeRenovacion").on('hidden.bs.modal', function(){
+    if (opcion=="condicionLaboral" && enviar=="SI"){
+        personal=parseInt(personal)
+        VistasEspecificas(personal,opcion);
+    }
+}); 
+    
+</script>

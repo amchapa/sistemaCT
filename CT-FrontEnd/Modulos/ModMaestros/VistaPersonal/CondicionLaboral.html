@@ -1,0 +1,411 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">Actualizar Condicion laboral</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">
+         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          
+        </div>
+        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">
+         
+          <!--CODIGO-->
+          <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. INGRESO A LA EMPRESA-->
+          <label for="fIngreso">Fecha de Ingreso</label>
+          <input required readonly type="date" class="form-control" id="fIngreso" aria-describedby="fIngresoHelp">
+          <small id="fIngresoHelp" class="form-text text-muted">Ingresar Fecha de Ingreso al Grupo Computextos.</small>
+          
+          <!--ESTADO-->
+          <label for="estado" style="margin-top: 1rem;">Estado</label>
+          <select required disabled id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+          
+        </div>
+
+      </div>
+   
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Personales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--APELLIDO PATERNO-->
+        <div class="col-12 col-md form-group">
+          <label for="aPaterno">Apellido Paterno</label>
+          <input required readonly type="text" class="form-control" id="aPaterno" aria-describedby="aPaternoHelp" placeholder="Ingresar apellido paterno">
+          <small id="aPaternoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--APELLIDO MATERNO-->
+        <div class="col-12 col-md form-group">
+          <label for="aMaterno">Apellido Materno</label>
+          <input required readonly type="text" class="form-control" id="aMaterno" aria-describedby="aMaternoHelp" placeholder="Ingresar apellido materno">
+          <small id="aMaternoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--NOMBRE-->
+        <div class="col-12 col-md form-group">
+          <label for="nombre">Nombres</label>
+          <input required readonly type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar nombres">
+          <small id="nombreHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS CONDICION LABORAL-->
+  <div class="card">
+    <h5 class="card-header h5">Condicion Laboral</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--SITUACION LABORAL-->
+        <div class="col-12 col-md form-group">
+          <label for="situacionLaboral">Situacion laboral</label>
+          <select required id="situacionLaboral" class="form-control" aria-describedby="situacionLaboralHelp" onchange="mostrarInformacionLaboral()">
+            <option value="ReciboxHonorarios">RECIBOS POR HONORARIOS</option>
+            <option value="Contrato">CONTRATO</option>
+            <option value="Factura">FACTURA</option>
+            <option value="Eventual">EVENTUAL</option>
+            <option value="Otro">OTRO</option>
+          </select>
+          <small id="situacionLaboralHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--EMPRESA ASIGNADA-->
+        <div class="col-12 col-md form-group">
+          <label for="empresa">Empresa</label>
+          <select required id="empresa" class="form-control" aria-describedby="empresaHelp"></select>
+          <small id="empresaHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION LABORAL (SOLO CONTRATO)-->
+        <div id="informacionlaboral" class="col-12 col-md form-group d-none">
+          <fieldset class="form-group fieldset">
+            <legend class="col-form-label">Informacion laboral</legend>
+            <div class="form-row">
+
+              <!--FECHA DE CONTRATACION-->
+              <div class="col-12 col-md form-group">
+                <label for="fContrato">Fecha de contratacion</label>
+                <input type="date" class="form-control" id="fContrato" aria-describedby="fContratoHelp" value="2018-07-15" onchange=" mostrarContrato()">
+                <small id="fContratoHelp" class="form-text text-muted">Campo obligatorio.</small>
+              </div>
+
+              <!--TIEMPO DE CONTRATACION-->
+              <div class="col-12 col-md form-group">
+                <label for="tiempo">Tiempo de contratacion</label>
+                <input type="number" min="0" class="form-control" id="tiempo" aria-describedby="tiempoHelp" placeholder="12" onchange="mostrarContrato()">
+                <small id="tiempoHelp" class="form-text text-muted">Ingresar el tiempo de duracion del contrato (meses).</small>
+              </div>
+
+              <!--PERIODO DE CONTRATACION-->
+              <div class="col-12 col-md form-group">
+                <label for="periodoContrato">Periodo de contratacion</label>
+                <input type="text" class="form-control" id="periodoContrato" aria-describedby="periodoContratoHelp"  onchange="mostrarContrato()" readonly>
+                <small id="periodoContratoHelp" class="form-text text-muted">Este campo se genera automaticamente. Es necesario ingresar la fecha y tiempo de contratacion. </small>
+              </div>
+
+            </div >
+            <div class="col-12 col-md form-group">
+                <label for="liquidar">Liquidar</label>
+                <input id="liquidar" value="0" type="checkbox" style="width:20px;
+height:20px;" aria-describedby="tiempoHelp"  >
+                <small id="tiempoHelp" class="form-text text-muted">Al hacer click aqui, será el ultimo contrato que tendrá el personal</small>
+            </div>  
+          </fieldset>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" id="guardar" class="btn btn-guardar">Guardar</button>
+    <button id="reset" class="btn btn-reset">Reestablecer</button>
+  </div>
+  
+   <!-- MODAL MENSAJE DE RENOVACION -->
+<div class="modal fade" id="mensajeRenovacion" tabindex="-1" role="dialog" aria-labelledby="mensajeRenovacionTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Mensaje Renovacion</h5>
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         Cambiar la empresa afectará los contratos vigentes, 
+         ¿Desea Continuar?
+         <div class="text-center">
+         <button id="afirmar" data-dismiss="modal">SI</button>
+         <button  data-dismiss="modal" aria-label="Close">NO</button>
+          </div>
+        </div>
+      </div>
+
+  </div>
+ </div> 
+ 
+<!-- MENSAJE -->
+<div role=alert aria-live='assertive' aria-atomic='true' class='toast' data-autohide='false'></div>
+  
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script type="text/javascript">
+      
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function() {
+    cargarDatos(personal); 
+    mostrarInformacionLaboral();
+});
+var empresaantigua,situacionAntigua;
+   
+//--EVENTO CLICK >> GUARDAR--    
+$("#guardar").click(function(){
+    var R1 = $("#fContrato").val();
+    var R2 = $("#tiempo").val();
+    var liquidar;
+    var isChecked = document.getElementById('liquidar').checked;
+    if(isChecked){
+        liquidar ="SI";
+    }else{
+        liquidar = "NO";
+    };
+    
+   
+    document.getElementById("guardar").disabled=true; 
+    if (empresaantigua != $("#empresa").val() && $("#situacionLaboral").val() == "Contrato" ){
+        if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#fContrato").focus();
+        }
+        else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+            mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+            $("#tiempo").focus();
+        }else{
+            vPersonal.generarCodigoContrato(personal,liquidar);
+        }
+    }else
+  
+    if(situacionAntigua=="ReciboxHonorarios" && $("#situacionLaboral").val() == "Contrato"  ){
+        if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#fContrato").focus();
+        }
+        else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+            mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+            $("#tiempo").focus();
+        }else{
+            vPersonal.generarCodigoContrato(personal,liquidar);
+        }
+    }else if(situacionAntigua=="Contrato" && empresaantigua==$("#empresa").val() && enviar =="SI"){
+        if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#fContrato").focus();
+        }
+        else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+            mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+            $("#tiempo").focus();
+        }else{
+            vPersonal.generarCodigoContrato(personal,liquidar);
+        }
+    }else{
+        vPersonal.actualizarCondicionPersonal(personal,$("#empresa").val(),$("#situacionLaboral").val());
+    }
+    
+});
+    
+//--EVENTO CLICK >> LIMPIAR--    
+$("#reset").click(function(){
+    $("situacionLaboral").val(situacionAntigua);
+    if(situacionAntigua !="Contrato"){
+        $("#informacionlaboral").addClass("d-none");
+    }
+    cargarDatos(personal);
+}); 
+    
+var c=0;  
+//--EVENTO CLICK >> CAMBIAR EMPRESA--    
+$("#empresa").click(function(){
+    if(c==0 && situacionAntigua=="Contrato" && $("#situacionLaboral").val()=="Contrato"){
+        $('#mensajeRenovacion').modal('show');
+    }
+});
+    
+//--CARGAR DATOS DEL PERSONAL--
+function cargarDatos(personal){
+    
+   var $personal={
+        '_personal' : personal
+   }
+
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarDatosPersonal.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#codigo").text(datos.PERSCODIGO);
+                $("#nombre").val(datos.PERSNOMBRE);
+                $("#aPaterno").val(datos.PERSAPELLIDO_PATERNO);
+                $("#aMaterno").val(datos.PERSAPELLIDO_MATERNO);
+                $("#fIngreso").val(datos.PERSFECHA_INGRESO);
+                $("#situacionLaboral option[value="+ datos.PERSCONDICION_LABORAL +"]").attr("selected",true);
+                situacionAntigua=datos.PERSCONDICION_LABORAL
+                if(datos.PERSCONDICION_LABORAL=="Contrato"){
+                   mostrarContratoVigente(personal);
+                   $("#informacionlaboral").removeClass("d-none")
+                }   
+                if(datos.PERSFOTO!=""){
+                  document.getElementById('previewFoto').src = datos.PERSFOTO;
+                }
+                empresaantigua= datos.EMPCODIGO;
+                vPersonal.mostrarEmpresa(true,datos.EMPCODIGO);
+                vPersonal.mostrarEstado(true,datos.ESTCODIGO);              
+            }
+        }
+    }); 
+ }
+
+ // --MOSTRAR CONTRATO VIGENTE   
+function mostrarContratoVigente(personal){
+    var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalContratado.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{                
+                var obtenidos=vPersonal.ultimoRegistroIngresado(datos);
+                var q=obtenidos[0];
+            $("#fContrato").val(datos[q].DETCONTRFECHA_CONTRATACION );
+            $("#tiempo").val(datos[q].DETCONTRTIEMPO );
+            var periodo = vPersonal.fechaContratacion(datos[q].DETCONTRFECHA_CONTRATACION,datos[q].DETCONTRTIEMPO);
+            $("#periodoContrato").val(periodo);
+            if( datos[q].DETCONTRLIQUIDACION=="SI"){
+                document.getElementById('liquidar').checked=true;
+            }
+            document.getElementById("fContrato").disabled=true;
+            document.getElementById("tiempo").disabled=true;
+            document.getElementById("liquidar").disabled=true;    
+            }
+        }
+    });
+}
+    
+// --MOSTRAR INFORMACION LABORAL
+function mostrarInformacionLaboral(){
+    var situacion = $("#situacionLaboral").val();  
+    if(situacion != "Contrato" ){
+        $("#informacionlaboral").addClass("d-none")
+    }else{
+        $("#informacionlaboral").removeClass("d-none")
+    }
+} 
+    
+// --MOSTRAR FECHA DE CONTRATO
+function mostrarContrato(){
+    var fecha=vPersonal.fechaContratacion($("#fContrato").val(),$("#tiempo").val())
+    $("#periodoContrato").val(fecha);
+}
+        
+/*=============================================
+    MENSAJE DEL BOTON RENOVAR
+=============================================*/  
+
+var opcion,enviar;
+    
+$("#afirmar").click(function(){
+    opcion="actualizarPersonal";
+    enviar="SI";
+    mostrarModal="SI";
+});      
+
+$("#mensajeRenovacion").on('hidden.bs.modal', function(){
+    if (opcion=="actualizarPersonal" && enviar=="SI" && mostrarModal=="SI"){
+        $("#situacionLaboral").val("ReciboxHonorarios");
+         c=c+1;
+        $("#fContrato").val("");
+        $("#tiempo").val("");
+        $("#periodoContrato").val("");
+        document.getElementById("fContrato").disabled=false;
+        document.getElementById("tiempo").disabled=false;
+        document.getElementById("liquidar").disabled=false; 
+        $("#informacionlaboral").addClass("d-none")
+    }
+});     
+    
+    
+    
+/*=============================================
+   MOSTRAR TOAST CON MENSAJE DE RENOVACION
+=============================================*/  
+
+if(typeof(personal) == 'number'){
+        mostrarMensaje('informativo','');
+    }
+    
+    
+</script>

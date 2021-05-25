@@ -1,0 +1,57 @@
+td{
+      min-width: 100px;
+      padding: 0;
+      margin: 0;
+  }
+  th{text-align: left;}
+  
+  #tablaSuperior td input{text-align: center;}
+  
+  #otros td div, .table select,.table input[type="text"], #tablaAgregar input[type="text"]{width: 100%;}
+   #tablaAgregar input[type="text"]{text-align: center}
+  
+  .table td{vertical-align: middle;}
+  .table input[type="checkbox"]{
+    width: 35px;
+    height: 35px;
+    margin-left: 8px;
+    margin-top: 0px;
+  }
+  
+  #otros tr{margin: 0; padding: 0;}
+  #otros td{
+    vertical-align: middle; 
+    text-align: center; 
+    margin: 0; 
+    padding: 0;
+  }
+  #otros p{width: 50%; font-size: 18px;}
+  #otros input[type="text"]{
+    width: 49%;
+    margin: 0;
+    padding: 0;
+    }
+    
+    .divcambiar {
+        width:600px;height:300px;
+    }
+    
+    .imageTamano {
+        width:490px;height:250px;
+    }
+    
+    .pinza{
+         width: 490px; height: 30px;
+    }
+    
+  @media print {
+    #nuevaOrden, #barraIzq, button, .btn{display: none;}
+    .formulario{background-color: white;}
+    .h4-responsive{font-size: 30px;}
+    #tablaPDF{page-break-inside: avoid;}
+    @page{
+       margin: 0;
+    }
+    #tablaSuperior tbody{margin: 0;}
+    
+  }

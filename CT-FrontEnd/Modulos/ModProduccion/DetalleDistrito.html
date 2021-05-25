@@ -1,0 +1,185 @@
+<div class="card" style="width:70%;  margin: 0px auto;" >
+
+    <h5 class="card-header h5" id="titulo" style="text-align:center"></h5>
+    <button class="btn enfasis3" style="position:absolute; right: 10px; padding: 3px 10px; margin: 0; float: center;" id="btnImprimir" onclick="window.print();return false;">IMPRIMIR</button>
+    <div class="card-body">
+        <div class="form-row">
+
+            <div class="col-12 col-md-6 form-group">
+              <label for="distrito">Distrito</label>
+               <input type="text" id="distrito" class="form-control" readonly> 
+            </div>
+
+            <div class="col-12 col-md-6 form-group">
+              <label for="ot">O/T</label>
+               <input type="text" id="ot" class="form-control" readonly> 
+            </div>
+            
+             <div class="w-100"></div>
+             
+             <div class="col-12 col-md-4 form-group">
+              <label for="tipoMensajeria">Tipo Mensajeria:</label>
+               <input type="text" id="tipoMensajeria" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="seleccione">Seleccione:</label>
+               <input type="text" id="seleccione" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="otros">Solo llenar en Opcion Otros:</label>
+               <input type="text" id="otros" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+             
+             <div class="col-12 col-md-12 form-group">
+              <label for="direccion">Direccion:</label>
+               <input type="text" id="direccion" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+             
+             <div class="col-12 col-md-12 form-group">
+              <label for="descripcion">Descripcion:</label>
+               <input type="text" id="descripcion" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+             
+             <div class="col-12 col-md-12 form-group">
+              <label for="comentario">Comentario:</label>
+               <input type="text" id="comentario" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+             
+             <div class="col-12 col-md-6 form-group">
+              <label for="guia">IMPRIMIR GUIA REMISION:</label>
+               <input type="text" id="guia" class="form-control" readonly> 
+            </div>
+             
+             <div class="col-12 col-md-6 form-group">
+              <label for="factura">IMPRIMIR FACTURA:</label>
+               <input type="text" id="factura" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="costo">COSTO DE MENSAJERIA:</label>
+               <input type="text" id="costo" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="paquete"># DE PAQUETES:</label>
+               <input type="text" id="paquete" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="peso">PESO:</label>
+               <input type="text" id="peso" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="fechaDestino">FECHA DESTINO:</label>
+               <input type="text" id="fechaDestino" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="horario">Horario:</label>
+               <input type="text" id="horario" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-4 form-group">
+              <label for="plazoMaximo">Sólo llenar en opcion Plazo Maximo:</label>
+               <input type="text" id="plazoMaximo" class="form-control" readonly> 
+            </div>
+            
+            <div class="w-100"></div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="contacto">Contacto:</label>
+               <input type="text" id="contacto" class="form-control" readonly> 
+            </div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="telefono">Telefono:</label>
+               <input type="text" id="telefono" class="form-control" readonly> 
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+    cargarInfo(enviarCodigo);
+});
+
+/*FUNCION PARA CARGAR LA INFORMACION POR CODIGO DE DESPACHO*/
+function cargarInfo(codigo){
+    var mensajeria="";
+    var $codigo={
+        '_codigo':codigo
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarInfoXRegDespacho.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{ 
+                
+                if(datos.PRODESTIPO_MENSAJERIA.split("-")[0]=="M"){
+                    mensajeria="Mensajeria"
+                }else{
+                    mensajeria="Despacho"
+                }
+                document.getElementById('titulo').innerHTML="<b>Mensajeria </b>"+datos.OPCODIGO+"</br>"+datos.CLIENRAZON_SOCIAL;
+                document.getElementById('distrito').value=datos.DISTRNOMBRE;
+                document.getElementById('ot').value=datos.OPCODIGO;
+                document.getElementById('tipoMensajeria').value=vProduccion.cambiarTextoTipMensajeria(datos.PRODESTIP_MENSAJERIA);
+                if(datos.PRODES_SELECCIONE!="otros"){
+                    document.getElementById('seleccione').value=vProduccion.cambiarTextoSeleccione(datos.PRODES_SELECCIONE);
+                    document.getElementById('otros').value="-";
+                }else{
+                    document.getElementById('seleccione').value="-";
+                    document.getElementById('otros').value=datos.PRODES_OTROS;
+                }
+                document.getElementById('direccion').value=datos.PRODES_DIRECCION;
+                document.getElementById('descripcion').value=datos.PRODES_DESCRIPCION;
+                document.getElementById('comentario').value=datos.PRODES_COMENTARIO;
+                document.getElementById('guia').value=datos.PRODES_GUIA.toUpperCase();
+                document.getElementById('factura').value=datos.PRODES_FACTURA.toUpperCase();
+                document.getElementById('costo').value="S/ "+datos.PRODES_MONTO+" Nuevos Soles";
+                document.getElementById('paquete').value=datos.PRODES_PESO_BRUTO;
+                document.getElementById('peso').value=datos.PRODES_MONTO+" Kgs";
+                document.getElementById('fechaDestino').value=vProduccion.formatFechaOriginal(datos.PRODES_FECHA_DESTINO);
+                document.getElementById('horario').value=vProduccion.cambiarTextoHorario(datos.PRODES_HORARIO);
+                document.getElementById('plazoMaximo').value=vProduccion.changeValueToText(datos.PRODES_HORARIO_FINAL);
+                document.getElementById('contacto').value=datos.PRODES_CONTACTO;
+                document.getElementById('telefono').value=datos.PRODES_TELEFONO;
+            } 
+        }
+    });
+    
+}
+    
+</script>

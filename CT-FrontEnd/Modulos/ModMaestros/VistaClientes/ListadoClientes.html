@@ -1,0 +1,118 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="listado">
+  
+  <!--TITULO DE LA VISTA-->
+  <h3 class="h3-responsive titulo">LISTAR CLIENTES</h3>
+
+  <!--CONTENIDO PRINCIPAL DE LA VISTA-->
+  <table id="tablaListado" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead><tr>
+        <th>COD</th>
+        <th>RAZON SOCIAL</th>
+        <th>EMP</th>
+        <th>EJ</th>
+        <th>DIRECCION</th>
+        <th>T/IDEN</th>
+        <th>NUM/IDEN</th>
+        <th>TELEFONO</th>
+      </tr></thead>
+    <tbody id="cuerpoTabla"></tbody>
+  </table>
+  
+</section>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaClientes/VistaClientes.js"></script>
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+<script type="text/javascript">
+    
+cargarDatos();
+
+//--CARGAR DATOS TODOS CLIENTES--
+function cargarDatos(){
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarTodosClientes.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mostrarDatosCliente(datos);
+                
+            }
+        }
+    }); 
+     
+}
+    
+//-- MOSTRAR DATOS TODOS CLIENTES --
+function mostrarDatosCliente(datos){
+    var tablaClientes="";
+    
+    for(var i=0; i<datos.length; i++){
+        var ejec ="";
+    
+        switch(datos[i].CLIENVENDEDOR){
+            case "35" : ejec ="FM" ; break;
+            case "39" : ejec ="YP" ; break;
+            case "54" : ejec ="MS" ; break;
+            case "28" : ejec ="LG" ; break;
+            case "49" : ejec ="JR" ; break;
+            case "74" : ejec ="AL" ; break;
+            default : ejec ="" ; break;
+        }
+        
+        tablaClientes+="<tr>\
+        <td>"+datos[i].CLIENCODIGO+"</td>\
+        <td>"+datos[i].CLIENRAZON_SOCIAL+"</td>\
+        <td>"+datos[i].EMPCODIGO+"</td>\
+        <td>"+ejec+"</td>\
+        <td>"+datos[i].CLIENDOMICILIO+"</td>\
+        <td>"+datos[i].CLIENTIPIDEN+"</td>\
+        <td>"+datos[i].CLIENNUM_IDENTIFICACION+"</td>\
+        <td>"+datos[i].CLIENTELEFONO1+"</td>\
+    </tr>"
+        
+    }
+
+    tablaClientes+="\</tbody></table>";
+    
+    $("#cuerpoTabla").append(tablaClientes);
+    $('#tablaListado').DataTable( {
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+        ],
+        buttons: [
+            {
+                extend: 'pageLength',
+                text: "VER 10 FILAS"
+            },
+            {
+                extend: 'print',
+                title: 'LISTADO PERSONAL',
+                text: 'IMPRIMIR'
+            },
+            {
+                extend: 'pdfHtml5',
+                download: 'open',
+                title: 'LISTADO PERSONAL',
+                text: 'EXPORTAR PDF'
+            }
+        ]
+    } );
+  
+    
+}    
+
+</script>

@@ -1,0 +1,81 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">REGISTRO DE NUEVO BANCO</h3>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION GENERAL DE BANCO-->
+        <div class="col-12 col-md-5 col-xl-4 form-group text-center">
+         
+          <!--CODIGO-->
+          <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. REGISTRO EN EL SISTEMA-->
+          <h6 class="d-none">Fecha de registro: <span id="fechaRegistro"></span></h6>
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+   
+  <!--DATOS DEL BANCO-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombre">Nombre</label>
+          <input required type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar Nombre">
+          <small id="nombreHelp" class="form-text text-muted">Ejemplo:CHARLESTON FINANCIAL</small>
+        </div>
+
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="estado">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>  
+  
+  
+    <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+     <button type="button"  class="btn btn-guardar" onclick="vBanco.validar('REGISTRAR');return false">Guardar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+  </div>
+  
+  <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+
+</form>
+
+<script>
+document.getElementById("reset").onclick = function() {limpiarMensaje()};
+
+//--CARGAR ESTADO--
+vBanco.mostrarEstado();  
+
+//--LIMPIAR--
+ function limpiarMensaje(){
+     $("#resultado").text("");
+ }      
+    
+</script>

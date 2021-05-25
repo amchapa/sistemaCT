@@ -1,0 +1,141 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="listado">
+  
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">HISTORIAL LABORAL</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">
+         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          
+        </div>
+        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">
+          
+          <!--APELLIDOS-->
+          <label for="apellidos">Apellidos</label>
+          <input readonly type="text" class="form-control" id="apellidos">
+
+          <!--NOMBRE-->
+          <label for="nombre">Nombres</label>
+          <input readonly type="text" class="form-control" id="nombre">
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--CONTENIDO PRINCIPAL DE LA VISTA-->
+  <section id="tablas">
+    <tr></tr>
+  </section>
+    
+</section>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script>
+
+cargarDatos(personal)
+  
+function cargarDatos(personal){
+    
+   var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalTodoContratado.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                $("#listado .card").html("ERROR: "+datos.message)
+            }else{
+                $("#nombre").val(datos[0].PERSNOMBRE)
+                $("#apellidos").val(datos[0].PERSAPELLIDO_PATERNO+ " "+datos[0].PERSAPELLIDO_MATERNO)
+
+                if(datos[0].PERSFOTO!=""){
+                  document.getElementById('previewFoto').src = datos[0].PERSFOTO;
+                }
+
+                var titulo="";
+                var cuerpo="";var c=1;
+                var listadoempresa = new Array();
+                var empresa= datos[0].EMPCODIGO2;
+                for (var i=0;i<datos.length;i++){
+                    if (i==0){
+                         titulo+="<div id='empresa' class='tituloSeccion'>"+datos[i].EMPCODIGO2+"</div><table class='table my-3'><thead><tr>\
+                                        <th>#</th>\
+                                        <th>PERIODO</th>\
+                                        <th>FECHA DE CONTRATACION</th>\
+                                        <th>FECHA FINAL</th>\
+                                        <th>VIGENCIA</th>\
+                                        <th>CONTRATO</th>\
+                                    <tr></thead><tbody id="+i+"></tbody></table>"
+                        listadoempresa[i]=datos[i].EMPCODIGO2;
+
+                    }else if (empresa!=datos[i].EMPCODIGO2){
+                        titulo+="<div id='empresa' class='tituloSeccion'>"+datos[i].EMPCODIGO2+"</div><table class='table my-3'><thead><tr>\
+                                        <th>#</th>\
+                                        <th>PERIODO</th>\
+                                        <th>FECHA DE CONTRATACION</th>\
+                                        <th>FECHA FINAL</th>\
+                                        <th>VIGENCIA</th>\
+                                        <th>CONTRATO</th>\
+                                    </tr></thead><tbody id="+i+"></tbody></table>"
+                        empresa=datos[i].EMPCODIGO2;
+                        listadoempresa[i]=datos[i].EMPCODIGO2;
+                    }
+
+                }
+                $("#tablas").html(titulo);
+                for (var j=0;j<listadoempresa.length;j++){ 
+                    for (var i=0;i<datos.length;i++){
+                        if (listadoempresa[j]==datos[i].EMPCODIGO2){
+
+                      var periodo = vPersonal.fechaContratacion(datos[i].DETCONTRFECHA_CONTRATACION,datos[i].DETCONTRTIEMPO);
+                        cfincontrato=periodo.split("al");
+
+                        cuerpo +="<tr>\
+                                    <td class='text-center'>"+c+"</td>\
+                                    <td class='text-center'> "+periodo+"</td>\
+                                    <td class='text-center'>"+datos[i].DETCONTRFECHA_CONTRATACION+"</td>\
+                                    <td class='text-center'>"+cfincontrato[1]+"</td>\
+                                    <td class='text-center'>"+datos[i].DETCONTRTIEMPO+"</td>\
+                                    <td class='text-center'>"+datos[i].DETCONTRCODIGO+"</td>\
+                                   </tr>"
+                            c=c+1;
+
+                        }   
+                    } $("#"+j+"").html(cuerpo); cuerpo="";c=1;
+                }
+            }
+        }
+    }); 
+}
+  
+</script>

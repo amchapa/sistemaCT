@@ -1,0 +1,338 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">REGISTRO DE NUEVO CLIENTE C/ CREDITO</h3>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION GENERAL DEL CLIENTE-->
+        <div class="col-12 col-md-5 col-xl-4 form-group text-center">
+         
+          <!--CODIGO-->
+          <h6>Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. REGISTRO EN EL SISTEMA-->
+          <h6>Fecha de registro: <span id="fechaRegistro"></span></h6>
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Personales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--RAZON SOCIAL-->
+        <div class="col-12 col-md-8 form-group">
+          <label for="razonSocial">Razon Social</label>
+          <input required type="text" class="form-control" id="razonSocial" aria-describedby="razonSocialHelp" placeholder="Ingresar razon social" readonly>
+          <small id="razonSocialHelp" class="form-text text-muted">Ejemplo: Banco de Credito del Peru.</small>
+        </div>
+
+        <!--ACRONIMO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="nombreCorto">Acronimo</label>
+          <input required type="text" class="form-control" id="nombreCorto" aria-describedby="nombreCortoHelp" placeholder="Ingresar nombre abreviado del cliente" readonly>
+          <small id="nombreCortoHelp" class="form-text text-muted">Ejemplo: BCP</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--IDENTIFICACION-->
+        <div class="col-12 col-md form-group form-inline">
+          <label for="tipiden">Identificacion</label>
+          <div class="form-inline">
+            <input required id="tipiden" class="form-control w-25" readonly>
+            <input required type="number" class="form-control w-75" id="numIdentificacion" aria-describedby="numIdentificacionHelp" placeholder="Ingresar numero de identificacion" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" readonly>
+          </div>
+          <small id="numIdentificacionHelp" class="form-text text-muted">Segun el tipo de documento, ingresar el numero de identificacion.</small>
+        </div>
+        
+        <!--GIRO EMPRESA -->
+        <div class="col-12 col-md form-group">
+          <label for="giroEmpresa">Giro de empresa</label>
+          <input type="text" class="form-control" id="giroEmpresa" aria-describedby="giroEmpresaHelp" placeholder="Ingresar el sector donde se desempeña la empresa." readonly>
+          <small id="giroEmpresaHelp" class="form-text text-muted">Ejemplo: Imprenta, Importacion, Comercio, Publicidad...</small>
+        </div>
+        
+        <!--TIPO DE CLIENTE-->
+        <div class="col-12 col-md form-group">
+          <label for="tipo">Tipo de cliente</label>
+          <input required id="tipo" class="form-control" readonly>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--EMPRESA ASIGNADA-->
+        <div class="col-12 col-md form-group">
+          <label for="empresa">Empresa</label>
+          <input required id="empresa" class="form-control" aria-describedby="empresaHelp" readonly>
+          <small id="empresaHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--EJECUTIVO ASIGNADO-->
+        <div class="col-12 col-md form-group">
+          <label for="vendedor">Vendedor asignado</label>
+          <input name="vendedor" id="vendedor" class="form-control" readonly>
+          <small id="vendedorHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--ESTADO-->
+        <div class="col-12 col-md form-group">
+          <label for="estado">Estado</label>
+          <input required id="estado" class="form-control" aria-describedby="estadoHelp" readonly>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+      </div>
+   
+    </div>
+  </div>
+
+  <!--DATOS CREDITO-->
+  <div class="card" id=creditoDiv>
+    <h5 class="card-header h5">Datos del Credito</h5>
+    <div class="card-body">
+
+      <div class="row">
+      
+        <!--CREDITO -->
+        <div class="col-12 col-md form-group">
+          <label for="credito">Credito</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="credito">
+        </div>
+        
+        <!--MONEDA -->
+        <div class="col-12 col-md form-group">
+          <label for="moneda">Moneda</label>
+          <select id="moneda" class="form-control">
+              <option value="SOLES">SOLES</option>
+              <option value="DOLARES">DOLARES</option>
+              <option value="EUROS">EUROS</option>
+          </select>
+        </div>
+        
+        <!--DEUDA -->
+        <div class="col-12 col-md form-group">
+          <label for="deuda">Deuda</label>
+          <input id="deuda" type="text" class="form-control" disabled>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--PLAZO-->
+        <div class="col-12 col-md form-group">
+          <label for="plazo">Plazo</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="4"  class="form-control" id="plazo">
+        </div>
+        
+        <!--COMPROBANTE-->
+        <div class="col-12 col-md form-group">
+          <label for="comprob">Comprobante</label>
+          <select id="comprob" class="form-control">
+              <option value="">NINGUNO</option>
+              <option value="FACTURA">FACTURA</option>
+              <option value="ORDSERV">ORDEN DE SERVICIO</option>
+          </select>
+        </div>
+        
+        <!--FORMA DE PAGO-->
+        <div class="col-12 col-md form-group">
+          <label for="fpago">Forma de Pago</label>
+          <select id="fpago" class="form-control">
+              <option value="">NINGUNO</option>
+              <option value="C-CANJE">C/CANJE</option>
+              <option value="CH-DIF">CH/DIF</option>
+              <option value="LETRA">LETRA</option>
+          </select>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" onclick="validar();return false" class="btn btn-guardar">Guardar</button>
+  </div>
+
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaClientes/VistaClientes.js"></script>
+
+<script type="text/javascript">   
+    
+cargarDatos(cliente); 
+    
+/*=============================================
+    CARGAR DATOS DEL CLIENTE
+=============================================*/
+
+function cargarDatos(cliente){
+    
+    var $nombre={
+        '_nombre' : cliente
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarDatosClientes.php',
+        type: 'POST',
+        data: $nombre,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            
+            var vendedor = "";
+ 
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#codigo").text(datos.CLIENCODIGO);
+                $("#nombreCorto").val(datos.CLIENNOMBRE_CORTO);
+                $("#fechaRegistro").text(datos.CLIENFECHA_REGISTRO);
+                $("#razonSocial").val(datos.CLIENRAZON_SOCIAL);
+                $("#tipiden").val(datos.CLIENTIPIDEN);
+                $("#numIdentificacion").val(datos.CLIENNUM_IDENTIFICACION);
+                $("#empresa").val(datos.EMPDESCRIPCION);
+                $("#giroEmpresa").val(datos.CLIENGIRO_EMPRESA);
+                $("#tipo").val(datos.CLIENTIPO);
+                $("#estado").val(datos.ESTDESCRIPCION)
+                switch(datos.CLIENVENDEDOR) {
+                    case "35":
+                        vendedor = "Fabiola Morales"
+                        break;
+                    case "39":
+                        vendedor = "Yrma Paucar"
+                        break;
+                    case "54":
+                        vendedor = "Milagros Salinas"
+                        break;
+                    case "28":
+                        vendedor = "Liz Guerrero";
+                        break;
+                    case "49":
+                        vendedor = "Jose Ramos Ledesma";
+                        break;
+                    case "74":
+                        vendedor = "Alan lavanda";
+                        break;
+                    }
+                $("#vendedor").val(vendedor);
+                $("#deuda").val(datos.CLIENDEUDA);
+                $("#credito").val(datos.CLIENCREDITO);
+                $("#moneda").val(datos.CLIENMONEDA);
+                $("#plazo").val(datos.CLIENPLAZO_PAGO);
+                if(datos.CLIENTIPCOMPROB != "" || datos.CLIENFORMPAGO != ""){
+                    $("#creditoDiv").addClass("d-none");
+                    mostrarMensaje("advertencia","EL CLIENTE YA CUENTA CON UN CREDITO EXISTENTE, POR FAVOR COMPROBARLO EN LA VISTA DE ACTUALIZAR CLIENTE")
+                    //$("#comprob option[value="+ datos.CLIENTIPCOMPROB+"]").attr("selected",true);
+                    //$("#fpago option[value="+ datos.CLIENFORM_PAGO+"]").attr("selected",true);
+                }
+            }
+        }
+    });  
+}       
+
+/*=============================================
+    VALIDAR FORMULARIO
+=============================================*/
+    
+function validar(){
+    
+    var R1 = $("#credito").val();
+    var R3 = $("#moneda").val();
+    var R5 = $("#plazo").val();
+    var R6 = $("#comprob").val();
+    var R7 = $("#fpago").val();
+    
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        alert('ERROR: El campo no debe ir vacío o lleno solamente espacios en blanco');
+        $("#credito").focus();
+    }
+    else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+        alert('ERROR: El campo no debe ir vacío o lleno solamente espacios en blanco');
+        $("#moneda").focus();
+    }
+    else if(R5 == null || R5.length == 0 || /^\s+$/.test(R5)){
+        alert('ERROR: El campo no debe ir vacío o lleno solamente espacios en blanco');
+        $("#plazo").focus();
+    }
+    else if(R6 == null || R6.length == 0 || /^\s+$/.test(R6)){
+        alert('ERROR: El campo no debe ir vacío o lleno solamente espacios en blanco');
+        $("#comprob").focus();
+    }
+    else if(R7 == null || R7.length == 0 || /^\s+$/.test(R7)){
+        alert('ERROR: El campo no debe ir vacío o lleno solamente espacios en blanco');
+        $("#fpago").focus();
+    }
+    
+    else{
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        RegistrarClientesCredito();
+    }
+        
+}    
+    
+/*=============================================
+   ENVIAR FORMULARIO
+=============================================*/
+
+function RegistrarClientesCredito(){
+    var $cliente={
+        '_codigo' : $("#codigo").text(),
+        '_credito' : $("#credito").val(),
+        '_moneda' : $("#moneda").val(),
+        '_plazo' : $("#plazo").val(),
+        '_comprob' : $("#comprob").val(),
+        '_fpago' : $("#fpago").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_RegistrarClientesCredito.php',
+        type: 'POST',
+        data: $cliente,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+            }
+        }
+    });
+}   
+     
+</script>

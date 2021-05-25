@@ -1,0 +1,439 @@
+<!--OPCIONES DE LA VISTA-->
+ <div class="w-responsive mx-auto my-5">
+  <div class="row text-center">
+   
+    <!--OPCION REGISTRAR ENTRADA/SALIDA-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="habilitarDiv('listadoPersonal')">POR PERSONAL</button></div>
+    
+    <!--OPCION LISTAR-->
+    <div class="col"><button class="btn h btn-lg b boton"  onclick="habilitarDiv('listadoEmpresa')">POR EMPRESA</button></div>
+    
+    <!--OPCION LISTAR-->
+    <div class="col"><button class="btn h btn-lg b boton"  onclick="habilitarDiv('listadoSelect')">AÑADIR</button></div>
+    
+  </div>
+</div>
+
+<!--LISTADO DE BUSQUEDAS DE LA VISTA-->
+<div class="w-responsive mx-auto my-5">
+    <div id="listadoGeneral" class="text-center boton b white-text py-1">LISTADO DE HORARIO DE CONTROL</div>
+    
+    <!--LISTADO DE CONTROL DE HORARIO X PERSONAL-->
+    <div id="listadoPersonal" class="formulario text-center mt-4 pb-3">
+        <p class="b subform white-text py-1">BUSCAR X PERSONAL</p>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="nombre">Nombre</label>
+            <select name="persona" class="w-responsive" id="persona"></select>
+           </div>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="finicioPersonal">Fecha Inicio</label>
+            <input class="w-responsive" id="finicioPersonal" type="date">
+           </div>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto"> 
+            <label class="mr-auto pr-2" for="ffinalPersonal">Fecha Final</label>
+            <input class="w-responsive" id="ffinalPersonal" type="date">
+           </div>
+           <button id="listarxPersonal" type="submit"  class="px-5">Buscar</button>
+    </div>
+    
+    <!--LISTADO x EMPRESA-->
+    <div id="listadoEmpresa" class="formulario text-center mt-4 pb-3 d-none">
+        <form action="POST">
+          <p class="b subform white-text py-1">BUSCAR X EMPRESA</p>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="nombre">Empresa</label>
+            <select name="empresa" class="w-responsive" id="empresa"></select>
+           </div>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="finicio">Fecha Inicio</label>
+            <input class="w-responsive" id="finicioEmpresa" type="date">
+           </div>
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto"> 
+            <label class="mr-auto pr-2" for="ffinal">Fecha Final</label>
+            <input class="w-responsive" id="ffinalEmpresa" type="date">
+           </div>
+           <button type="button" id="listarXFecha" class="px-5">Buscar</button>
+        </form>
+        
+    </div>
+    
+    <div id="listadoSelect" class="formulario text-center mt-4 pb-3 d-none">
+      <p class="b subform white-text py-1">ELEGIR PERSONAL</p>
+       <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="nombre">Nombre</label>
+            <select name="personal" class="w-responsive" id="personal"></select>
+        </div> 
+        <button type="button" id="listarParaAnadir" class="px-5">Buscar</button>
+    </div>
+    
+    <div id="formularioAñadir" class="formulario text-center mt-4 pb-3 d-none">
+       <p class="b subform white-text py-1">AÑADIR A HORARIO</p>
+        <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+
+        <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+          <label class="mr-auto pr-2" for="aNombre">Nombre</label>
+          <input  id="aNombre" type="text" class="w-responsive" disabled>
+        </div>
+
+         <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+          <label for="aEmpresa">Empresa</label>
+          <input  id="aEmpresa" type="text" class="w-responsive" disabled>
+        </div>
+
+        <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+          <label for="aDEntrada">Dia de Entrada</label>
+          <input  id="aDEntrada" type="date" class="w-responsive">
+        </div>
+
+        <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+          <label for="aDSalida">Dia de Salida</label>
+          <input  id="aDSalida" type="date" class="w-responsive">
+        </div>
+
+        <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+          <label for="aObservaciones">Observaciones</label>
+          <input  id="aObservaciones" type="text" class="w-responsive">
+        </div>
+
+        <button class="px-5" onclick="validacionDeAñadir()">GUARDAR</button>
+    </div>
+    
+</div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script>
+    
+/*=============================================
+    ELEGIR OPCION DE LISTADO
+=============================================*/
+var opcion="";
+var select="";
+var finicio, ffinal;
+var array = new Array();
+    
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function() {
+    mostrarPersonal()
+    mostrarEmpresas()
+});
+
+//--GENERAR OPCIONES DEL PERSONAL--
+function mostrarPersonal(){
+    var boxPersonal="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxPersonal+="<option value='' selected>Elegir Personal</option>";
+            $("#persona").html(boxPersonal);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                boxPersonal+="<option value='0' selected>Todo el Personal</option>";
+                $("#persona").html(boxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                        boxPersonal+="<option value='0'>Todo el Personal</option>";
+                    }
+                    boxPersonal+="<option value='"+datos[i].PERSCODIGO+"'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+" "+datos[i].PERSNOMBRE+"</option>";
+                }
+                $("#persona").html(boxPersonal);
+                $("#personal").html(boxPersonal);
+            }
+        }
+    });  
+    
+}
+    
+//--GENERAR OPCIONES DE EMPRESA--
+function mostrarEmpresas(){
+    var boxEmpresas="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Empresa/Controlador_MostrarTodosEmpresa.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxEmpresas+="<option value='' selected>Elegir Empresa</option>";
+            $("#empresa").html(boxEmpresas);
+            $("#Empresa").html(boxEmpresas);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxEmpresas+="<option value='' selected>Elegir Empresa</option>";
+                $("#empresa").html(boxEmpresas);
+                $("#Empresa").html(boxEmpresas);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEmpresas+="<option value='' selected>Elegir Empresa</option>";
+                    }
+                    boxEmpresas+="<option value='"+datos[i].EMPCODIGO+"'>"+datos[i].EMPDESCRIPCION+"</option>";
+                }
+                $("#empresa").html(boxEmpresas);
+                $("#Empresa").html(boxEmpresas);
+            }
+        }
+    });  
+    
+}
+    
+//--FUNCION PARA HABILITAR DIV CORRESPONDIENTE--
+function habilitarDiv(id){
+    $("#formularioAñadir").addClass("d-none");
+    switch(id){
+        case "listadoPersonal":
+            $("#listadoEmpresa").addClass("d-none");
+            $("#listadoSelect").addClass("d-none");
+            $("#listadoGeneral").removeClass("d-none");
+            $("#"+id).removeClass("d-none");
+        break;
+        case "listadoEmpresa":
+            $("#listadoPersonal").addClass("d-none");
+            $("#listadoSelect").addClass("d-none");
+            $("#listadoGeneral").removeClass("d-none");
+            $("#"+id).removeClass("d-none");
+        break;
+        case "listadoSelect":
+            $(id).removeClass("d-none");
+            $("#listadoPersonal").addClass("d-none");
+            $("#listadoEmpresa").addClass("d-none");
+            $("#listadoGeneral").addClass("d-none");
+            $("#"+id).removeClass("d-none");
+        break;
+    }   
+}
+
+//--BTN listarxPersonal PARA ACTIVAR FUNCION--
+$("#listarxPersonal").click(function(){
+    select=$("#persona").val();
+    finicio = document.getElementById("finicioPersonal").value;
+    ffinal = document.getElementById("ffinalPersonal").value;
+    if(select=="0" && finicio!="" && ffinal!=""){
+        select+="/"+finicio+"/"+ffinal;
+        opcion="TODO";
+        ListarControlHorario(select,opcion);
+    }else if(select != "" && finicio!="" && ffinal!=""){
+        select+="/"+finicio+"/"+ffinal;
+        opcion="PERSONAL";
+        ListarControlHorario(select,opcion);
+    }else{mostrarMensaje("advertencia","Llenar campos para la busqueda")}
+    
+ });
+    
+//--BTN listarXFecha PARA ACTIVAR FUNCION--    
+$("#listarXFecha").click(function(){
+    select=$("#empresa").val();
+    finicio = document.getElementById("finicioEmpresa").value;
+    ffinal = document.getElementById("ffinalEmpresa").value;
+    if(select!="" && finicio != "" && ffinal != ""){
+        select+="/"+finicio+"/"+ffinal;
+        opcion="EMPRESA";
+        ListarControlHorario(select,opcion);
+    }else{mostrarMensaje("advertencia","Llenar campos para la busqueda")}
+    
+ });
+    
+//--BTN listarParaAnadir PARA ACTIVAR FUNCION--    
+$("#listarParaAnadir").click(function(){
+    var personal = document.getElementById("personal").value;
+    
+    if(personal != ""){
+        $("#listadoSelect").addClass("d-none");
+        $("#formularioAñadir").removeClass("d-none");
+        var $personal={'_personal' : personal}
+    }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarDatosPersonal.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#codigo").text(datos.PERSNUM_IDENTIFICACION);
+                $("#aEmpresa").val(datos.EMPCODIGO);
+                $("#aNombre").val(datos.PERSNOMBRE+" "+datos.PERSAPELLIDO_PATERNO+" "+datos.PERSAPELLIDO_MATERNO);
+            }
+        }
+    }); 
+    
+});
+    
+//--FUNCION PARA VALIDAR EN LA VENTANA AÑADIR--
+function validacionDeAñadir(){
+    
+    var R1 = $("#aEmpresa").val();
+    var R2 = $("#aDEntrada").val();
+    var R3 = $("#aDSalida").val();
+    
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#aEmpresa").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#aDEntrada").focus();
+    }
+    else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#aDSalida").focus();
+    }else{
+        guardarControlHorario()
+    }
+}
+    
+//--FUNCION PARA GUARDAR LOS DATOS DE LA VENTANA AÑADIR--  
+function guardarControlHorario(){
+    
+    var numIdentificacion = $("#codigo").text();
+    var aDEntrada = $("#aDEntrada").val();
+    var aDSalida = $("#aDSalida").val();
+    var hEntrada = "00:00:00";
+    var hSalida = "00:00:00";
+    var observaciones = $("#aObservaciones").val();
+    var dias = parseInt( moment(aDSalida).diff(moment(aDEntrada), 'days'))+1;
+    var diasIniciales = new Array();
+    var diasFinales = new Array();
+
+    for(var i=0; i<dias;i++){
+        diasIniciales[i]=aDEntrada;
+        diasFinales[i]=aDEntrada;
+        aDEntrada=vPersonal.calculoFechaFinalxDias(diasIniciales[i],1); 
+        
+        var $datos ={
+        '_numIdentificacion':numIdentificacion,
+        '_aDEntrada':diasIniciales[i],
+        '_aDSalida':diasFinales[i],
+        '_hEntrada':hEntrada,
+        '_hSalida':hSalida,
+        '_observaciones':observaciones
+    }
+        vPersonal.registrarControlHorario($datos,"añadir")
+    }
+}
+    
+//--FUNCION PARA VERIFICAR EL HORARIO DE INGRESO/SALIDA-- 
+function verificarControl(codigo){
+    var Hoy = new Date();
+    var fechaRegistrar=Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+    var hSalida=Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +Hoy.getSeconds(); 
+    
+    var $valores={
+        '_codigo':codigo,
+        '_fecha': fechaRegistrar
+    }
+    
+    var $datos={
+        '_numIdentificacion':codigo,
+        '_aDEntrada':fechaRegistrar,
+        '_aDSalida':"",
+        '_hEntrada':hSalida,
+        '_hSalida':"",
+        '_observaciones':""
+    }
+    
+    var $actualizar={
+        '_numIdentificacion':codigo,
+        '_aDEntrada':fechaRegistrar,
+        '_aDSalida':fechaRegistrar,
+        '_hSalida':hSalida
+    }
+    
+    var $diaSgte={
+        '_numIdentificacion':codigo,
+        '_aDEntrada':Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + (Hoy.getDate()-1),
+        '_aDSalida':fechaRegistrar,
+        '_hSalida':hSalida
+    }
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_VerificarControlHorario.php",
+        type: 'POST',
+        data: $valores, 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                console.log("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                console.log("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                console.log("error",'ERROR: '+datos.message);
+                vPersonal.registrarControlHorario($datos,"verificar")
+            }else{
+        
+                if((new Date(datos.FECHA_CONT_HOR_INGRESO.replace(/-/g, '\/').replace(/T.+/, ''))).getTime() == (new Date(fechaRegistrar)).getTime()){
+                    if(datos.FECHA_CONT_HOR_SALIDA==null && datos.HORA_SALIDA == "00:00:00"){
+                        vPersonal.actualizarControlHorario($actualizar,"actualizar")
+                    }else{
+                        console.log("registro del dia ya realizado")
+                    }  
+                }else if(new Date(vPersonal.calculoFechaFinalxDias(datos.FECHA_CONT_HOR_INGRESO,1).replace(/-/g, '\/').replace(/T.+/, '')).getTime() == new Date(fechaRegistrar).getTime() && datos.FECHA_CONT_HOR_SALIDA==null && datos.HORA_SALIDA == "00:00:00"){
+                    vPersonal.actualizarControlHorario($diaSgte,"diaSgte")
+                }else{
+                    vPersonal.registrarControlHorario($datos,"verificar")
+                }
+                
+            }
+        }
+    }); 
+} 
+
+function grupos(){
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosGrupos.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            
+            if(datos.response=="0"){
+            }else{
+                console.log(datos)
+            }
+        }
+    });
+}    
+    
+</script>

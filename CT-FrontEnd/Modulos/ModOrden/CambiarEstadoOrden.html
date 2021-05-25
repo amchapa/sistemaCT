@@ -1,0 +1,39 @@
+<!--CONTENIDO DEL CUERPO-->
+<form>
+<div id="encabezadoPrincipal" class="container font-weight-bold h2-responsive principal-text text-center my-4">CAMBIAR ESTADO ORDEN</div>
+
+<div id="ListadoPrincipal" class="table-responsive">
+
+    <table id="TITULO" class="table my-3">   
+        <tbody>
+            <tr>
+                <td class="formulario">Numero de Orden :</td>
+                <td class="text-center"><input id="numOrden" placeholder="190903001" type="text" ></td>
+                <td><button id="buscarOrden" class="btn boton" onclick="slider3.validarcodigo(); return false">BUSCAR</button></td>
+                <td class="formulario">Cambiar Estado</td>
+                <td><select id="estado"></select></td>
+                <td><button id="cambiarestado" class="btn boton" onclick="slider3.actualizarEstado(); return false">ACTUALIZAR</button></td>
+            </tr>
+        </tbody>
+    </table>
+   
+</div>
+
+<div id="ListadoDeOrdenes" class="card my-4">
+<div id="titulo" class="container font-weight-bold h3-responsive my-3 strong-text text-center"></div>
+
+<table id="tablaOrdenes" class='table table-striped table-bordered text-center my-3' style="border-top-color: #007bff" cellspacing='0' >
+  <thead><tr id="tituloColumnas"></tr></thead>
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+</div>
+
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/Modorden/VistaPrincipal.js"></script>
+
+<script>
+slider3.Estado(0);  
+</script>

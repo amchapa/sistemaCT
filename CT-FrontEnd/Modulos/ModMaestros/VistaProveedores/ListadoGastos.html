@@ -1,0 +1,93 @@
+<div id="encabezado" class="container font-weight-bold h2-responsive principal-text text-center">LISTAR PROVEEDORES X FECHA</div>
+<div id="titulo" class="container font-weight-bold h4-responsive principal-text text-center"></div>
+
+<table id="tablaGastoxFecha" class='table table-striped table-bordered' cellspacing='0' width='100%'>
+  <thead><tr>
+      <th class='th-sm'>CODIGO</th>
+      <th class='th-sm'>PROVEEDOR</th>
+      <th class='th-sm'>FECHA EMISION</th>
+      <th class='th-sm'>FECHA VENCIMIENTO</th>
+      <th class='th-sm'>FECHA PAGO</th>
+      <th class='th-sm'>IMPORTE</th>
+      <th class='th-sm'>N COMPROBANTE</th>
+      <th class='th-sm'>MONEDA</th>
+      <th class='th-sm'>TIPO</th>
+      <th class='th-sm'>CATEGORIA</th>
+      <th class='th-sm'>EMPRESA</th>
+      <th class='th-sm'>ARCHIVO</th>
+      <th class='th-sm'>ORDEN</th>
+      <th class='th-sm'>OBSERVACION</th>
+    </tr></thead>
+   
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaProveedores/VistaProveedores.js"></script>
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+    
+ListarFechas(fInicio,fFinal);
+    
+function ListarFechas(fInicio,fFinal){
+    var $fechas={'_finicio':fInicio,
+                 '_ffinal': fFinal
+                };
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Proveedor/Controlador_MostrarxFecha.php",
+        type: 'POST',
+        data: $opcion, 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                console.log('ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                mostrarDatosGasto(datos);
+            }
+        }
+    });
+}
+    
+/*=============================================
+    MOSTRAR DATOS DEL PROVEEDOR POR FECHA
+=============================================*/     
+    
+function mostrarDatosGasto(datos){
+    var tablaGasto="";
+    /*FALTA LA TABLA DE GASTOS*/
+    for(var i=0; i<datos.length; i++){
+        
+        tablaGasto+="<tr>\
+        <td>"+datos[i].CLIENCODIGO+"</td>\
+        <td>"+datos[i].CLIENRAZON_SOCIAL+"</td>\
+        <td>"+datos[i].EMPCODIGO+"</td>\
+        <td>"+datos[i].CLIENDOMICILIO+"</td>\
+        <td>"+datos[i].CLIENTIPIDEN+"</td>\
+        <td>"+datos[i].CLIENNUM_IDENTIFICACION+"</td>\
+        <td>"+datos[i].CLIENTELEFONO1+"</td>\
+    </tr>"
+        
+    }
+
+    tablaGasto+="\</tbody></table>";
+    
+    console.log(tablaGasto);
+    
+    $("#cuerpoTabla").append(tablaGasto);
+    $('#tablaGastoxFecha').DataTable();
+    $('.dataTables_length').addClass('bs-select');
+    
+}    
+    
+</script>

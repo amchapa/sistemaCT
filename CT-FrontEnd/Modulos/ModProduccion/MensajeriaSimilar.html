@@ -1,0 +1,91 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="listado">
+  
+  <!--TITULO DE LA VISTA-->
+  <h3 class="h3-responsive titulo">ELEGIR PLANTILLA CREADA</h3>
+
+  <!--CONTENIDO PRINCIPAL DE LA VISTA-->
+  <table id="tablaListado" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead><tr>
+        <th>COD</th>
+        <th>TIPO MENSAJERIA</th>
+        <th>DESCRIPCION</th>
+        <th>DISTRITO</th>
+        <th>FECHA DESTINO</th>
+        <th>RESPONSABLE</th>
+    <tbody id="cuerpoTabla"></tbody>
+  </table>
+</section>
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+
+
+<script type="text/javascript">
+ 
+var opcion, tipo ="";    
+    
+$(document).ready(function(){
+    cargarDatos(opcion);
+});    
+
+/*FUNCION PARA TRAER DATOS POR ORD. PRODUCCION*/
+function cargarDatos(codigo){
+    
+    var $codigo={'_codigo':codigo}
+
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarRegistrosTotalXOt.php',
+        type: 'POST',
+        data: $codigo,
+        datatype: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje('ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                llenarTabla(datos)
+            }
+        } 
+    });
+}
+    
+/*FUNCION PARA CARGAR LOS DATOS POR ORD. PRODUCCION*/
+function llenarTabla(datos){
+    var tablaListado="";
+    
+    for(var i=0; i<datos.length; i++){
+        
+        tablaListado+="<tr id='"+datos[i].PRODESCODIGO+"' onclick='cambiarHoja(this.id)'>\
+                        <td>"+datos[i].PRODESTIPO_MENSAJERIA+"</td>\
+                        <td>"+vProduccion.cambiarTextoTipMensajeria(datos[i].PRODESTIP_MENSAJERIA)+"</td>\
+                        <td>"+datos[i].PRODES_DESCRIPCION+"</td>\
+                        <td>"+datos[i].DISTRNOMBRE+"</td>\
+                        <td>"+vProduccion.formatFechaOriginal(datos[i].PRODES_FECHA_DESTINO)+"</td>\
+                        <td>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO+"</td>\
+                    </tr>"
+        
+    }
+
+    tablaListado+="\</tbody></table>";
+    
+    $("#cuerpoTabla").append(tablaListado);    
+    $('#tablaListado').DataTable();
+    $('.dataTables_length').addClass('bs-select');
+    
+} 
+  
+/*FUNCION PARA REDIRIGIR A LA HOJA DE MENSAJERIA NUEVA*/    
+function cambiarHoja(id){
+    tipo="similar";
+    opcion = id;
+    MensajeriaNueva(opcion,personal,tipo);
+}
+    
+</script>

@@ -1,0 +1,280 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="menuPersonal" class="menu">
+
+  <!--OPCIONES GENERALES DE LA VISTA-->
+  <section id="menuPersonal-Generales"> 
+    <div class="w-responsive mx-auto my-3">
+
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion">FUNCIONES GENERALES</div>
+
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION NUEVO PERSONAL-->
+        <div class="col"><button class="btn btn-lg btnGeneral" onclick="NuevoPersonal();return false"><i class="fas fa-user-plus fa-4x"></i><br>Registrar Nuevo Personal</button></div>
+
+        <!--OPCION ACTUALIZAR PERSONAL-->
+        <div class="col"><button id="actualizarPersonal" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-user-edit fa-4x"></i><br>Actualizar Personal</button></div>
+
+        <!--OPCION PERSONAL DE BAJA-->
+        <div class="col"><button id="personalBaja" class="btn btn-lg btnGeneral" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-user-slash fa-4x"></i><br>Personal de Baja</button></div>
+
+        <!--OPCION LISTAR TODO EL PERSONAL-->
+        <div class="col"><button class="btn btn-lg btnGeneral" onclick="ListarPersonal();return false"><i class="fas fa-users fa-4x"></i><br>Listar Todo el Personal</button></div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!--OPCIONES DE CONTRATO-->
+  <section id="menuPersonal-Contrato">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion">CONDICION LABORAL</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION ACTUALIZAR CONDICION LABORAL-->
+        <div class="col"><button id="condicionLaboral" class="btn btn-lg btnSecundario1" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-briefcase fa-4x"></i><br>Condicion Laboral</button></div>
+        
+        <!--OPCION RENOVACION CONTRATO-->
+        <div class="col"><button id="renovarContrato" class="btn btn-lg btnSecundario1" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-user-lock fa-4x"></i><br>Renovacion Contrato</button></div>
+        
+        <!--OPCION HISTORIAL LABORAL-->
+        <div class="col"><button id="historialLaboral" class="btn btn-lg btnSecundario1" data-toggle="modal" data-target="#listadoPersonal"><i class="far fa-address-card fa-4x"></i><br>Historial Laboral</button></div>
+
+        <!--OPCION CONSOLIDADO CONTRATOS-->
+        <div class="col"><button onclick="ConsolidadoContratos();return false" class="btn btn-lg btnSecundario1"><i class="fas fa-chart-bar fa-4x"></i><br>Consolidado Contratos</button></div>
+
+      </div>
+    </div>
+  </section>
+  
+  <!--OPCIONES DE VACACIONES-->
+  <section id="menuPersonal-Vacaciones">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion">VACACIONES</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION ASIGNAR VACACIONES-->
+        <div class="col"><button onclick="AsignarVacaciones();return false" class="btn btn-lg btnSecundario2"><i class="fas fa-chalkboard-teacher fa-4x"></i><br>Asignar Vacaciones</button></div>
+        
+        <!--OPCION PROGRAMAR VACACIONES-->
+        <div class="col"><button id="programarVacaciones" class="btn btn-lg btnSecundario2" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-user-clock fa-4x"></i><br>Programar Vacaciones</button></div>
+
+        <!--OPCION VACACIONES EXIGIBLES-->
+        <div class="col"><button onclick="VacacionesExigibles();return false" class="btn btn-lg btnSecundario2"><i class="fas fa-bell fa-4x"></i><br>Vacaciones Exigibles</button></div>
+
+      </div>
+      
+    </div>
+  </section>
+  
+  <!--CONTROL DEL PERSONAL-->
+  <section id="menuPersonal-Control">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion">CONTROL PERSONAL</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION REGISTRAR SOBRETIEMPOS
+        <div class="col"><button id="registrarSobretiempos" class="btn btn-lg btnSecundario3" data-toggle="modal" data-target="#listadoPersonal"><i class="fas fa-wrench fa-4x"></i><br>Registrar Sobretiempos</button></div>-->
+
+        <!--OPCION CONSOLIDADO SOBRETIEMPOS
+        <div class="col"><button id="consolidadoSobretiempos" class="btn btn-lg btnSecundario3"><i class="fas fa-people-carry fa-4x"></i><br>Consolidado Sobretiempos</button></div>-->
+
+        
+
+        <!--OPCION CONSOLIDADO ASISTENCIAS-->
+        <div class="col"><button id="consolidadoAsistencias" class="btn btn-lg btnSecundario3"><i class="fas fa-calendar-check fa-4x"></i><br>Consolidado Asistencias</button></div>
+
+        <!--OPCION CONTROL DE HORARIO-->
+        <div class="col"><button onclick="ControlHorario();return false" class="btn btn-lg btnSecundario3" ><i class="fas fa-users-cog fa-4x"></i><br>Control de Horario</button></div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL LISTAR PERSONAL -->
+  <div class="modal fade" id="listadoPersonal" tabindex="-1" role="dialog" aria-labelledby="listadoPersonalTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header principal">
+          <h5 class="modal-title white-text font-weight-bold">Elegir Personal</h5>
+          <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <select name="persona" id="persona" class="w-responsive"></select>
+          <button id="opPersonal" data-dismiss="modal">Buscar</button>
+        </div>
+
+      </div>
+
+  </div>
+  </div>
+
+</section>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script>    
+
+/*=============================================
+    CARGAR DATOS DEL PERSONAL
+=============================================*/
+var baja=false;
+  
+$("#personalBaja").click(function(){
+    mostrarPersonal("../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonalBaja.php"); 
+    baja=true;
+});
+  
+$("#renovarContrato").click(function(){
+    mostrarPersonal("../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_PersonalContrato.php"); 
+    baja=true;
+});
+  
+$("#historialLaboral").click(function(){
+    mostrarPersonal("../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalConHistorial.php"); 
+    baja=true;
+});
+  
+$("#programarVacaciones").click(function(){
+    mostrarPersonal("../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonalVacaciones.php"); 
+    baja=true;
+});
+  
+mostrarPersonal("../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php");   
+     
+function mostrarPersonal(url){
+    var boxPersonal="";
+    
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxPersonal+="<option value='' selected>Elegir Personal</option>";
+            $("#persona").html(boxPersonal);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                $("#persona").html(boxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPersonal+="<option value='' selected>Elegir Personal</option>";
+                    }
+                    boxPersonal+="<option value='"+datos[i].PERSCODIGO+"'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+" "+datos[i].PERSNOMBRE+"</option>";
+                }
+                $("#persona").html(boxPersonal);
+            }
+        }
+    });  
+    
+}
+    
+/*=============================================
+   BUSCAR X OPCION
+=============================================*/
+    
+var opPersonal=0;
+var buscar="NO";
+var personal,opcion;
+    
+$("#actualizarPersonal").click(function(){
+    opPersonal=1;
+    opcion="actualizarPersonal";
+});
+  
+$("#personalBaja").click(function(){
+    opPersonal=1;
+    opcion="personalBaja";
+});
+  
+$("#condicionLaboral").click(function(){
+    opPersonal=1;
+    opcion="condicionLaboral";
+});
+  
+$("#renovarContrato").click(function(){
+    opPersonal=1;
+    opcion="renovarContrato";
+});
+  
+$("#historialLaboral").click(function(){
+    opPersonal=1;
+    opcion="historialLaboral";
+});
+
+$("#programarVacaciones").click(function(){
+    opPersonal=1;
+    opcion="programarVacaciones";
+});    
+    
+$("#registrarSobretiempos").click(function(){
+    opPersonal=1;
+    opcion="registrarSobretiempos";
+}); 
+  
+$("#asistenciaDiaria").click(function(){
+    opPersonal=1;
+    opcion="asistenciaDiaria";
+}); 
+  
+$("#controlHorario").click(function(){
+    opPersonal=1;
+    opcion="controlHorario";
+});  
+    
+$("#opPersonal").click(function(){
+    buscar="SI";
+    personal=$("#persona").val();
+});   
+    
+$("#consolidadoAsistencias").click(function(){
+    $.ajax({  
+        url:  "Modulos/ModMaestros/VistaPersonal/ConsolidadoAsistencias.html",   
+        success: function(data) {  
+            $('#cuerpo').html(data); 
+            clearInterval(intervalo)
+        }  
+    }); 
+});      
+    
+$("#listadoPersonal").on('hidden.bs.modal', function(){
+    if (opPersonal != 0 && buscar=="SI"  && $("#persona option:selected").text() != "Elegir Personal"){
+        VistasEspecificas(personal,opcion);
+    }else{
+        if(baja==true){
+          mostrarPersonal("../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosPersonal.php");
+          baja=false;
+        }
+    }
+});     
+    
+</script>

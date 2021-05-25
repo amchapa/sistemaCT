@@ -1,0 +1,152 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">ACTIVAR/DESACTIVAR BANCO</h3>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+   
+  <!--DATOS DEL BANCO-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombre">Nombre Banco</label>          
+          <select required id="nombre" class="form-control" aria-describedby="nombreHelp"></select>
+          <small id="nombreHelp" class="form-text text-muted">Ejemplo:CHARLESTON FINANCIAL</small>
+        </div>
+
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="estado">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>  
+  
+  
+    <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" onclick="vBanco.validar('ACTUALIZAR');return false" class="btn btn-guardar">Actualizar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+ </div>
+  </div>
+  
+ <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+
+</form>
+
+<script>
+    
+var opcionbanco = "Elegir Banco";
+    
+vBanco.mostrarEstado();    
+cargarbanco();
+    
+document.getElementById("reset").onclick = function() {limpiarMensaje()};    
+
+//--CARGAR DATOS DEL BANCO--        
+function cargarbanco(){
+    var boxEmpresa="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Bancos/Controlador_MostrarTodoBancos.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxEmpresa+="<option value='' selected>Elegir Banco</option>";
+            $("#nombre").html(boxEmpresa);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxEmpresa+="<option value='' selected>Elegir Banco</option>";
+                $("#nombre").html(boxEmpresa);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEmpresa+="<option value='' selected>Elegir Banco</option>";
+                    }
+                    boxEmpresa+="<option value='"+datos[i].BANCCODIGO+"'>"+datos[i].BANCDESCRIPCION+"</option>";
+                }
+                $("#nombre").html(boxEmpresa);
+            }
+        }
+    });     
+}
+    
+//--CARGAR ESTADO DEL BANCO SELECCIONADO--   
+$("#nombre").change(function() {
+    opcionbanco = $("#nombre option:selected").val();
+    mostrarEstadoBanco();
+});
+    
+//--MOSTRAR ESTADO DEL BANCO SELECCIONADO--
+function mostrarEstadoBanco(){
+    var boxEmpresa="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Bancos/Controlador_MostrarTodoBancos.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(opcionbanco==datos[i].BANCCODIGO){
+                        if(datos[i].ESTCODIGO==6){
+                            $("#estado option[value='6']").attr("selected",true);
+                            $("#estado option[value='7']").attr("selected",false);
+                            $("#estado option[value='']").attr("selected",false);
+                        }else{
+                            $("#estado option[value='7']").attr("selected",true);
+                            $("#estado option[value='6']").attr("selected",false);
+                            $("#estado option[value='']").attr("selected",false);
+                        }
+                    }
+                }
+            }
+        }
+    });     
+}
+    
+//--LIMPIAR--    
+ function limpiarMensaje(){
+     $("#resultado").text("");
+      $("#estado option[value='']").attr("selected",true);
+      $("#estado option[value='6']").attr("selected",false);
+      $("#estado option[value='7']").attr("selected",false);
+ }  
+    
+</script>

@@ -1,0 +1,91 @@
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--OPCIONES DE LA VISTA-->
+ <div class="w-responsive mx-auto my-5">
+  <div class="row text-center">
+   
+    <!--OPCION NUEVO BANCO-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="NuevoBanco();return false">Nuevo Banco</button></div>
+    
+    <!--OPCION ACTIVAR BANCO-->
+    <div class="col"><button class="btn h btn-lg b boton"  onclick="ActivarBanco();return false">Activar Banco</button></div>
+    
+  </div>
+</div>
+
+<!--LISTADO DE BANCOS-->
+<div class="w-responsive mx-auto my-5">
+<div class="table-responsive w-50 mx-auto">
+ 
+  <table class="table table-striped table-bordered" id="tabla">
+    <thead class="boton white-text font-weight-bold text-center">
+      <tr><th colspan="2">BANCOS</th></tr>
+      <tr>
+        <th scope="col">Descripcion</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody class="formulario" id="cuerpotabla">
+      
+    </tbody>
+  </table>
+  
+</div>
+</div>
+
+<script type="text/javascript" src="Modulos/ModMaestros/VistaBancos/VistaBancos.js"></script>
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+    
+cargartodo();
+    
+/*=============================================
+    CARGAR BANCOS
+=============================================*/    
+    
+function cargartodo(){
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Bancos/Controlador_MostrarTodoBancos.php",
+        type: 'GET', 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }
+            else{
+                var tablabancos="";
+
+                for(var i=0; i<datos.length; i++){
+                    tablabancos+="<tr >\
+                    <td  >"+datos[i].BANCDESCRIPCION+"</td>\
+                    <td >"+datos[i].ESTDESCRIPCION+"</td>\
+                    </tr>"
+                }
+
+                $("#cuerpotabla").append(tablabancos);
+                $('#tabla').DataTable();
+                $('.dataTables_length').addClass('bs-select');
+            }
+        }
+    }); 
+    
+    
+}
+
+</script>

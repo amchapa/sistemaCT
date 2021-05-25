@@ -1,0 +1,339 @@
+<style>
+input {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 5px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  width: 190px;
+}
+
+  select{
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 3px 5px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+    width: 190px;
+  }  
+</style>
+
+ <form>
+  <div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">LISTADO SALIDAS</div>
+
+  <div class="card text-center">
+    <h5 class="card-header h5">INGRESAR FILTROS</h5>
+    <div class="card-body">
+    
+    <div class="container-fluid">
+      <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="9000">
+          <div class="carousel-inner row w-100 mx-auto" >
+              <!--BUSCAR POR RANGO DE FECHAS-->
+              <div class="carousel-item active">
+                <label class="font-weight-bold">FECHA INICIO</label>
+                <input type="date" id="fechainicio" class=" my-4">
+                <label class=" font-weight-bold">FECHA FIN</label>
+                <input type="date" id="fechafin" class=" my-4">
+                <button class='btn btn-reset' onclick="cargarDatos();return false">BUSCAR</button>
+              </div>
+              <!--BUCAR POR ODEN DE PRODUCCION-->
+              <div class="carousel-item">
+                <label class="my-4 font-weight-bold">ORDEN DE PRODUCCION</label>
+                <select  id="opCodigo" class=" my-4" style="width: 350px"></select>
+                <button class='btn btn-reset' onclick="cargarDatosXOrden();return false">BUSCAR</button>
+                
+              </div>
+              <!--BUSCAR POR PRODUCTO SEGUN FECHAS-->
+              <div class="carousel-item">
+                <label class="font-weight-bold">FECHA INICIO</label>
+                <input type="date" id="fechainicio2" class=" my-4">
+                <label class=" font-weight-bold">FECHA FIN</label>
+                <input type="date" id="fechafin2" class=" my-4">
+                <div>
+                  <label class="my-4 font-weight-bold">CODIGO PRODUCTO</label>
+                  <select  id="codigoProducto2" class=" my-4" style="width: 350px"></select>
+                  <button class='btn btn-reset' onclick="cargarDatosXProducto();return false">BUSCAR X CODIGO</button>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <label class="font-weight-bold">FECHA INICIO</label>
+                <input type="date" id="fechainicio3" class=" my-4">
+                <label class=" font-weight-bold">FECHA FIN</label>
+                <input type="date" id="fechafin3" class=" my-4">
+                <div>
+                  <label class="my-4 font-weight-bold">TIPO PRODUCTO</label>
+                  <select  id="tipoProducto" class="my-4"></select>
+                  <button class='btn btn-reset' onclick="return false">BUSCAR X TIPO PRODUCTO</button>  
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <label class="font-weight-bold">FECHA INICIO</label>
+                
+                <input type="date" id="fechainicio4" class=" my-4">
+                <label class=" font-weight-bold">FECHA FIN</label>
+                <input type="date" id="fechafin4" class=" my-4">
+                <div>
+                  <label class="my-4 font-weight-bold">EMPRESA</label>
+                  <select  id="empresa" class="my-4"></select>
+                  <button class='btn btn-reset' onclick="return false">BUSCAR X EMPRESA</button>
+                </div>
+                  
+              </div>
+
+          </div>
+          <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+              <i class="fa fa-chevron-left fa-lg text-muted"></i>
+              <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next text-faded" href="#carouselExample" role="button" data-slide="next">
+              <i class="fa fa-chevron-right fa-lg text-muted"></i>
+              <span class="sr-only">Next</span>
+          </a>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+  
+  <div id="tableExport" class="my-4">
+    <div id="campo1" class="card my-4" >
+      <table id="tablaDatos1" class='table  text-center' cellspacing='0'>
+        <thead id="cabezal1"></thead>
+        <tbody id="cuerpoTabla1"></tbody>
+        <tfoot id="pie1"></tfoot>
+      </table>
+    </div>
+  </div>
+  
+</form>
+  <button class="btn boton" id="boton-descarga">Exportar</button>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+
+$('.carousel').carousel('pause');
+mostrarProductos('codigoProducto');
+mostrarProductos('codigoProducto2');
+mostrarFamiliaProductos('tipoProducto');
+mostrarOrdenProduccion('opCodigo');
+mostrarEmpresa('empresa');
+
+  document.querySelector("#fechainicio").valueAsDate = new Date();  
+  document.querySelector("#fechainicio2").valueAsDate = new Date();  
+  document.querySelector("#fechainicio3").valueAsDate = new Date();  
+  document.querySelector("#fechainicio4").valueAsDate = new Date();  
+  document.querySelector("#fechafin").valueAsDate = new Date();
+  document.querySelector("#fechafin2").valueAsDate = new Date();
+  document.querySelector("#fechafin3").valueAsDate = new Date();
+  document.querySelector("#fechafin4").valueAsDate = new Date();
+
+function cargarDatos(){
+    
+    var $datos={
+      '_fechaInicio': $("#fechainicio").val(),
+      '_fechafin': $("#fechafin").val()
+    }
+    
+     $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarSalidas.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+              var titulos="";
+              titulos+="<tr><th colspan='13' class='th-sm h5 text-center' >REPORTE DE SALIDAS DE PRODUCTO DEL DIA "+$("#fechainicio").val()+" HASTA "+$("#fechafin").val()+" </th></tr>\
+              <th class='th-sm '>FECHA DE REGISTRO</th>\
+              <th class='th-sm '>OPERADOR</th>\
+              <th class='th-sm '>CODIGO - PRODUCTO</th>\
+              <th class='th-sm '>CANT.</th>\
+              <th class='th-sm '>EMPRESA</th>\
+              <th class='th-sm '>MARCA</th>\
+              <th class='th-sm '>TAMAÑO</th>\
+              <th class='th-sm '>GRAMAJE</th>\
+              <th class='th-sm '>ESTADO</th>\
+              <th class='th-sm '>CENTRO DE COSTOS</th>\
+              <th class='th-sm '>AREA</th>\
+              <th class='th-sm '>ENTREGADO</th>\
+              <th class='th-sm '>OP</th></tr>";
+              $("#cabezal1").html(titulos);
+              mostrarDatos(datos)
+            }
+        }
+    });    
+}
+  
+function cargarDatosXOrden(){
+    
+    var $datos={
+      '_ordenProduccion': $("#opCodigo").val()
+    }
+    
+     $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarSalidasXOrdenProduccion.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+              var titulos="";
+              titulos+="<tr><th colspan='13' class='th-sm h5 text-center' >REPORTE DE SALIDAS DE PRODUCTO DE LA ORDEN "+$("#opCodigo").val()+" </th></tr>\
+              <th class='th-sm '>FECHA DE REGISTRO</th>\
+              <th class='th-sm '>OPERADOR</th>\
+              <th class='th-sm '>CODIGO - PRODUCTO</th>\
+              <th class='th-sm '>CANT.</th>\
+              <th class='th-sm '>EMPRESA</th>\
+              <th class='th-sm '>MARCA</th>\
+              <th class='th-sm '>TAMAÑO</th>\
+              <th class='th-sm '>GRAMAJE</th>\
+              <th class='th-sm '>ESTADO</th>\
+              <th class='th-sm '>CENTRO DE COSTOS</th>\
+              <th class='th-sm '>AREA</th>\
+              <th class='th-sm '>ENTREGADO</th>\
+              <th class='th-sm '>OP</th></tr>";
+              $("#cabezal1").html(titulos);
+              mostrarDatos(datos)
+            }
+        }
+    });    
+}
+  
+function cargarDatosXProducto(){
+    
+    var $datos={
+      '_fechaInicio': $("#fechainicio2").val(),
+      '_fechafin': $("#fechafin2").val(),
+      '_producto': $("#codigoProducto2").val()
+    }
+    
+     $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarSalidasXProducto.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+              var titulos="";
+              titulos+="<tr><th colspan='13' class='th-sm h5 text-center' >REPORTE DE SALIDAS DE PRODUCTO DE LA ORDEN "+$("#opCodigo").val()+" </th></tr>\
+              <th class='th-sm '>FECHA DE REGISTRO</th>\
+              <th class='th-sm '>OPERADOR</th>\
+              <th class='th-sm '>CODIGO - PRODUCTO</th>\
+              <th class='th-sm '>CANT.</th>\
+              <th class='th-sm '>EMPRESA</th>\
+              <th class='th-sm '>MARCA</th>\
+              <th class='th-sm '>TAMAÑO</th>\
+              <th class='th-sm '>GRAMAJE</th>\
+              <th class='th-sm '>ESTADO</th>\
+              <th class='th-sm '>CENTRO DE COSTOS</th>\
+              <th class='th-sm '>AREA</th>\
+              <th class='th-sm '>ENTREGADO</th>\
+              <th class='th-sm '>OP</th></tr>";
+              $("#cabezal1").html(titulos);
+              mostrarDatos(datos)
+            }
+        }
+    });    
+}
+  
+var modulo=0;
+  //REPORTE DE INGRESO DE PRODUCTO DEL DIA
+function mostrarDatos(datos){
+  var tablaContenido="",tablaFin="",marca,tamaño,gramaje,montoFacturado=0,montoTotal=0;
+  
+  for(var i=0;i<datos.length;i++){
+    
+    if(datos[i].PROMARCA==""){
+      marca = "No Disponible";
+    }else{
+      marca = datos[i].PROMARCA;
+    }
+
+    if(datos[i].PROTAMAÑO==""){
+      tamaño = "No Disponible";
+    }else{
+      tamaño = datos[i].PROTAMAÑO;
+    }
+
+    if(datos[i].PROGRAMAJE==""){
+      gramaje = "No Disponible"
+    }else{
+      gramaje = datos[i].PROGRAMAJE;
+    }
+    tablaContenido+="<tr class='text-center'>\
+                <td>"+datos[i].FECHA_REGISTRO+"</td>\
+                <td>"+datos[i].OPERADOR+"</td>\
+                <td>"+datos[i].PROCODIGO+" "+datos[i].PRONOMBRE+"</td>\
+                <td>"+datos[i].CANTIDAD+"</td>\
+                <td>"+datos[i].EMPCODIGO+"</td>\
+                <td>"+marca+"</td>\
+                <td>"+tamaño+"</td>\
+                <td>"+gramaje+"</td>\
+                <td>"+datos[i].TIPOTRABAJO+"</td>\
+                <td>"+datos[i].FAMILIA+"</td>\
+                <td>"+datos[i].SUBFAMILIA+"</td>\
+                <td>"+datos[i].PERSNOMBRE+" "+datos[i].PERSAPELLIDO_PATERNO+"</td>\
+                <td>"+datos[i].OPCODIGO+"</td>\
+            </tr>";
+  }
+  
+  $("#cuerpoTabla1").html(tablaContenido);
+  if(modulo==0){
+    $('#tablaDatos1').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+    });
+    
+    /*tablaFin="<tr class='text-center'>\
+                <th colspan='10' class='text-right font-weight-bold'> MONTO TOTAL DEL REPORTE</th>\
+                <th >$ "+montoTotal.toFixed(2)+"</th><th></th></tr>";
+    $("#pie1").html(tablaFin); */
+    modulo=modulo+1;
+  }
+  
+  $("#tablaDatos1").removeClass("dataTable");
+  document.getElementById('tablaDatos1').style.width='100%'
+}
+
+</script>

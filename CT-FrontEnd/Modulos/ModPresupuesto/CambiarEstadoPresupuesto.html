@@ -1,0 +1,520 @@
+
+<!-- BUSQUEDA DEL $("#codpresupuesto").val() -->
+<div class="table-responsive">
+
+  <table id="TITULO" class="table my-3" >
+    <thead class="black white-text">
+        <tr><th  class="font-weight-bold" colspan="12">PRESUPUESTOS POR APROBAR</th></tr>
+    </thead>    
+    <tbody>
+        <tr>
+            <td class="formulario">Codigo Presupuesto :</td>
+            <td class="text-center"><input id="codpresupuesto" placeholder="3200-19" type="text" ></td>
+            <td><button id="buscarPresupuesto" class="btn boton" onclick="validarcodigo();return false">BUSCAR</button></td>
+            <td class="formulario">Cambiar Estado</td>
+            <td><select id="estado"></select></td>
+            <td><button id="cambiarestado" class="btn boton" disabled>ACTUALIZAR</button></td>
+        </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- DATOS DEL PRESUPUESTO -->
+<div>
+    <table class="w-50 my-4" style="margin-left: 25%;margin-right: 25%" id="vistaPrevia" >  
+            <tr>
+              <td id="logoEmpresa" rowspan=4 colspan="2"><img src="Modulos/ModPresupuesto/Logo-Computextos.png" width="220" height="65"></td>
+              <td class="text-right" id="clienteEmpresa">TELEFONICA DEL PERU</td>  
+            </tr>
+            <tr>
+              <td id="nPresupuesto" class="h4-responsive font-weight-bold text-right">Presupuesto 3210-19</td> 
+            </tr>
+            <tr>
+              <td class="text-right" id="fechaRegistroModal">Lince, 13 de Marzo del 2019</td>
+            </tr>
+            <tr>
+              <td class="text-right font-weight-bold" id="totalVenta">Total: S/ 1000 + IGV</td>
+            </tr>
+
+
+        <tr><td id="pContactoTd" class="font-weight-bold" style="padding: 5px; text-decoration: underline"></td></tr>
+
+        <tbody id="cuerpovista">
+        </tbody>
+        <tr><td id="valorTotal" class='font-weight-bold pt-3' colspan='3'></td></tr>
+        <tr><td style="padding: 5px"></td></tr>
+            <tr><td style="padding: 5px"></td></tr>
+            <tr>
+             <tr><td style="padding: 5px" colspan="3"></td></tr>
+              <td class="text-left">Atentamente,</td>
+              <tr><td style="padding: 10px"></td></tr>
+            </tr>
+            <tfoot>
+              <tr><td >
+                <div class="font-weight-bold" id="ejecutiva" style="font-size: 13px;"></div>
+                <div class="font-weight-bold"style="font-size: 14px;"> GRUPO COMPUTEXTOS S.A.C.</div>
+              </td></tr>
+            </tfoot>
+      </table>
+</div>
+<div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+
+  <!--MODAL : MEDIDAS DEL ITEM - PPTO-->
+    <div class="modal fade" id="modalOT" tabindex="-1" role="dialog" aria-labelledby="modalMonto"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document" id="mdialTamanio">
+        <div class="modal-content" style="width: 400px">
+
+          <div class="modal-header principal">
+            <h5 id ="codigoOT" class="modal-title white-text font-weight-bold">NUEVA ORDEN DE TRABAJO</h5>
+            
+          </div>
+          <div class="modal-body">
+              <table  class="w-100">
+                  <tbody >
+                    <tr><td class="font-weight-bold" >DETALLES :</td></tr>
+                    <tr><td><input required class="form-control" type="text" style="width: 90%;" aria-describedby="detalleOTP" id="detalleOT" ></td></tr>
+                    <tr><td><small id="detalleOTP" class="form-text text-muted">Campo obligatorio.</small></td></tr>
+                    <tr><td class="font-weight-bold"  >FECHA DE ENTREGA :</td></tr>
+                    <tr><td><input required class="form-control" type="date" style="width: 90%;" aria-describedby="fechaOTP" id="fechaOT"></td>
+                    <tr><td><small id="fechaOTP" class="form-text text-muted">Campo obligatorio.</small></td></tr></tr>
+                  </body>
+                  <tfoot>
+                    <tr><td><input class="btn btn-titulo principal" style="margin-left: 15%" data-dismiss="modal" id="GUARDAROP" value="GUARDAR"></td></tr>
+                  </tfoot>
+              </table>
+          </div>
+        </div>   
+      </div>
+    </div>
+
+<script type="text/javascript" src="Modulos/ModPresupuesto/VistaPresupuesto.js"></script>
+<script>
+  
+$("#vistaPrevia").addClass("d-none");
+    
+var vendedor = "";
+var cantItem = "";
+var estado = 0;
+    
+Estado();
+/*================================================================================
+   CARGANDO ESTADOS DEL PRESUPUESTO 
+================================================================================*/    
+function Estado(){
+     var boxestado="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarEstados.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxestado+="<option value='0' selected>Elegir Banco</option>";
+            $("#estado").html(boxestado);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxestado+="<option value='0' selected>Elegir Estado</option>";
+                $("#estado").html(boxestado);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxestado+="<option value='0' selected>Elegir Estado</option>";
+                    }
+                    boxestado+="<option value='"+datos[i].ESTCODIGO+"'>"+datos[i].ESTDESCRIPCION+"</option>";
+                }
+                $("#estado").html(boxestado);
+            }
+        }
+    });      
+        
+}
+    
+/*================================================================================
+   OBTENIENDO EL CODIGO DEL ESTADO PRESUPUESTO 
+================================================================================*/
+$("#cambiarestado").click(function(){
+    var estadocodigo = $("#estado").val();
+    var codigo = $("#codpresupuesto").val();
+    if(estadocodigo==estado || estadocodigo==0 ){
+      mostrarMensaje("error","ELEGIR ESTADO DEL PRESUPUESTO");
+    }else{
+      if(estadocodigo==15){
+        $("#modalOT").modal('show');
+        generarCodigoOP(codigo);
+      }else{
+        actualizarEstado(codigo,estadocodigo);
+      }
+    }    
+});
+  
+$("#GUARDAROP").click(function(){
+    guardarOrProduccion();
+    actualizarEstado( $("#codpresupuesto").val(),$("#estado").val());
+    ventanaCambiarEstadoPresupuesto();
+});
+    
+$("#estado").change(function(){
+    var estadocodigo = $("#estado").val();
+    if(estadocodigo==14 || estadocodigo==0){
+        document.getElementById("cambiarestado").disabled = true;
+    }else{
+        document.getElementById("cambiarestado").disabled = false;
+    }
+})
+/*================================================================================
+   CARGANDO DATOS DEL CODIGO DEL PRESUPUESTO 
+================================================================================*/
+   
+function validarcodigo(){
+  var codigo = $("#codpresupuesto").val();
+  if (codigo=="" || codigo==0){
+    mostrarMensaje("error","Ingresar Codigo de Presupuesto");
+    $("#cambiarestado").disabled = true;
+
+  }else{        
+    $("#cambiarestado").disabled = false;
+    var $codigo={'_codigo': codigo}
+
+    $.ajax({
+      url: '../CT-BackEnd/Controlador/ModPresupuesto/Controlador_ValidarPresupuesto.php',
+      type: 'POST',
+      data: $codigo,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","Error no identificado");
+          }
+          $("#vistaPrevia").addClass("d-none");
+          $("#cuerpovista").html("");
+      },
+      success: function(datos){
+          if(datos.response=="0"){
+              mostrarMensaje("error",'ERROR: '+datos.message);
+              $("#cuerpovista").html("");
+              $("#vistaPrevia").addClass("d-none");
+             $("#resultado").text("NO EXISTE EL PRESUPUESTO");
+              $("#estado").val('0')
+            document.getElementById('estado').disabled=true; document.getElementById('cambiarestado').disabled=true;
+          }
+          else{
+            switch(datos[0].EMPCODIGO){
+              case 'CT': imagen="<img src='Modulos/ModPresupuesto/Logo-Computextos.png' width='220' height='65'>";break;
+              case 'ER': imagen="<img src='Modulos/ModPresupuesto/Logo-EdicionesReales.png' width='220' height='65'>";break;
+              case 'ED': imagen="<img src='Modulos/ModPresupuesto/Logo-EditorialEImprentaDesa.png' width='220' height='65'>";break;
+              case 'GR': imagen="<img src='Modulos/ModPresupuesto/Logo-GraficaReal.png' width='220' height='65'>";break;
+              default : imagen="<img src='Modulos/ModPresupuesto/Logo-Computextos.png' width='220' height='65'>";break;
+            }
+            $("#pContactoTd").html("Atención: " +datos[0].PRESUPPERS_CONTACTO);
+            $("#logoEmpresa").html(imagen);
+            $("#cliente").html(datos[0].CLIENRAZON_SOCIAL);
+            $("#nPresupuesto").html("Presupuesto "+datos[0].PRESUPNUMERO);
+
+            var fecha = new Date(datos[0].PRESUPFECHA_REGISTRO);  
+            var mes=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+            $("#fechaRegistroModal").html("Lince, "+ fecha.getDate()  + ' de ' + mes[fecha.getMonth()]+ ' del ' + fecha.getFullYear());
+
+            var tablaItem="";
+            var preciototal=0;
+            var precioSoles=0;
+            var precioDolares=0;
+            var tipoMonedaSoles ="";
+            var tipoMonedaDolares ="";
+            var valorTotal= "";
+            var valorVenta= "Total : ";
+            var valorTotalSoles = "VALOR TOTAL EN SOLES : ";
+            var valorTotalDolares = "VALOR TOTAL EN DOLARES : ";
+            for(var i=0; i<datos.length; i++){
+              if (datos[i].ESTDESCRIPCION=="ACEPTADO"){
+                var item=datos[i].ITPRESUCODIGO;
+                item = item.substr(8);
+
+                var impresion;
+                var colores;
+                if(datos[i].DETPRESUPNUM_COLOR==4){
+                  colores="FULL COLOR";
+                }
+                else{
+                  colores=datos[i].DETPRESUPNUM_COLOR+" colores";
+                }
+
+                if(datos[i].DETPRESUPTIPO_IMPRESION==1){
+                      impresion="SOLO TIRA";
+                }
+                else if(datos[i].DETPRESUPTIPO_IMPRESION==2){
+                      impresion="T/R APARTE";
+                }
+                else  if(datos[i].DETPRESUPTIPO_IMPRESION==3){
+                      impresion="T/R JUNTA";
+                }
+
+                var acabados="";
+
+              if (datos[i].DETPRESUPBARNIZ_PLASTI==0 || datos[i].DETPRESUPBARNIZ_PLASTI==null || datos[i].DETPRESUPBARNIZ_PLASTI.length==0){}else{    acabados+=""+datos[i].DETPRESUPBARNIZ_PLASTI+ " <br />"; }
+
+              if (datos[i].DETPRESUPBARNIZ_PLASTI1==0 || datos[i].DETPRESUPBARNIZ_PLASTI1==null || datos[i].DETPRESUPBARNIZ_PLASTI1.length==0){}else{    acabados+=""+datos[i].DETPRESUPBARNIZ_PLASTI1+"  <br />"; }
+
+              if (datos[i].DETPRESUPBARNIZ_PLASTI2==0 || datos[i].DETPRESUPBARNIZ_PLASTI2==null || datos[i].DETPRESUPBARNIZ_PLASTI2.length==0){}else{    acabados+=""+datos[i].DETPRESUPBARNIZ_PLASTI2+" <br />"; }
+
+              if (datos[i].DETPRESUPTROQUEL=="-" || datos[i].DETPRESUPTROQUEL==""){}else{    acabados+="TROQUELADO - "+datos[i].DETPRESUPTROQUEL+" <br />"; } 
+
+              if (datos[i].DETPRESUPDOBLADO_ALCE=="NO"){}else{    acabados+="DOBLADO - "+datos[i].DETPRESUPDOBLADO_ALCE+" <br />"; } 
+
+              if (datos[i].DETPRESUPCOSIDO_COLA_GRAPA=="NO"){}else{    acabados+="ALCE - "+datos[i].DETPRESUPCOSIDO_COLA_GRAPA+" <br />"; }
+
+              if (datos[i].DETPRESUPCAJA_PAQUETE==0 || datos[i].DETPRESUPCAJA_PAQUETE==null || datos[i].DETPRESUPCAJA_PAQUETE.length==0){}
+              else{
+                if(datos[i].DETPRESUPCAJA_PAQUETE=="CAJA"){
+                      acabados+="ENCAJONADO <br />";
+                  }
+                  else{
+                     acabados+="EMPAQUETADO DE "+datos[i].DETPRESUPCAJA_PAQUETE+" unidades X PAQUETE <br />";
+                  }
+              }
+
+              if (datos[i].DETPRESUPCOSTO_COLA_FORRO==0){}else{    acabados+="ENCOLADO Y FORRADO <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_CORTE==0){}else{    acabados+="DEGOLLADO Y CORTE <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_ARMADO==0){}else{    acabados+="ARMADO Y PEGADO DE BOLSILLO <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_OJAL==0){}else{    acabados+="PUESTA DE OJALILLOS <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_NYLON==0){}else{    acabados+="NYLON 0.7mm <br />";}
+
+              tablaItem+="<tr>\
+                            <td class='font-weight-bold pt-3' colspan='3' style='text-decoration: underline' >"+ item+ ". "+ datos[i].ITPRESUDESCRIPCION+"</td>\
+                          </tr>\
+                          <tr>\
+                            <td>Cantidad</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+datos[i].DETPRESUPTIRAJE_TOTAL+" unidades</td>\
+                          </tr>\
+                          <tr>\                                                 <td>Impresión</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+colores+" "+ impresion+"</td>\
+                          </tr>\
+                          <tr>\                                                 <td>Material</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+datos[i].DETPRESUPTIP_PAPEL+" "+ datos[i].DETPRESUPGRAMAJE +" GRS."+"</td>\
+                          </tr>\
+                          <tr>\                                                 <td>Medidas</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+datos[i].ITPRESUMEDIDAS +"</td>\
+                          </tr>";
+
+                if(acabados!=""){
+                    tablaItem+="<tr>\                                                 <td>Acabados</td>\
+                                  <td>:</td>\
+                                  <td class='descripcion'>"+acabados+"</td>\
+                              </tr>";
+                }
+
+                tablaItem+="<tr>\                                                 <td>Valor de Venta</td>\
+                              <td>:</td>\
+                              <td class='descripcion red-text font-weight-bold text-left'>"+datos[i].ITPRESUIMPORTE + " + IGV"+"</td>\
+                            </tr>";
+
+                var inicial=datos[i].ITPRESUIMPORTE.substr(0,1);
+                if( inicial=='$'){
+                    tipoMonedaDolares = inicial; 
+                    precioDolares += parseFloat(datos[i].ITPRESUIMPORTE.substr(1)); 
+                }else if (inicial=='S'){
+                    tipoMonedaSoles = inicial;
+                    precioSoles += parseFloat(datos[i].ITPRESUIMPORTE.substr(3));
+                }  
+              }  
+
+            }
+
+            if(precioSoles !=""){
+            valorTotalSoles += tipoMonedaSoles+"/"+precioSoles+" + IGV" + "<br/>";
+            valorVenta += tipoMonedaSoles+"/"+precioSoles+" + IGV" + "<br/>";
+            }
+
+            if(precioDolares != ""){
+           valorTotalDolares += tipoMonedaDolares + precioDolares +"+ IGV " + "<br/>";
+            valorVenta += tipoMonedaDolares + precioDolares +"+ IGV" + "<br/>";
+            }
+
+            if(valorTotalSoles!="VALOR TOTAL EN SOLES : "){
+            valorTotal+=valorTotalSoles;
+            }
+            if(valorTotalDolares !="VALOR TOTAL EN DOLARES : "){
+            valorTotal += valorTotalDolares;
+            }
+
+            $("#cuerpovista").html(tablaItem);
+            $("#totalVenta").html(valorVenta);
+            $("#valorTotal").html(valorTotal);
+            $("#ejecutiva").html(" "+datos[0].PERSNOMBRE+" "+datos[0].PERSAPELLIDO_PATERNO+" "+datos[0].PERSAPELLIDO_MATERNO+"");
+            $("#estado").val(datos[0].ESTADO);
+            switch(datos[0].ESTADO){
+                case '14': $("#resultado").text("");document.getElementById('estado').disabled=false; document.getElementById('cambiarestado').disabled=false; break;
+                case '15': $("#resultado").text("PRESUPUESTO ACEPTADO");document.getElementById('estado').disabled=false; document.getElementById('cambiarestado').disabled=false; break;
+                case '16': $("#resultado").text("PRESUPUESTO EN PRODUCCION");document.getElementById('estado').disabled=false; document.getElementById('cambiarestado').disabled=false; break;
+                case '17': $("#resultado").text("PRESUPUESTO FACTURADO");document.getElementById('estado').disabled=true; document.getElementById('cambiarestado').disabled=true; break;
+                case '18': $("#resultado").text("PRESUPUESTO ANULADO");document.getElementById('estado').disabled=true; document.getElementById('cambiarestado').disabled=true; break;
+                default: $("#resultado").text("ERROR DEL SISTEMA");break;
+            };
+            $("#vistaPrevia").removeClass("d-none");
+            vendedor = datos[0].PRESUPVENDEDOR;
+            cantItem = datos[0].PRESUPCANT_ITEM;
+            estado = datos[0].ESTADO;
+          }
+        }
+    });
+  }
+}    
+    
+/*================================================================================
+   ACTUALIZAR ESTADO DEL PRESUPUESTO
+================================================================================*/
+    
+function actualizarEstado(opcion, estado){
+    var $estado={
+        '_codigo': opcion,
+        '_estado': estado 
+    }
+     $.ajax({
+        url: '../CT-BackEnd/Controlador/ModPresupuesto/Controlador_ActualizarEstadoPresupuesto.php',
+        type: 'POST',
+        data: $estado,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+ 
+            if(datos.response=="0"){
+                mostrarMensaje("error","No se puede actualizar");
+            }else{
+                mostrarMensaje("exito","PRESUPUESTO ACTUALIZADO");
+                $("#resultado").text("PRESUPUESTO ACTUALIZADO");
+            }
+        }
+    });   
+}
+    
+/*================================================================================
+   GENERAR CODIGO DE ORDEN DE PRODUCCION
+================================================================================*/
+    
+function generarCodigoOP(codePresupuesto){
+    
+    var Hoy = new Date();
+    
+    if((Hoy.getMonth() +1).toString()>=1 && (Hoy.getMonth() +1).toString()<=9){
+        var mes = "0"+(Hoy.getMonth() +1).toString();
+    }else{
+        mes = (Hoy.getMonth() +1).toString();
+    }
+    
+    if(Hoy.getDate().toString()>=1 && Hoy.getDate().toString()<=9){
+        var dia = "0"+Hoy.getDate().toString();
+    }else{
+        dia = Hoy.getDate().toString();
+    }
+    
+    Hoy = Hoy.getFullYear().toString().substring(2,4) + mes + dia ;
+    
+     $.ajax({
+        url: '../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarTodoOrdenes.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+ 
+            if(datos.response=="0"){
+                var codigo = Hoy + "001";
+            }else{
+                
+                var total = 0; 
+                for (var i=0; i< datos.length ; i++){
+                    if(Hoy == (datos[i].OPCODIGO).toString().substring(0,6)){
+                        total = total+1;
+                        if(total.toString().length == 1){
+                            var numOP = "00" + (total+1).toString();
+                        }else if(total.length == 2){
+                            numOP = "0" + (total+1).toString();
+                        }else{
+                             numOP = (total+1).toString();
+                        }
+                        codigo = Hoy + numOP.toString();
+                        
+                    }else{
+                        codigo = Hoy + "001";
+                    }
+                }
+                //codigo = Hoy + numOP.toString();
+                }
+          $("#codigoOT").html("NUEVA ORDEN DE TRABAJO - "+ codigo); 
+
+            }
+        });
+}
+  
+    
+function guardarOrProduccion(){
+
+    var $datos={
+        '_codigo': $("#codigoOT").html().split(" - ")[1],
+        '_vendedor' : vendedor,
+        '_cantitem': cantItem,
+        '_estado': 19,
+        '_numPresup' : $("#codpresupuesto").val(),
+        '_detalleOT' : $("#detalleOT").val(),
+        '_fechaEntrega' : $("#fechaOT").val(),
+    }
+
+     $.ajax({
+        url: '../CT-BackEnd/Controlador/ModOrden/Controlador_GuardarOrdenProduccion.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+ 
+            if(datos.response=="0"){
+                mostrarMensaje("error","No se puede actualizar");
+            }else{
+                $("#resultado").text("PRESUPUESTO ACTUALIZADO");
+            }
+        }
+    }); 
+    
+}
+
+   
+</script>
+

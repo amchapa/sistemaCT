@@ -1,0 +1,101 @@
+<div id="encabezado" class="container font-weight-bold h2-responsive principal-text text-center">LISTAR PROVEEDORES</div>
+<div id="titulo" class="container font-weight-bold h4-responsive principal-text text-center"></div>
+
+<table id="tablaProveedores" class='table table-striped table-bordered' cellspacing='0' width='100%'>
+  <thead><tr>
+      <th class='th-sm'>CODIGO</th>
+      <th class='th-sm'>RAZON SOCIAL</th>
+      <th class='th-sm'>RUC</th>
+      <th class='th-sm'>TELEFONO</th>
+      <th class='th-sm'>CONTACTO</th>
+      <th class='th-sm'>T. DEL CONTACTO</th>
+    </tr></thead>
+  <tbody id="cuerpoTablaProveedores"></tbody>
+</table>
+ 
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaProveedores/VistaProveedores.js"></script>
+
+<script type="text/javascript">
+    
+cargarDatos();
+    
+/*=============================================
+    CARGAR DATOS TODOS PROVEEDORES
+=============================================*/ 
+    
+function cargarDatos(){
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Proveedor/Controlador_MostrarTodosProveedores.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                mostrarDatosProveedor(datos);
+          
+            }
+        }
+    });
+}
+    
+    
+/*=============================================
+    MOSTRAR DATOS TODOS PROVEEDORES
+=============================================*/ 
+    
+function mostrarDatosProveedor(datos){
+    var tablaProveedores="";
+    
+    for(var i=0; i<datos.length; i++){
+        tablaProveedores+="<tr>\
+        <td>"+datos[i].PROVEEDCODIGO+"</td>\
+        <td>"+datos[i].PROVEEDRAZON_SOCIAL+"</td>\
+        <td>"+datos[i].PROVEEDRUC+"</td>\
+        <td>"+datos[i].PROVEEDTELEFONO_EMPRESA+"</td>\
+        <td>"+datos[i].PROVEEDCONTACTO+"</td>\
+        <td>"+datos[i].PROVEEDTELEFONO_CONTACTO+"</td>\
+    </tr>"
+        
+    }
+
+    tablaProveedores+="\</tbody></table>";
+    
+    $("#cuerpoTablaProveedores").append(tablaProveedores);
+    $('#tablaProveedores').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                title: 'LISTADO PROVEEDORES',
+                text: 'IMPRIMIR',
+                className: 'btn boton'
+            },
+            {
+                extend: 'pdfHtml5',
+                download: 'open',
+                title: 'LISTADO PROVEEDORES',
+                text: 'EXPORTAR PDF',
+                className: 'btn boton'
+            }
+        ]
+    } );
+    $('.dataTables_length').addClass('bs-select');
+    
+}        
+    
+</script>

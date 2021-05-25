@@ -1,0 +1,771 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">Actualizar Datos del cliente</h3>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION GENERAL DEL CLIENTE-->
+        <div class="col-12 col-md-5 col-xl-4 form-group text-center">
+         
+          <!--CODIGO-->
+          <h6>Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. REGISTRO EN EL SISTEMA-->
+          <h6>Fecha de registro: <span id="fechaRegistro"></span></h6>
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Personales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--RAZON SOCIAL-->
+        <div class="col-12 col-md-8 form-group">
+          <label for="razonSocial">Razon Social</label>
+          <input required type="text" class="form-control" id="razonSocial" aria-describedby="razonSocialHelp" placeholder="Ingresar razon social">
+          <small id="razonSocialHelp" class="form-text text-muted">Ejemplo: Banco de Credito del Peru.</small>
+        </div>
+
+        <!--ACRONIMO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="nombreCorto">Acronimo</label>
+          <input required type="text" class="form-control" id="nombreCorto" aria-describedby="nombreCortoHelp" placeholder="Ingresar nombre abreviado del cliente">
+          <small id="nombreCortoHelp" class="form-text text-muted">Ejemplo: BCP</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--IDENTIFICACION-->
+        <div class="col-12 col-md form-group">
+          <label for="tipiden">Identificacion</label>
+          <div class="form-inline">
+            <select required id="tipiden" class="form-control">
+              <option value="RUC">RUC</option>
+              <option value="LE-DNI">LE/DNI</option>
+              <option value="PAS">PAS</option>
+            </select>
+            <input required type="number" class="form-control" id="numIdentificacion" aria-describedby="numIdentificacionHelp" placeholder="Ingresar numero de identificacion" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11">
+          </div>
+          <small id="numIdentificacionHelp" class="form-text text-muted">Segun el tipo de documento, ingresar el numero de identificacion.</small>
+        </div>
+        
+        <!--GIRO EMPRESA -->
+        <div class="col-12 col-md form-group">
+          <label for="giroEmpresa">Giro de empresa</label>
+          <input type="text" class="form-control" id="giroEmpresa" aria-describedby="giroEmpresaHelp" placeholder="Ingresar el sector donde se desempeña la empresa.">
+          <small id="giroEmpresaHelp" class="form-text text-muted">Ejemplo: Imprenta, Importacion, Comercio, Publicidad...</small>
+        </div>
+        
+        <!--TIPO DE CLIENTE-->
+        <div class="col-12 col-md form-group">
+          <label for="tipo">Tipo de cliente</label>
+          <select required id="tipo" class="form-control">
+            <option value="EVENTUAL">EVENTUAL</option>
+            <option value="PERMANENTE">PERMANENTE</option>
+          </select>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--EMPRESA ASIGNADA-->
+        <div class="col-12 col-md form-group">
+          <label for="emp">Empresa</label>
+          <select required id="emp" class="form-control" aria-describedby="empHelp"></select>
+          <small id="empHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--EJECUTIVO ASIGNADO-->
+        <div class="col-12 col-md form-group">
+          <label for="vendedor">Vendedor asignado</label>
+          <select name="vendedor" id="vendedor" class="form-control">
+              <option value="35">Fabiola Morales</option>
+              <option value="39">Yrma Paucar</option>
+              <option value="54">Milagros Salinas</option>
+              <option value="28">Liz Guerrero</option>
+              <option value="49">Jose Ramos Ledesma</option>
+              <option value="74">Alan lavanda</option>
+          </select>
+          <small id="vendedorHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--ESTADO-->
+        <div class="col-12 col-md form-group">
+          <label for="estado">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--PAIS-->
+        <div class="col-12 col-md form-group">
+          <label for="pais">Pais</label>
+          <select required id="pais" class="form-control" aria-describedby="paisHelp"></select>
+          <small id="paisHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--PROVINCIA-->
+        <div class="col-12 col-md form-group">
+          <label for="prov">Provincia</label>
+          <select required id="prov" class="form-control" aria-describedby="provHelp"></select>
+          <small id="provHelp" class="form-text text-muted">Las opciones de provincia se generaran en base al pais elegido.</small>
+        </div>
+        
+        <!--DISTRITO-->
+        <div class="col-12 col-md form-group">
+          <label for="distr">Distrito</label>
+          <select required id="distr" class="form-control" aria-describedby="distrHelp"></select>
+          <small id="distrHelp" class="form-text text-muted">Las opciones de distrito se generaran en base a la provincia elegida.</small>
+        </div>
+        
+        <!--DIRECCION-->
+        <div class="col-12 col-md form-group">
+          <label for="domicilio">Direccion</label>
+          <input type="text" class="form-control" id="domicilio" aria-describedby="domicilioHelp" placeholder="Ingresar direccion (calle, dpto, mzna, etc)">
+          <small id="domicilioHelp" class="form-text text-muted">Ejemplo: Calle Los geranios 136 Urb. Pacifico.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--DATOS CONTACTO-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Contacto</h5>
+    <div class="card-body">
+
+      <div class="row">
+      
+        <!--NOMBRE CONTACTO -->
+        <div class="col-12 col-md form-group">
+          <label for="nombreContacto">Nombre de contacto</label>
+          <input type="text" class="form-control" id="nombreContacto" aria-describedby="nombreContactoHelp" placeholder="Ingresar nombre del contacto con el cliente">
+          <small id="nombreContactoHelp" class="form-text text-muted">Recomendacion: Ingresar el nombre de la persona a contactar con el cliente.</small>
+        </div>
+        
+        <!--CARGO CONTACTO -->
+        <div class="col-12 col-md form-group">
+          <label for="cargoContacto">Cargo de contacto</label>
+          <input type="text" class="form-control" id="cargoContacto" aria-describedby="cargoContactoHelp" placeholder="Ingresar cargo del contacto con el cliente">
+          <small id="cargoContactoHelp" class="form-text text-muted">Recomendacion: Ingresar el cargo de la persona a contactar con el cliente.</small>
+        </div>
+        
+        <!--CORREO -->
+        <div class="col-12 col-md form-group">
+          <label for="correoContacto">Correo</label>
+          <input type="email" class="form-control" id="correoContacto" aria-describedby="correoContactoHelp" placeholder="Ingresar correo del cliente">
+          <small id="correoContactoHelp" class="form-text text-muted">Recomendacion: Ingresar el correo del cliente.</small>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--TELEFONO 1-->
+        <div class="col-12 col-md form-group">
+          <label for="telefono1">Telefono 1</label>
+          <input type="number" min="0" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="telefono1" aria-describedby="telefono1Help" placeholder="Ingresar telefono 1">
+          <small id="telefono1Help" class="form-text text-muted">Recomendacion: Ingresar el telefono principal del cliente.</small>
+        </div>
+        
+        <!--TELEFONO 2-->
+        <div class="col-12 col-md form-group">
+          <label for="telefono2">Telefono 2</label>
+          <input type="number" min="0" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="telefono2" aria-describedby="telefono2Help" placeholder="Ingresar telefono 2">
+          <small id="telefono2Help" class="form-text text-muted">Recomendacion: Ingresar el telefono auxiliar del cliente.</small>
+        </div>
+        
+        <!--ANEXO-->
+        <div class="col-12 col-md form-group">
+          <label for="anexTelefono">Anexo telefonico</label>
+          <input type="number" min="0" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="anexTelefono" aria-describedby="anexTelefonoHelp" placeholder="Ingresar telefono 2">
+          <small id="anexTelefono2Help" class="form-text text-muted">Recomendacion: Ingresar el anexo del telefono del cliente.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--OBSERVACIONES -->
+        <div class="col-12 col-md form-group">
+          <label for="observacion">Observaciones</label>
+          <textarea class="form-control" id="observacion" rows="3" aria-describedby="observacionHelp" placeholder="Ingresar las observaciones."></textarea>
+          <small id="observacionHelp" class="form-text text-muted">Campo opcional.</small>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  
+  <!--DATOS CREDITO-->
+  <div class="card">
+    <h5 class="card-header h5">Datos del Credito</h5>
+    <div class="card-body">
+
+      <div class="row">
+      
+        <!--CREDITO -->
+        <div class="col-12 col-md form-group">
+          <label for="credito">Credito</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="credito">
+        </div>
+        
+        <!--MONEDA -->
+        <div class="col-12 col-md form-group">
+          <label for="moneda">Moneda</label>
+          <select id="moneda" class="form-control">
+              <option value="SOLES">SOLES</option>
+              <option value="DOLARES">DOLARES</option>
+              <option value="EUROS">EUROS</option>
+          </select>
+        </div>
+        
+        <!--DEUDA -->
+        <div class="col-12 col-md form-group">
+          <label for="deuda">Deuda</label>
+          <input id="deuda" type="text" class="form-control" disabled>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--PLAZO-->
+        <div class="col-12 col-md form-group">
+          <label for="plazo">Plazo</label>
+          <input type="number" min="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="4"  class="form-control" id="plazo">
+        </div>
+        
+        <!--COMPROBANTE-->
+        <div class="col-12 col-md form-group">
+          <label for="comprob">Comprobante</label>
+          <select id="comprob" class="form-control">
+              <option value="">NINGUNO</option>
+              <option value="FACTURA">FACTURA</option>
+              <option value="ORDSERV">ORDEN DE SERVICIO</option>
+          </select>
+        </div>
+        
+        <!--FORMA DE PAGO-->
+        <div class="col-12 col-md form-group">
+          <label for="fpago">Forma de Pago</label>
+          <select id="fpago" class="form-control">
+              <option value="">NINGUNO</option>
+              <option value="C-CANJE">C/CANJE</option>
+              <option value="CH-DIF">CH/DIF</option>
+              <option value="LETRA">LETRA</option>
+          </select>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" id="guardar" class="btn btn-guardar">Actualizar</button>
+    <button type="reset" id="reset" class="btn btn-reset">Reestablecer</button>
+  </div>
+
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaClientes/VistaClientes.js"></script>
+<script type="text/javascript">
+    
+var opcionPais = "Elegir Pais";
+var opcionProvincia = "Elegir Provincia";
+var opcionDistrito = "Elegir Distrito";
+
+cargarDatos(cliente); 
+  
+//--EVENTO CLICK >> GUARDAR--    
+$("#guardar").click(function(){
+    Validar();
+});
+  
+//--EVENTO CLICK >> LIMPIAR--    
+$("#reset").click(function(){
+    cargarDatos(cliente);
+});  
+        
+/*=============================================
+    CARGAR DATOS DEL CLIENTE
+=============================================*/  
+    
+function cargarDatos(cliente){
+    
+   var $nombre={
+        '_nombre' : cliente
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarDatosClientes.php',
+        type: 'POST',
+        data: $nombre,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mostrarMensaje("exito",'INFORMACION CARGADA EXITOSAMENTE')
+                $("#codigo").text(datos.CLIENCODIGO);
+                $("#nombreCorto").val(datos.CLIENNOMBRE_CORTO);
+                $("#fechaRegistro").text(datos.CLIENFECHA_REGISTRO);
+                $("#razonSocial").val(datos.CLIENRAZON_SOCIAL);
+                $("#tipiden option[value="+ datos.CLIENTIPIDEN +"]").attr("selected",true);
+                $("#numIdentificacion").val(datos.CLIENNUM_IDENTIFICACION);
+                mostrarEmpresa(datos.EMPCODIGO);
+                $("#tipo option[value="+ datos.CLIENTIPO +"]").attr("selected",true);
+                mostrarEstado(datos.ESTCODIGO);
+                $("#vendedor option[value="+ datos.CLIENVENDEDOR +"]").attr("selected",true);
+                $("#domicilio").val(datos.CLIENDOMICILIO);
+                $("#telefono1").val(datos.CLIENTELEFONO1);
+                $("#telefono2").val(datos.CLIENTELEFONO2);
+                $("#anexTelefono").val(datos.CLIENANEX_TELEFONO);
+                $("#nombreContacto").val(datos.CLIENNOMBRE_CONTACTO);
+                $("#cargoContacto").val(datos.CLIENCARGO_CONTACTO);
+                $("#correoContacto").val(datos.CLIENCORREO_CONTACTO);
+                $("#giroEmpresa").val(datos.CLIENGIRO_EMPRESA);
+                $("#observacion").val(datos.CLIENOBSERVACION);
+                $("#credito").val(datos.CLIENCREDITO);
+                $("#moneda option[value="+ datos.CLIENMONEDA +"]").attr("selected",true);
+                $("#deuda").val(datos.CLIENDEUDA);
+                $("#plazo").val(datos.CLIENPLAZO_PAGO);
+                
+                if(datos.CLIENTIPCOMPROB != ""){
+                    $("#comprob option[value="+ datos.CLIENTIPCOMPROB+"]").attr("selected",true);
+                }
+                if(datos.CLIENFORMPAGO != ""){
+                    $("#fpago option[value="+ datos.CLIENFORMPAGO+"]").attr("selected",true);
+                }
+                            
+            }
+        }
+    }); 
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarDireccionCliente.php',
+        type: 'POST',
+        data: $nombre,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                 mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mostrarPais(datos.PAISCODIGO);
+                mostrarProvincia(datos.PAISNOMBRE,datos.PROVCODIGO);
+                mostrarDistrito(datos.PROVNOMBRE,datos.DISTRCODIGO);
+                                  
+            }
+        }
+    });
+    
+ }
+    
+/*=============================================
+    CARGAR EMPRESA
+=============================================*/
+
+function mostrarEmpresa(OP){
+    var boxEmpresa="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarEmpresa.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxEmpresa+="<option value='' selected>Elegir Empresa</option>";
+            $("#emp").html(boxEmpresa);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxEmpresa+="<option value='' selected>Elegir Empresa</option>";
+                $("#emp").html(boxEmpresa);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEmpresa+="<option value='' selected>Elegir Empresa</option>";
+                    }
+                    boxEmpresa+="<option value='"+datos[i].EMPCODIGO+"'>"+datos[i].EMPDESCRIPCION+"</option>";
+                }
+                $("#emp").html(boxEmpresa);
+                $("#emp option[value="+ OP +"]").attr("selected",true);
+            }
+        }
+    });  
+}    
+    
+/*=============================================
+    CARGAR ESTADO
+=============================================*/
+
+function mostrarEstado(OP){
+    var boxEstado="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarEstado.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxEstado+="<option value='' selected>Elegir Estado</option>";
+            $("#estado").html(boxEstado);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxEstado+="<option value='' selected>Elegir Estado</option>";
+                $("#estado").html(boxEstado);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEstado+="<option value='' selected>Elegir Estado</option>";
+                    }
+                    boxEstado+="<option value='"+datos[i].ESTCODIGO+"'>"+datos[i].ESTDESCRIPCION+"</option>";
+                }
+                $("#estado").html(boxEstado);
+                $("#estado option[value="+ OP +"]").attr("selected",true);
+            }
+        }
+    });  
+}   
+    
+/*=============================================
+    CARGAR PAIS
+=============================================*/
+
+//--GENERAR OPCIONES DE PAIS--
+function mostrarPais(OP){
+    var boxPais="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarPais.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxPais+="<option value='' selected>Elegir Pais</option>";
+            $("#pais").html(boxPais);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxPais+="<option value='' selected>Elegir Pais</option>";
+                $("#pais").html(boxPais);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxPais+="<option value='' selected>Elegir Pais</option>";
+                    }
+                    boxPais+="<option value='"+datos[i].PAISCODIGO+"'>"+datos[i].PAISNOMBRE+"</option>";
+                }
+                $("#pais").html(boxPais);
+                $("#pais option[value="+ OP +"]").attr("selected",true);
+            }
+        }
+    });  
+}    
+    
+//--SELECCION DE PAIS--
+$("#pais").change(function() {
+    opcionPais = $("#pais option:selected").text();
+    mostrarProvincia(opcionPais);
+    opcionProvincia = "Elegir Provincia";
+    mostrarDistrito(opcionProvincia);
+
+});   
+    
+ /*=============================================
+    CARGAR PROVINCIA
+=============================================*/
+
+//--GENERAR OPCIONES DE PROVINCIA--
+function mostrarProvincia(opcion,OP){
+    var boxProvincia="";
+    
+    var $pais={
+        '_pais': opcion
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarProvincia.php',
+        type: 'POST',
+        data: $pais,
+        datatype: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxProvincia+="<option value='' selected>Elegir Provincia</option>";
+            $("#prov").html(boxProvincia);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxProvincia+="<option value='' selected>Elegir Provincia</option>";
+                $("#prov").html(boxProvincia);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxProvincia+="<option value='' selected>Elegir Provincia</option>";
+                    }
+                    boxProvincia+="<option value='"+datos[i].PROVCODIGO+"'>"+datos[i].PROVNOMBRE+"</option>";
+                }
+                $("#prov").html(boxProvincia);
+                $("#prov option[value="+OP +"]").attr("selected",true);
+            }
+        } 
+    });
+}     
+    
+//--SELECCION DE PROVINCIA--
+$("#prov").change(function() {
+    opcionProvincia = $("#prov option:selected").text();
+    mostrarDistrito(opcionProvincia);
+});
+    
+/*=============================================
+    CARGAR DISTRITO
+=============================================*/
+
+function mostrarDistrito(opcion,OP){
+    var boxDistrito="";
+    
+    var $provincia={
+        '_provincia': opcion
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarDistrito.php',
+        type: 'POST',
+        data: $provincia,
+        datatype: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxDistrito+="<option value='' selected>Elegir Distrito</option>";
+            $("#distr").html(boxDistrito);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxDistrito+="<option value='' selected>Elegir Distrito</option>";
+                $("#distr").html(boxDistrito);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxDistrito+="<option value='' selected>Elegir Distrito</option>";
+                    }
+                    boxDistrito+="<option value='"+datos[i].DISTRCODIGO+"'>"+datos[i].DISTRNOMBRE+"</option>";
+
+                }
+                $("#distr").html(boxDistrito);
+                 $("#distr option[value="+OP+"]").attr("selected",true);
+
+            }
+        } 
+    });
+    
+} 
+ 
+/*=============================================
+    VALIDAR DATOS INGRESADOS
+=============================================*/    
+
+function Validar(){
+    
+    var R1 = $("#razonSocial").val();
+    var R2 = $("#nombreCorto").val();
+    var R3 = $("#tipiden").val();
+    var R4 = $("#numIdentificacion").val();
+    var R5 = $("#domicilio").val();
+    var R6 = $("#distr").val();
+    var R7 = $("#tipo").val();
+    var R8 = $("#estado").val();
+    var R9 = $("#emp").val();
+    var R11 = $("#vendedor").val();
+    var R12 = $("#correoContacto").val();
+    
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#razonSocial").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#nombreCorto").focus();
+    }
+    else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#iden").focus();
+    }
+    else if(R4 == null || R4.length == 0 || /^\s+$/.test(R4)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#numIdentificacion").focus();
+    }
+    else if(R5 == null || R5.length == 0 || /^\s+$/.test(R5)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#domicilio").focus();
+    }
+    else if(R6 == null || R6.length == 0 || /^\s+$/.test(R6)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#distr").focus();
+    }
+    else if(R7 == null || R7.length == 0 || /^\s+$/.test(R7)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#tipo").focus();
+    }
+    else if(R8 == null || R8.length == 0 || /^\s+$/.test(R8)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#estado").focus();
+    }
+    else if(R9 == null || R9.length == 0 || /^\s+$/.test(R9)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#emp").focus();
+    }
+    else if(R11 == null || R11.length == 0 || /^\s+$/.test(R11)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#vendedor").focus();
+    }
+    else if(R4.length > 11){
+        mostrarMensaje("advertencia","ADVERTENCIA: Longitud máxima del campo = 11");
+        $("#numIdentificacion").focus();
+    }
+    else if(R12 == null || R12.length == 0 || /^\s+$/.test(R12)){
+         mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        ActualizarClientes();
+    }
+    else {
+       
+        if(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.([a-zA-Z]{2,4})+$/.test(R12)){
+            mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+            ActualizarClientes();
+        }
+        else{
+            mostrarMensaje("advertencia","ADVERTENCIA: Ingresar una direccion electrónica valida.");
+            $("#correo").focus();
+        }
+    }  
+}      
+
+/*=============================================
+    ACTUALIZAR CLIENTES
+=============================================*/  
+    
+function ActualizarClientes(){
+    
+    var $cliente={
+        
+        '_codigo' : $("#codigo").text(),
+        '_nombreCorto' : $("#nombreCorto").val(),
+        '_razonsocial' : $("#razonSocial").val(),
+        '_tipiden' : $("#tipiden").val(),
+        '_numIdentificacion' : $("#numIdentificacion").val(),
+        '_emp' : $("#emp").val(),
+        '_tipo' : $("#tipo").val(),
+        '_estado' : $("#estado").val(),
+        '_vendedor' : $("#vendedor").val(),
+        '_distr' : $("#distr").val(),
+        '_domicilio' : $("#domicilio").val(),
+        '_telefono1' : $("#telefono1").val(),
+        '_telefono2' : $("#telefono2").val(),
+        '_anexTelefono' : $("#anexTelefono").val(),
+        '_nombreContacto' : $("#nombreContacto").val(),
+        '_cargoContacto' : $("#cargoContacto").val(),
+        '_correoContacto' : $("#correoContacto").val(),
+        '_giroEmpresa' : $("#giroEmpresa").val(),
+        '_observacion' : $("#observacion").val(),
+        '_credito' : $("#credito").val(),
+        '_moneda' : $("#moneda").val(),
+        '_plazo' : $("#plazo").val(),
+        '_comprob' : $("#comprob").val(),
+        '_fpago' : $("#fpago").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_ActualizarClientes.php',
+        type: 'POST',
+        data: $cliente,
+        dataType: 'json',
+        error: function(error){
+            $("#resultado").removeClass("orange");
+            $("#resultado").addClass("red");
+            if(error.status == 401){
+                $("#resultado").text("ACTUALIZACION INCORRECTA! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                $("#resultado").text("ACTUALIZACION INCORRECTA! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            $("#resultado").removeClass("orange");
+
+            if(datos.response == 0){
+                $("#resultado").text('ACTUALIZACION INCORRECTA! ERROR: '+datos.message);
+                $("#resultado").addClass("red");
+            }
+            else{
+                $("#resultado").text("ACTUALIZACION EXITOSA!");
+                $("#resultado").addClass("green");
+            }
+        }
+    });
+
+}
+    
+</script>

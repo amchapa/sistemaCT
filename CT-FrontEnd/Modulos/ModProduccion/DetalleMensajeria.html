@@ -1,0 +1,142 @@
+<div style="text-align:center;" id="detalleMensajeria">
+    <div class="card" style="width: 70%;margin: 0px auto">
+
+        <h5 class="card-header h5" id="titulo"></h5>
+        <button class="btn enfasis3" style="position:absolute; right: 10px; padding: 3px 10px; margin: 0; float: center;" id="btnImprimir" onclick="window.print();return false;">IMPRIMIR</button>
+        <div class="card-body">
+            <div class="form-row">
+                
+                <div class="col-12 col-md form-group">
+                   <p id="encabezado"></p>
+                </div>
+                
+                <table style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td><p id="fechaRegistro" align="left"></p></td>
+                            <td><p id="Costo" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="otEmpresa" align="left"></p></td>
+                            <td><p id="hora" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="guia" align="left"></p></td>
+                            <td><p id="peso" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="factura" align="left"></p></td>
+                            <td><p id="paquete" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="direccion" align="left"></p></td>
+                            <td><p id="distrito" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="plazoEntrega" align="left"></p></td>
+                            <td><p id="horario" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="contacto" align="left"></p></td>
+                            <td><p id="telefono" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td><p id="responsable" align="left"></p></td>
+                            <td><p id="tipoMensajeria" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p id="descripcion" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p id="comentario" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p id="datos" align="left"></p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p id="dni" align="left"></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<script type="text/javascript">
+   
+$(document).ready(function(){
+    cargarInfo(enviarCodigo);
+});
+
+/*FUNCION PARA CARGAR INFORMACION DE REGISTRO POR COD. DE DESPACHO*/
+function cargarInfo(codigo){
+    var mensajeria="";
+    var $codigo={
+        '_codigo':codigo
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarInfoXRegDespacho.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{ 
+                
+                if(datos.PRODESTIPO_MENSAJERIA.split("-")[0]=="M"){
+                    mensajeria="Mensajeria"
+                }else{
+                    mensajeria="Despacho"
+                }
+                document.getElementById('titulo').innerHTML="Mensajeria "+datos.PRODESTIPO_MENSAJERIA.split("-")[1];
+                document.getElementById('encabezado').innerHTML=datos.CLIENRAZON_SOCIAL+"</br>"+datos.OPCODIGO+"</br>"+"Area: "+mensajeria;
+                document.getElementById('fechaRegistro').innerHTML="<b>FECHA REGISTRO MENSAJERIA: </b>"+(vProduccion.formatFechaOriginal(datos.PRODES_FECHA_REGISTRO.split(" ")[0])+" "+datos.PRODES_FECHA_REGISTRO.split(" ")[1]);
+                document.getElementById('Costo').innerHTML="<b>COSTO: </b>_________________________ soles" ;
+                document.getElementById('otEmpresa').innerHTML="<b>O/T ASIGNADA A LA EMPRESA: </b>"+datos.EMPCODIGO;
+                document.getElementById('hora').innerHTML="<b>Horas Hombre: </b>_________________________ soles" ;
+                document.getElementById('guia').innerHTML="<b>IMPRIMIR GUIA REMISION: </b>"+datos.PRODES_GUIA.toUpperCase();
+                document.getElementById('peso').innerHTML="<b>PESO: </b>"+datos.PRODES_MONTO+" Kgs";
+                document.getElementById('factura').innerHTML="<b>IMPRIMIR FACTURA: </b>"+datos.PRODES_FACTURA.toUpperCase();
+                document.getElementById('paquete').innerHTML="<b># DE PAQUETES : </b>"+datos.PRODES_NUM_PAQ;
+                document.getElementById('direccion').innerHTML="<b>Direccion: </b>"+datos.PRODES_DIRECCION;
+                document.getElementById('distrito').innerHTML="<b>Distrito: </b>"+datos.DISTRNOMBRE;
+                if(datos.PRODES_FECHA_DESTINO!=""){document.getElementById('plazoEntrega').innerHTML="<b>PLAZO ENTREGA: </b>"+vProduccion.formatFechaOriginal(datos.PRODES_FECHA_DESTINO);}
+                if(datos.PRODES_HORARIO!="0" && datos.PRODES_HORARIO_INICIO!="0" && datos.PRODES_HORARIO_FINAL!="0"){
+                    document.getElementById('horario').innerHTML=vProduccion.cambiarTextoHorario(datos.PRODES_HORARIO)+" DE "+vProduccion.changeValueToText(datos.PRODES_HORARIO_INICIO)+" HASTA "+vProduccion.changeValueToText(datos.PRODES_HORARIO_FINAL);
+                }else if(datos.PRODES_HORARIO!="0" && datos.PRODES_HORARIO_INICIO!="0" && datos.PRODES_HORARIO_FINAL=="0"){
+                    document.getElementById('horario').innerHTML=vProduccion.cambiarTextoHorario(datos.PRODES_HORARIO)+" DE "+vProduccion.changeValueToText(datos.PRODES_HORARIO_INICIO);
+                }else if(datos.PRODES_HORARIO!="0" && datos.PRODES_HORARIO_INICIO=="0" && datos.PRODES_HORARIO_FINAL=="0"){
+                    document.getElementById('horario').innerHTML=vProduccion.cambiarTextoHorario(datos.PRODES_HORARIO);
+                }
+                document.getElementById('contacto').innerHTML="<b>Contacto: </b>"+datos.PRODES_CONTACTO;
+                document.getElementById('telefono').innerHTML="<b>Telefono: </b>"+datos.PRODES_TELEFONO;
+                document.getElementById('responsable').innerHTML="<b>Responsable: </b>"+datos.PERSNOMBRE + " "+datos.PERSAPELLIDO_PATERNO;
+                if(datos.PRODES_SELECCIONE!="otros"){
+                    document.getElementById('tipoMensajeria').innerHTML="<b>Tipo Mensajeria: </b>"+vProduccion.cambiarTextoTipMensajeria(datos.PRODESTIP_MENSAJERIA)+" - "+vProduccion.cambiarTextoSeleccione(datos.PRODES_SELECCIONE);
+                }else{
+                    document.getElementById('tipoMensajeria').innerHTML="<b>Tipo Mensajeria: </b>"+vProduccion.cambiarTextoTipMensajeria(datos.PRODESTIP_MENSAJERIA)+" - "+datos.PRODES_OTROS;
+                }
+                document.getElementById('descripcion').innerHTML="<b>Descripcion: </b>"+datos.PRODES_DESCRIPCION;
+                document.getElementById('comentario').innerHTML="<b>Comentario: </b>"+datos.PRODES_COMENTARIO;
+                document.getElementById('datos').innerHTML="<b>Nombres y Apellidos: </b>_______________________________________________________________________";
+                document.getElementById('dni').innerHTML="<b>DNI: </b>______________________________________________________________________________________";
+            } 
+        }
+    });
+    
+}
+    
+</script>

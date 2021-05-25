@@ -1,0 +1,146 @@
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--DISEÑO GENERAL DE LA VISTA-->
+<section id="menuMaquinas" class="menu">
+    
+    <!--OPCIONES GENERALES DE LA VISTA-->
+    <section id="menuMaquinas-Generales">
+       <div class="w-responsive mx-auto my-3">
+          
+          <!--TITULO DE LA SECCION-->
+          <div class="tituloSeccion">FUNCIONES GENERALES</div>
+           
+           <!--OPCIONES DE LA SECCION-->
+          <div class="row text-center my-3">
+
+            <!--OPCION NUEVA MAQUINA-->
+            <div class="col"><button class="btn btn-lg btnGeneral" onclick="NuevaMaquina();return false"><i class="fas fa-cog fa-4x"></i><br>Nueva Maquina</button></div>
+
+            <!--OPCION ACTUALIZAR MAQUINA-->
+            <div class="col"><button id="actualizarMaquinas" class="btn btn-lg btnGeneral" data-toggle="modal"  data-target="#listadoMaquinas" ><i class="fas fa-cogs fa-4x"></i><br>Actualizar Maquina</button></div>
+            
+            <!--OPCION LISTAR MAQUINAS-->
+            <div class="col"><button class="btn btn-lg btnGeneral" id="ListarTodo"><i class="fas fa-tools fa-4x"></i><br>Listar Maquina</button></div>
+
+          </div>
+           
+       </div>
+        
+    </section>
+    
+
+
+<!-- MODAL LISTAR MAQUINAS -->
+<div class="modal fade" id="listadoMaquinas" tabindex="-1" role="dialog" aria-labelledby="listadoMaquinasTitulo" aria-hidden="true">
+<div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Maquina</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select name="maquinas" id="maquinas" class="w-responsive"></select>
+        <button id="opMaquina" data-dismiss="modal">Buscar</button>
+      </div>
+
+    </div>
+    
+</div>
+</div>
+</section>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaMaquinas/VistaMaquinas.js"></script>
+
+<script> 
+    
+/*=============================================
+    CARGAR MAQUINAS
+=============================================*/
+    
+mostrarMaquinas();
+
+function mostrarMaquinas(){
+    var boxMaquinas="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Maquinas/Controlador_MostrarTodosMaquinas.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxMaquinas+="<option value='' selected>Elegir Maquina</option>";
+            $("#maquinas").html(boxMaquinas);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxMaquinas+="<option value='' selected>Elegir Maquina</option>";
+                $("#maquinas").html(boxMaquinas);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxMaquinas+="<option value='' selected>Elegir Maquina</option>";
+                    }
+                    boxMaquinas+="<option value='"+datos[i].MAQUICODIGO+"'>"+datos[i].MAQUINOMBRE+"</option>";
+                }
+                $("#maquinas").html(boxMaquinas);
+               
+            }
+        }
+    });  
+    
+}    
+   
+    
+/*=============================================
+    ELEGIR OPCION DE LISTADO
+=============================================*/
+var opcion="";
+var select="";
+
+$("#ListarTodo").click(function(){
+    opcion="TODO";
+    select="";
+    ListarMaquinas(opcion,select);
+});    
+
+    
+/*=============================================
+   BUSCAR X NOMBRE DE LA MAQUINA
+=============================================*/
+    
+var opMaquina=0;
+var buscar="NO";
+var maquina;
+    
+$("#actualizarMaquinas").click(function(){
+    opMaquina=1;
+});
+    
+$("#opMaquina").click(function(){
+    buscar="SI";
+    maquina=$("#maquinas").val();
+}); 
+    
+$("#listadoMaquinas").on('hidden.bs.modal', function(){
+    if (buscar=="SI" && $("#maquinas option:selected").text() != "Elegir Maquina"){
+        ActualizarMaquina(maquina);
+    }else{mostrarMensaje("error","Seleccionar Maquina")}
+});  
+    
+</script>   

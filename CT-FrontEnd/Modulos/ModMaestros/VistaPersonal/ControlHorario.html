@@ -1,0 +1,465 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form class="form2">
+
+  <!--TITULO DE LA VISTA-->
+  <h3 class="h3-responsive titulo">CONTROL HORARIO</h3>
+  
+  <!--OPCIONES DEL GRUPO-->
+  <div class="form-row">
+    
+    <!--AGREGAR GRUPO-->
+    <div class="col-12 col-md form-group">
+      <div class="card">
+        <h5 class="card-header h5">Agregar nuevo grupo</h5>
+        <div class="card-body">
+
+          <div class="form-row">
+            
+            <!--DESCRIPCION-->
+            <div class="col-12 col-md form-group">
+              <label for="descripcion">Descripcion</label>
+              <input class="form-control" id="descripcion" placeholder="Grupo 1" type="text">
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--CODIGO-->
+            <div class="col-12 col-md form-group">
+              <label for="siglas">Codigo</label>
+              <input class="form-control" id="siglas" placeholder="G1" type="text">
+            </div>
+
+            <!--TURNO-->
+            <div class="col-12 col-md form-group">
+              <label for="turnoAgregar">Turno</label>
+              <select id="turnoAgregar" class="form-control">
+                  <option value="Mañana">Mañana</option>
+                  <option value="Tarde">Tarde</option>
+                  <option value="Noche">Noche</option>
+              </select>
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--GUARDAR-->
+            <div class="col-12 col-md form-group text-center">
+              <button class="btn btn-guardar py-1" onclick="verificarCampos();return false">Guardar</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+    <!--ASIGNAR TURNO AL GRUPO-->
+    <div class="col-12 col-md form-group">
+      <div class="card">
+        <h5 class="card-header h5">Asignar turno</h5>
+        <div class="card-body">
+
+          <div class="form-row">
+
+            <!--GRUPO-->
+            <div class="col-12 col-md form-group">
+              <label for="grupo">Grupo</label>
+              <select class="form-control" id="grupo" ></select>
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--TURNO-->
+            <div class="col-12 col-md form-group">
+              <label for="turnoGrup">Turno</label>
+              <select class="form-control" id="turnoGrup" >
+                <option value="Mañana" >MAÑANA</option>
+                <option value="Tarde">TARDE</option>
+                <option value="Noche">NOCHE</option>
+              </select> 
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--GUARDAR-->
+            <div class="col-12 col-md form-group text-center">
+              <button class="btn btn-guardar py-1" onclick="cambioTotal();return false">GUARDAR</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>  
+    </div>
+    
+  </div>
+  
+  <!--VER PERSONAL ASIGNADO A CADA GRUPO-->
+  <div class="card">
+    <h5 class="card-header h5">Ver personal asignado a cada grupo</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+        
+        <div class="col-12 col-md-4">
+          <div class="list-group" id="list-tab-grupos" role="tablist">
+
+          </div>
+        </div>
+        
+        <div class="col-12 col-md-8">
+          <div class="tab-content" id="nav-tabContent-grupos">
+            </div>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--ASIGNAR GRUPOS AL PERSONAL-->   
+ <table id="administra" class="table my-2">
+   <thead>
+      <tr>
+        <th colspan="8">ASIGNAR PERSONAL A UN GRUPO</th>   
+      </tr>
+      <tr>
+          <th>CODIGO</th>
+          <th>APELLIDOS</th>
+          <th>NOMBRES</th>
+          <th>AREA</th>
+          <th>GRUPO</th>
+          <th>TURNO</th>
+          <th>ACCION</th>
+      </tr>
+   </thead>
+   <tbody id="tablaControl">
+   </tbody>
+ </table>  
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script type="text/javascript">
+    
+vPersonal.cargarGrupos();
+cargarTablaRotativos(); 
+listaGrupo();
+    
+function listaGrupo(){
+        var boxLista="";
+        var boxListaPersonal="";
+        
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosGrupos.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxLista+="<a class='list-group-item list-group-item-action active' id='list-home-list' data-toggle='list' href='#list-home' role='tab' aria-controls='home'>Home</a>";
+            boxListaPersonal+="<div class='tab-pane fade show active' id='list-home role='tabpanel' aria-labelledby='list-home-list'>INFORMACION NO ENCONTRADA</div>";
+            $("#list-tab-grupos").html(boxLista);
+            $("#nav-tabContent-grupos").html(boxListaPersonal);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxLista+="<a class='list-group-item list-group-item-action active' id='list-home-list' data-toggle='list' href='#list-home' role='tab' aria-controls='home'>Home</a>";
+                boxListaPersonal+="<div class='tab-pane fade show active' id='list-home role='tabpanel' aria-labelledby='list-home-list'>INFORMACION NO ENCONTRADA</div>";
+                $("#list-tab-grupos").html(boxLista);
+                $("#nav-tabContent-grupos").html(boxListaPersonal);
+            }else{
+                mostrarMensaje("exito",'INFORMACION CARGADA EXITOSAMENTE');
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxLista+="<a class='list-group-item list-group-item-action active text-center' id='list-"+datos[i].GRUPCODIGO+"-list' onclick='listaGrupoPersonal(this.id);return false' data-toggle='list' href='#list-"+datos[i].GRUPCODIGO+"' role='tab' aria-controls="+datos[i].GRUPCODIGO+">"+datos[i].GRUPDESCRIPCION+" </a>";
+                        boxListaPersonal+="<div class='tab-pane fade show active' id='list-"+datos[i].GRUPCODIGO+"' role='tabpanel' aria-labelledby='list-"+datos[i].GRUPCODIGO+"-list'><table class='w-100'><thead><tr>\
+                                      <td class='text-center'>CODIGO</td>\
+                                      <td class='text-center'>APELLIDOS</td>\
+                                      <td class='text-center'>NOMBRES</td>\
+                                      <td class='text-center'>DNI</td>\
+                                      <td class='text-center'>AREA</td>\
+                                      <td class='text-center'>T. HORARIO</td>\
+                                  </tr></thead><tbody id=tabla"+datos[i].GRUPCODIGO+"></tbody></table></div>";
+                    }else{
+                        boxLista+="<a class='list-group-item list-group-item-action text-center' id='list-"+datos[i].GRUPCODIGO+"-list' onclick='listaGrupoPersonal(this.id);return false' data-toggle='list' href='#list-"+datos[i].GRUPCODIGO+"' role='tab' aria-controls="+datos[i].GRUPCODIGO+">"+datos[i].GRUPDESCRIPCION+"</a>";
+                        boxListaPersonal+="<div class='tab-pane fade' id='list-"+datos[i].GRUPCODIGO+"' role='tabpanel' aria-labelledby='list-"+datos[i].GRUPCODIGO+"-list'><table class='w-100'><thead><tr>\
+                                      <td class='text-center'>CODIGO</td>\
+                                      <td class='text-center'>APELLIDOS</td>\
+                                      <td class='text-center'>NOMBRES</td>\
+                                      <td class='text-center'>DNI</td>\
+                                      <td class='text-center'>AREA</td>\
+                                      <td class='text-center'>T. HORARIO</td>\
+                                  </tr></thead><tbody id=tabla"+datos[i].GRUPCODIGO+"></tbody></table></div>";
+                    }
+                }
+                $("#list-tab-grupos").html(boxLista);
+                $("#nav-tabContent-grupos").html(boxListaPersonal);
+            }
+        }
+    });
+}  
+    
+function listaGrupoPersonal(codigo){
+    codigo=codigo.split("-");
+    
+    var $codigo={
+        '_codigo':codigo[1]
+    }
+    
+    $.ajax({
+    url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalxGrupo.php",
+    type: 'POST',
+    data: $codigo,
+    dataType: 'json',
+    error: function(error){
+        if(error.status == 401){
+            mostrarMensaje("error","Archivos no encontrados");
+        }
+        else{
+            mostrarMensaje("error","Error no identificado");
+        }
+    },
+    success: function(datos){
+        if(datos.response=="0"){
+            mostrarMensaje("error",'ERROR: '+datos.message);
+        }else{
+            var tablaControl="";
+            for(var i=0; i<datos.length; i++){
+                tablaControl+="<tr>\
+                <td class='text-center'>"+datos[i].PERSCODIGO+"</td>\
+                <td class='text-center'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+"</td>\
+                <td class='text-center'>"+datos[i].PERSNOMBRE+"</td>\
+                <td class='text-center'>"+datos[i].PERSNUM_IDENTIFICACION+"</td>\
+                <td class='text-center'>"+datos[i].AREADESCRIPCION+"</td>\
+                <td class='text-center'>"+datos[i].GRUPTURNO+"</td>\
+                </tr>"
+            }
+            $("#tabla"+codigo[1]).html(tablaControl);
+            mostrarMensaje("exito",'INFORMACION CARGADA EXITOSAMENTE');
+            }
+        }
+    });
+    
+}    
+    
+function cargarTablaRotativos(){
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosRotativo.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                var tablaControl="";
+                for(var i=0; i<datos.length; i++){
+                    tablaControl+="<tr>\
+                    <td class='text-center'>"+datos[i].PERSCODIGO+"</td>\
+                    <td class='text-center'>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+"</td>\
+                    <td class='text-center'>"+datos[i].PERSNOMBRE+"</td>\
+                    <td class='text-center'>"+datos[i].AREADESCRIPCION+"</td>\
+                    <td class='text-center'><select class='turno' id='turnoGrupo"+i+"' class='w-100'></select></td>\
+                    <td class='text-center'>"+datos[i].GRUPTURNO+"</td>\
+                    <td class='text-center'><input id="+ datos[i].PERSCODIGO+" type='button' value='GUARDAR' onclick='actualizarGrupo(this.id,"+i+");return false'></td>\
+                    </tr>"
+                }
+                $("#tablaControl").html(tablaControl);
+                seleccionGrupo(datos);
+            }
+        }
+    }); 
+}
+    
+function seleccionGrupo(data){
+    
+    var boxGruposxPersonal="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarTodosGrupos.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxGruposxPersonal+="<option value='' selected>Elegir Grupo</option>";
+            $(".turno").html(boxGruposxPersonal);
+        },
+        success: function(datos){
+            
+            if(datos.response=="0"){
+                boxGruposxPersonal+="<option value='' selected>Elegir Grupo</option>";
+                $(".turno").html(boxGruposxPersonal);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    boxGruposxPersonal+="<option value='"+datos[i].GRUPCODIGO+"'>"+datos[i].GRUPDESCRIPCION+"</option>";
+                }
+                $(".turno").html(boxGruposxPersonal);   
+                
+                for (var j=0; j<data.length;j++){
+                    $("#turnoGrupo"+j+" option[value="+ data[j].GRUPCODIGO +"]").attr("selected",true);
+                }
+                mostrarMensaje("exito",'INFORMACION CARGADA EXITOSAMENTE');
+            }
+        }
+    });
+    
+}
+    
+function verificarCampos(){
+    var cod=$("#siglas").val();
+    var descripcion=$("#descripcion").val();
+    var pos=document.getElementById("turnoAgregar")
+    var turno=pos.value;
+    
+    if(cod=="" || descripcion==""){
+        mostrarMensaje("error","CAMPOS INCORRECTAMENTE INGRESADOS");
+    }else{
+        guargarGrupo(cod,descripcion,turno);
+    }
+}
+
+function guargarGrupo(cod,descripcion,turno){
+    
+    var $datos={
+        '_codigo':cod,
+        '_descripcion': descripcion,
+        '_turno': turno
+        
+    }
+    
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_RegistrarNuevoGrupo.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }  
+            
+        },
+        success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                vPersonal.cargarGrupos()
+                cargarTablaRotativos();
+                listaGrupo();
+            }
+
+        }
+        
+    });
+    $("#agregarNuevoGrupo").modal("hide");
+    
+    
+
+}
+
+function actualizarGrupo(codigo,posicion){
+
+    var pos=document.getElementById("turnoGrupo"+posicion)
+    var grupo=pos.value;
+    
+    var $codigo={
+        '_codigo': codigo,
+        '_grupo':grupo
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_ActualizarGrupo.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+                cargarTablaRotativos();
+            }
+        }
+    });
+    
+}   
+    
+function cambioTotal(){
+    var grupo=document.getElementById("grupo").value;
+    var turno=document.getElementById("turnoGrup").value;
+    
+    var $data={
+        '_grupo': grupo,
+        '_turno' : turno
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_CambiarTurnoxGrupo.php',
+        type: 'POST',
+        data: $data,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                $("#resultado").text("CAMBIOS REALIZADOS");
+                cargarTablaRotativos();
+                listaGrupo();
+            }
+        }
+    }); 
+    
+}
+    
+function mostrarhora(){ 
+var f=new Date();
+var cad=f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();
+}
+    
+</script>

@@ -1,0 +1,26 @@
+<div class="card w-50 my-1" style="margin-left: 20%; margin-right: 20%" >
+    <div class="text-center form-card  form-group" >
+      <div class="col-12 my-4 h3-responsive font-weight-bold">BUSCAR POR CÓDIGO:</div>
+        <div class="form-inline">
+          <select class="form-control text-left font-weight-bold" style="margin-left: 8%; margin-right: 10%" id="ordenesAprobados"><option value="0">-</option></select>
+          <select class="form-control text-center font-weight-bold" style="margin-left: 8%; margin-right: 10%" id="subItems"><option value="0">Elegir SubItem</option></select>
+        </div>
+      <div class="col-12 my-4 h6"><input type="button" id="buscar" value="BUSCAR" class="btn btn-titulo enfasis2" onclick="vPrincipal.mostrarDatosItem();return false"></div>
+    </div>
+  </div>
+
+<div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModOrden/VistaPrincipal.js"></script>
+
+<script>
+/*CARGAR ORDENES DE PRODUCCION QUE SE VAN A CREAR SU(S) ITEM(S)*/
+vPrincipal.mostrarOrProducACrear()
+    
+/* BUSCAR Y MOSTRAR LOS ITEMS DE LA ORDEN - SELECT*/
+$("#ordenesAprobados").change(function(){
+   vPrincipal.mostrarSubItemXOrProduccion($("#ordenesAprobados").val());
+});
+
+</script>

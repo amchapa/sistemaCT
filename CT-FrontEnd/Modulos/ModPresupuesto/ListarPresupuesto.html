@@ -1,0 +1,226 @@
+<form>
+<div id="encabezadoPrincipal" class="container font-weight-bold h2-responsive principal-text text-center my-4">LISTAR PRESUPUESTOS</div>
+
+<div id="ListadoPrincipal">
+ 
+ <!-- LISTADO DE PRESUPUESTO X CODIGO -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+    <div  class="h5-responsive font-weight-bold my-2" style="margin-left:8%"> LISTADO X CODIGO DE PRESUPUESTO</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="presupuestos" ></select>
+     <button class="text-right btn btn-titulo  mx-4" id='1' onclick="cargarDatos(this.id);return false">BUSCAR</button>
+      </div>
+ </div>
+ 
+ <!-- LISTADO DE PRESUPUESTO X CLIENTE -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+     <div  class="h5-responsive font-weight-bold my-2" style="margin-left:8%"> LISTADO POR CLIENTE</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="cliente"></select>
+     <button class="text-right btn btn-titulo mx-4" id='2' onclick="cargarDatos(this.id);return false">BUSCAR</button>
+     </div>
+     
+ </div>
+ 
+ <!-- LISTADO DE PRESUPUESTO X VENDEDOR -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+     <div  class="h5-responsive font-weight-bold my-2" style="margin-left:8%"> LISTADO POR EJECUTIVA</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="vendedor">
+        <option value="49">PEPE</option>
+        <option value="35">FABIOLA</option>
+        <option value="39">YRMA</option>
+        <option value="54">MILAGROS</option>
+        <option value="28">LIZ</option>
+        <option value="74">ALAN</option>
+      </select>
+      <button class="text-right btn btn-titulo mx-4" id='3' onclick="cargarDatos(this.id);return false">BUSCAR</button>
+     </div>
+ </div>
+  
+  <!-- LISTADO DE PRESUPUESTO X CLIENTE -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+     <div  class="h5-responsive font-weight-bold my-2" style="margin-left:8%"> MOSTRAR PRESUPUESTOS X ESTADO</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="estado">
+        <option value="14">POR APROBAR</option>
+        <option value="15">ACEPTADO</option>
+        <option value="16">PRODUCCION</option>
+        <option value="17">FACTURADO</option>
+        <option value="18">ANULADO</option>
+        <option value="0">TODOS</option>
+      </select>
+     <button class="text-right btn btn-titulo mx-4" id='4' onclick="cargarDatos(this.id);return false">MOSTRAR</button>
+     </div>  
+ </div>
+  
+</div>
+
+<div id="ListadoDePresupuesto" class="card my-4">
+<div id="titulo" class="container font-weight-bold h3-responsive my-3 strong-text text-center"></div>
+
+<table id="tablaPresupuestos" class='table table-striped table-bordered text-center my-3' style="border-top-color: #007bff" cellspacing='0' >
+  <thead><tr id="tituloColumnas"></tr></thead>
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+</div>
+
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+
+<script type="text/javascript" src="Modulos/ModPresupuesto/VistaPresupuesto.js"></script>
+
+<script>
+$("#ListadoDePresupuesto").addClass('d-none');
+datos.mostrarCliente();
+datos.mostrarPresupuestos();
+var inicializar=0;
+    
+/*=============================================
+    CARGAR DATOS DEL LISTADOXCLIENTE
+=============================================*/       
+    
+function cargarDatos(id){
+  
+    if(inicializar!=0 ){
+    $('#tablaPresupuestos').DataTable().destroy();
+  }
+    var titulos="";
+    var $opcion;
+    var codigo="",ruta="";
+    titulos+="<th  class='th-sm text-center'>CLIENTE</th>\
+              <th  class='th-sm text-center'>FECHA DE REGISTRO</th>\
+              <th  class='th-sm text-center'>PRESUPUESTO</th>\
+              <th  class='th-sm text-center'>VENDEDOR</th>\
+              <th  class='th-sm text-center'>ITEMS</th>\
+              <th  class='th-sm text-center'>ESTADO</th>\
+              <th  class='th-sm text-center'>DETALLE</th>\
+            ";
+    $("#tituloColumnas").html(titulos);
+  
+    switch(id){
+      case('1'): codigo=$("#presupuestos").val(); ruta="../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarTodosXCodigo.php" ; $("#titulo").html("PRESUPUESTO - " + codigo);break;
+      case('2'): codigo=$("#cliente").val(); ruta='../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarPresupuestoCliente.php'; $("#titulo").html("PRESUPUESTO - " + codigo);break;
+      case('3'): $("#titulo").html("PRESUPUESTOS - " + $("#vendedor option:selected").text());
+        switch($("#vendedor").val()){
+            case('35'): codigo="FABIOLA"; break;
+            case('39'): codigo="YRMA"; break;
+            case('54'): codigo="MILAGRITO"; break;
+            case('28'): codigo="LIZA"; break;
+            case('74'): codigo="ALAN";break;
+          default: codigo="JOSE"; $("#titulo").html("PRESUPUESTOS - JOSE RAMOS LEDESMA");break;
+        }
+        ruta="../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarTodoXVendedor.php" ; break;
+      case('4'):
+        switch($("#estado").val()){
+            case('0'): codigo=$("#estado").val(); ruta="../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarTodosPptos.php"; $("#titulo").html("PRESUPUESTOS - " + $("#estado option:selected").text());break;
+            default:   codigo=$("#estado").val(); ruta="../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarPresupuestosXEstados.php";$("#titulo").html("PRESUPUESTOS - " + $("#estado option:selected").text());break;
+        }
+    }
+    $opcion={'_dato': codigo};
+    
+    $.ajax({
+        url: ruta,
+        type: 'POST',
+        data: $opcion, 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            $("#resultado").text("NO HAY RESULTADOS PARA LA BÚSQUEDA");
+            $("#tablaPresupuestos").html("");inicializar=0;
+        },
+        success: function(datos){
+            mostrarDatosPresupuestos(datos);  
+        }
+    }); 
+}
+    
+/*=============================================
+    MOSTRAR DATOS TODOS PRESUPUESTOS X CLIENTE
+=============================================*/  
+
+function mostrarDatosPresupuestos(datos){
+    var tablaPresupuestos="";
+    if(datos.response=="0"){
+        $("#resultado").text("NO HAY RESULTADOS PARA LA BÚSQUEDA");
+        mostrarMensaje("error","NO HAY RESULTADOS PARA LA BÚSQUEDA");
+    }else{
+        $("#resultado").text("");
+        var vendedor = "";
+        for(var i=0; i<datos.length;i++){
+
+            switch(datos[i].PRESUPVENDEDOR){
+              case('49'): vendedor="JOSE RAMOS LEDESMA"; break;
+              case('35'): vendedor="FABIOLA MORALES"; break;
+              case('39'): vendedor="YRMA PAUCAR"; break;
+              case('54'): vendedor="MILAGROS SALINAS"; break;
+              case('28'): vendedor="LIZA GUERRERO"; break;
+              case('74'): vendedor="ALAN LAVANDA";break;
+            }
+            tablaPresupuestos+="<tr>\
+                                  <td><a id='"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].CLIENNOMBRE_CORTO+"</a></td>\
+                                  <td><a id='"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].PRESUPFECHA_REGISTRO+"</a></td>\
+                                  <td><a id='"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].PRESUPNUMERO+"</a></td>\
+                                  <td><a id='"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+vendedor+"</a></td>\
+                                  <td><a id='"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].PRESUPCANT_ITEM+"</a></td>\
+                                  <td><a id='estado*"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].ESTDESCRIPCION+"</a></td>\
+                                  <td><a id='estado*"+datos[i].PRESUPNUMERO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].PRESUPDETALLE+"</a></td>\
+                              </tr>";
+        }
+        mostrarMensaje("exito","DATOS CARGADOS");
+    }
+    inicializar=inicializar+1;
+    $("#cuerpoTabla").html(tablaPresupuestos);
+    $('#tablaPresupuestos').DataTable( {
+            dom: 'Bfrtip',
+            lengthMenu: [
+                [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+            ],
+            buttons: [
+                {
+                    extend: 'pageLength',
+                    text: "VER 10 FILAS"
+                },
+                {
+                    extend: 'print',
+                    title: $("#titulo").html(),
+                    text: 'IMPRIMIR'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    download: 'open',
+                    title: $("#titulo").html(),
+                    text: 'EXPORTAR PDF'
+                }
+            ]
+        } );
+    $("#ListadoDePresupuesto").removeClass('d-none');
+    document.getElementById("tablaPresupuestos_wrapper").style.width = "80%";
+    document.getElementById("tablaPresupuestos_wrapper").style.marginLeft = "10%";
+    $("#tablaPresupuestos_wrapper").addClass("my-4");
+    
+    $("#tablaPresupuestos_filter input:eq(0)").focus();
+}
+  
+    
+/*=================================================
+    MOSTRAR DATOS SEGUN EL PRESUPUESTO SELECCIONADO
+==================================================*/      
+var presupuesto;
+function seleccionarLink(id){
+  if(id.split("*")[0]=="estado"){
+    CambiarEstadoPresupuesto(id)    
+  }else{
+    BuscarPresupuesto(id);
+  }
+    
+}   
+          
+</script>

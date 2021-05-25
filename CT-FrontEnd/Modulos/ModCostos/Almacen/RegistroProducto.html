@@ -1,0 +1,390 @@
+<form>
+<!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 id="tituloRegistro" class="h3-responsive titulo font-weight-bold"></h3>
+          <input type="hidden" id='codigoProductoActualizar'>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--DATOS DEL NUEVO PRODUCTO-->
+  <div id="nuevoproducto" class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--CODIGO-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="codigoProducto">Código</label>
+          <input required type="text" class="form-control" onkeyup="javascript:this.value=this.value.toUpperCase();" id="codigoProducto" onchange="verificarCodigo()" aria-describedby="nombreCodigoProductoHelp" placeholder="Ingresar Código">
+          <small id="nombreCodigoProductoHelp" class="form-text text-muted">Ejemplo: 02TSMAGENTAHOS</small>
+        </div>
+        
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="nombreTipoProducto">Nombre</label>
+          <input required type="text" class="form-control" id="nombreTipoProducto" aria-describedby="nombreTipoProductoHelp" placeholder="Ingresar Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="nombreTipoProductoHelp" class="form-text text-muted">Ejemplo: MAGENTA</small>
+        </div>
+        
+        <!--DESCRIPCION--USO-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="descripcionProducto">Descripción/ Uso</label>
+          <input type="text" class="form-control" id="descripcionProducto" aria-describedby="descripcionProductoHelp" placeholder="Ingresar Descripción" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="descripcionProductoHelp" class="form-text text-muted">Ejemplo: TINTA MAGENTA</small>
+        </div>
+        
+        <!--UNIDAD-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="unidadProducto">Unidad</label>
+          <select required type="text" class="form-control" id="unidadProducto" aria-describedby="unidadProductoHelp">
+            <option value="0" selected disabled>Elegir Unidad</option>
+            <option value="BID">BID</option>
+            <option value="FARDO">FARDO</option>
+            <option value="DOC">DOC</option>
+            <option value="GALONES">GALONES</option>
+            <option value="HOJA RESMA">HOJA RESMA</option>
+            <option value="KILOGRAMOS">KILOGRAMOS</option>
+            <option value="LITROS">LITROS</option>
+            <option value="UNIDADES">UNIDADES</option>
+            <option value="ROLLOS">ROLLOS</option></select>
+          <small id="unidadProductoHelp" class="form-text text-muted">Campo obligatorio</small>
+        </div>
+
+        <!--TIPO-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="TipoProducto">Tipo de Producto</label>
+          <select required id="TipoProducto" onchange="mostrarFormularioPapel()" class="form-control" aria-describedby="TipoProductoHelp">
+          </select>
+          <small id="TipoProductoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--FAMILIA PAPEL-->
+        <div style="display: none" id="familiapapel1"class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="codigofamiliaPapel">Familia Papel</label>
+          <select required id="codigofamiliaPapel" class="form-control" aria-describedby="codigofamiliaPapelHelp">
+          </select>
+          <small id="codigofamiliaPapelHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--GRAMAJE-->
+        <div style="display: none" id="familiapapel4"class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="gramajefamiliaPapel">Gramaje</label>
+           <input  type="number" class="form-control" id="gramajefamiliaPapel" aria-describedby="gramajefamiliaPapelHelp" placeholder="Ingresar Gramaje">
+          <small id="gramajefamiliaPapelHelp" class="form-text text-muted">Ejemplo : 90</small>
+        </div>
+        
+        <!--MARCA-->
+        <div  id="familiapapel2"class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="marcaproducto">Marca</label>
+           <input  type="text" class="form-control" id="marcaproducto" aria-describedby="marcafamiliaPapelHelp" placeholder="Ingresar Marca" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="marcafamiliaPapelHelp" class="form-text text-muted">Ejemplo : CB</small>
+        </div>
+        
+        <!--TAMAÑO-->
+        <div id="familiapapel3"class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="tamañoproducto">Tamaño</label>
+          <div class="form-inline">
+           <input type="number" class="form-control" id="tamañoproducto" aria-describedby="tamañofamiliaPapelHelp" placeholder="Ingresar Tamaño">
+            <input type="number" class="form-control" id="tamañoproducto2" aria-describedby="tamañofamiliaPapelHelp" placeholder="Ingresar Tamaño">
+            </div>
+          <small id="tamañofamiliaPapelHelp" class="form-text text-muted">Ejemplo : 70 , 100</small>
+        </div>
+        
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="estadoProducto">Estado</label>
+          <select required id="estadoProducto" class="form-control" aria-describedby="estadoProductoHelp">
+          <option value="66">ACTIVO</option>
+          <option value="67">INACTIVO</option>
+          </select>
+          <small id="estadoProductoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="tipocostoProducto">Tipo de Costo</label>
+          <select required id="tipocostoProducto" class="form-control" aria-describedby="tipocostoProductoHelp">
+          <option value="directo">DIRECTO</option>
+          <option value="indirecto">INDIRECTO</option>
+          </select>
+          <small id="tipocostoProductoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+     <button id="buttonCreate" type="button"  class="btn btn-guardar" onclick="registrar();return false">Guardar</button>
+     <button id="buttonUpdate" type="button"  class="btn btn-guardar" onclick="actualizar();return false">Actualizar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+  </div>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+  <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+</form>
+
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript">
+  
+document.getElementById("reset").onclick = function() {limpiarMensaje()};
+
+//--LIMPIAR--
+ function limpiarMensaje(){
+     $("#resultado").text("");
+ }
+
+mostrarFamiliaProductos("TipoProducto");
+mostrarFamiliaPapel("codigofamiliaPapel");
+  
+/*INICIO DEL DOCUMENTO*/
+function mostrarOpciones(dato){
+  if(dato=="registrar"){
+    $("#tituloRegistro").html("REGISTRO DE NUEVO PRODUCTO")
+    document.getElementById("buttonCreate").style.display=null;
+    document.getElementById("buttonUpdate").style.display='none';
+  }else{
+    $("#tituloRegistro").html("ACTUALIZAR DATOS DEL PRODUCTO")
+    document.getElementById("buttonUpdate").style.display=null;
+    document.getElementById("buttonCreate").style.display='none';
+    cargarDatos(dato);
+  }
+}  
+  
+/*OPCIONES DE TIPO PAPEL*/
+function mostrarFormularioPapel(FAMPROCODIGO){
+  if(FAMPROCODIGO=="7" || FAMPROCODIGO=='4' || FAMPROCODIGO =='5'){
+    document.getElementById("familiapapel1").style.display=null;
+    document.getElementById("tamañoproducto2").style.display=null;
+    document.getElementById("familiapapel4").style.display=null;
+  }else{
+    if($("#TipoProducto").val()=="7" || $("#TipoProducto").val()=='4' || $("#TipoProducto").val() =='5'){
+       document.getElementById("familiapapel1").style.display=null;
+      document.getElementById("tamañoproducto2").style.display=null;
+      document.getElementById("familiapapel4").style.display=null;
+    }else{
+      document.getElementById("familiapapel1").style.display='none';
+      document.getElementById("tamañoproducto2").style.display='none';
+      document.getElementById("familiapapel4").style.display='none';
+    }
+  }
+}
+  
+/*MOSTRAR DATOS DEL PRODUCTO*/  //ACTUALIZAR 
+function cargarDatos(codigo){
+  var $codigo={
+    '_codigo':codigo
+  }
+   $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarProductoXCodigo.php",
+        type: 'POST',
+        data:$codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+                mostrarMensaje("exito","DATOS MOSTRADOS");
+                $("#codigoProductoActualizar").val(datos.PRONUMERO);
+                $("#codigoProducto").val(datos.PROCODIGO);
+                $("#nombreTipoProducto").val(datos.PRONOMBRE);
+                $("#descripcionProducto").val(datos.PRODESCRIPCION);
+                $("#unidadProducto").val(datos.PROUNIDAD);
+              
+              mostrarFamiliaProductos("TipoProducto",datos.FAMPROCODIGO);
+                if(datos.FAMPROCODIGO=="4" || datos.FAMPROCODIGO=="5" || datos.FAMPROCODIGO=="7"){
+                  document.getElementById("familiapapel1").style.display=null;
+                  document.getElementById("tamañoproducto2").style.display=null;
+                  document.getElementById("familiapapel4").style.display=null;
+                  mostrarFamiliaPapel("codigofamiliaPapel",datos.FAMPANUMERO);
+                  $("#gramajefamiliaPapel").val(datos.PROGRAMAJE);
+                }
+                mostrarFormularioPapel(datos.FAMPROCODIGO);
+                $("#marcaproducto").val(datos.PROMARCA);
+                $("#tamañoproducto").val(datos.PROTAMAÑO.split(" X ")[0]);
+                $("#tamañoproducto2").val(datos.PROTAMAÑO.split(" X ")[1]);
+                $("#estadoProducto").val(datos.ESTADOCODIGO);
+                $("#tipocostoProducto").val(datos.PROTIPOCOSTO);
+            }
+        }
+    });
+}  
+  
+/*VERIFICAR EXISTENCIA*/ 
+function verificarCodigo(){
+  var codigo=$("#codigoProducto").val();
+  var $datos={
+    '_codigo':codigo
+  }
+  
+   $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_VerificarExistencia.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("exito","" + datos.message);
+            }else{
+                mostrarMensaje("error","ERROR! Este código ya existe, pertenece al producto "+ datos.PRONOMBRE);
+            }
+        }
+    });  
+}
+  
+/*REGISTRAR PRODUCTO*/
+function registrar(){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  var tamaño;
+  if($("#tamañoproducto2").val()==""){
+    tamaño=$("#tamañoproducto2").val().toString();
+  }else{
+    tamaño=$("#tamañoproducto").val().toString().concat(" X ").concat($("#tamañoproducto2").val().toString());
+  }
+  var $datos={
+    '_codigo': $("#codigoProducto").val(),
+    '_fecharegistro': fecharegistro,
+    '_nombre': $("#nombreTipoProducto").val(),
+    '_descripcion': $("#descripcionProducto").val(),
+    '_unidad': $("#unidadProducto").val(),
+    '_tipoProducto': $("#TipoProducto").val(),
+    '_FamiliaPapel': $("#codigofamiliaPapel").val(),
+    '_gramaje': $("#gramajefamiliaPapel").val(),
+    '_marca': $("#marcaproducto").val(),
+    '_tamaño': tamaño,
+    '_tipocosto': $("#tipocostoProducto").val(),
+    '_estado': $("#estadoProducto").val(),
+    '_usuario': USUACODIGO
+    }
+  $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_RegistrarProducto.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+                registrarStock($("#codigoProducto").val());
+            }
+        }
+    }); 
+}
+  
+function registrarStock(codigo){
+  var $datos={
+    '_codigoProducto':codigo
+  }
+  $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_RegistrarStockProducto.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+              mostrarMensaje("exito","DATO REGISTRADOS");
+              ventanaAlmacen();
+            }
+        }
+    }); 
+}  
+  
+/* ACTUALIZAR PRODUCTO*/
+function actualizar(){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  var tamaño;
+  if($("#tamañoproducto2").val()==""){
+    tamaño=$("#tamañoproducto2").val();
+  }else{
+    tamaño=$("#tamañoproducto").val().concat(" X ").concat($("#tamañoproducto2").val());
+  }
+  var $datos={
+    '_numero':$("#codigoProductoActualizar").val(),
+    '_codigo':$("#codigoProducto").val(),
+    '_fecharegistro': fecharegistro,
+    '_nombre': $("#nombreTipoProducto").val(),
+    '_descripcion': $("#descripcionProducto").val(),
+    '_unidad': $("#unidadProducto").val(),
+    '_tipoProducto': $("#TipoProducto").val(),
+    '_FamiliaPapel': $("#codigofamiliaPapel").val(),
+    '_gramaje': $("#gramajefamiliaPapel").val(),
+    '_marca': $("#marcaproducto").val(),
+    '_tamaño': tamaño,
+    '_tipocosto': $("#tipocostoProducto").val(),
+    '_estado': $("#estadoProducto").val(),
+    '_usuario': USUACODIGO
+  }
+  
+   $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_ActualizarProducto.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+                mostrarMensaje("exito","Datos Actualizados Correctamente");
+            }
+        }
+    }); 
+}
+  
+</script>

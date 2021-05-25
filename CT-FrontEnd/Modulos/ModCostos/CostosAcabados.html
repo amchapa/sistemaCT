@@ -1,0 +1,458 @@
+<form>
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">COSTOS ACABADOS</div>
+
+
+<div id="llenadoprincipal" class="w-responsive mx-auto my-5">
+  <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">LLENAR COSTOS ACABADOS PARA ORDEN</p>
+      
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto font-weight-bold pr-2" for="codigo">ORDEN PRODUCCION</label>
+            <input id="codigo" class="w-responsive" type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" min="1" maxlength="9">
+           </div>
+           <button id="llenarcodigo" type="submit" onclick="evaluar();mostrarfactura();return false" class="btn principal px-5">LISTAR</button>
+  </div>
+  
+  <div class="formulario text-center my-3 mt-4 pb-3">
+        <p class="b black white-text py-1 font-weight-bold">LLENAR OTROS COSTOS </p>
+           <button type="submit" onclick="mostrarOtrosCostos();return false" class="btn principal px-5">LISTAR</button>
+  </div>
+</div>
+<div id="llenadosecundario" class="w-responsive mx-auto my-5" style="display: none">
+ 
+  <div id="encabezadosecundario" class="container font-weight-bold h3-responsive principal-text text-center my-4"></div>
+  <div id="llenadofactura" style="display: none" class="formulario text-center my-3 mt-4 pb-3">
+      <p id="opcodigotexto" class="b principal white-text py-1 font-weight-bold">LLENAR COSTOS ACABADOS POR FACTURA</p>
+      <table style="float: none;text-align: center;width: 100%">
+        <tr class="my-2">
+          <td class="text-right font-weight-bold" style="font-size: 108%">PROVEEDOR:</td>
+          <td><select style="width: 50%"name="proveedor" id="proveedor"></select></td>
+        </tr>
+        <tr class="my-2">
+          <td class="text-right font-weight-bold" style="font-size: 108%">COMPROBANTE:</td>
+          <td><input style="width: 50%" id="comprobante" type="text" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>
+        </tr>
+        <tr>
+          <td class="text-right font-weight-bold" style="font-size: 108%">IMPORTE:</td>
+          <td><input style="width: 25%" id="importe" type="number" placeholder="0.00"><select style="width: 25%;height: 27px" id="tipoImporte" ><option value="S">SOLES</option><option value="$">DOLARES</option></select></td>
+        </tr>
+        <tr class="my-2">
+          <td class="text-right font-weight-bold" style="font-size: 108%">TIPO ACABADOS:</td>
+          <td><select style="width: 50%" name="acabados" id="acabados"></select></td>
+        </tr>
+        <tr class="my-2">
+          <td class="text-right font-weight-bold" style="font-size: 108%" >OBSERVACIONES:</td>
+          <td><input style="width: 50%" id="observacionesfactura" type="text" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>
+        </tr>
+      </table>
+      <button id="guardarxFactura" type="submit" onclick="guardar(this.id);return false" class="btn principal px-5">GUARDAR</button>
+  </div>
+  
+  <div class="container font-weight-bold h4-responsive principal-text text-center my-4">SELECCIONAR ITEM DE INGRESO</div>
+  <div id="item" style="float: none;text-align: center"></div>
+  <div id="contenedor-item" style="float: none;text-align: center"></div>
+</div>
+  
+  <div id="return" style="float: right; margin-right:15%;display: none"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="retroceder()"></i></div>
+</form>
+ <!-- MENSAJE -->
+<div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModCostos/VistaCostos.js"></script>
+
+<script type="text/javascript">
+  
+var arrayBotones = new Array();
+mostrarAcabados();
+mostrarProveedor();
+  
+$("#codigo").on('keydown', function(e) {
+      if (e.which == 13) {
+        $("#llenarcodigo").trigger('click');
+        return false;    
+      }
+});
+  
+$("#observacionesfactura").on('keydown', function(e) {
+      if (e.which == 13) {
+        $("#guardarxFactura").trigger('click');
+        return false;    
+      }
+});
+  
+$("#observaciones").on('keydown', function(e) {
+      if (e.which == 13) {
+        $("#guardarxPersonal").trigger('click');
+        return false;    
+      }
+});
+  
+$("#cantidad").on('keydown', function(e) {
+      if (e.which == 13) {
+        $("#guardarxPersonal").trigger('click');
+        return false;    
+      }
+});
+      
+function mostrarFormulario(item,descripcion){
+  var formulario="";
+  formulario+="<div  class='formulario text-center my-3 mt-4 pb-3'>\
+                  <p class='b principal white-text py-1 font-weight-bold'>"+descripcion+"</p>\
+                  <input type='hidden' id='itemnumero'>\
+                  <table style='float: none;text-align: center;width: 100%'>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA INICIO:</td>\
+                        <td><input style='width: 60%' id='fechai' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horai'>HORA INICIO:</label><input style='width: 50%' id='horai' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA-HORA FIN:</td>\
+                        <td><input style='width: 60%' id='fechaf' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horaf'>HORA FIN:</label><input style='width: 50%' id='horaf' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>TIPO:</td>\
+                        <td><select style='width: 60%' id='acabado'></td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>PERSONAL:</td>\
+                        <td><select style='width: 60%' id='personal'></td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>OBSERVACIONES:</td>\
+                        <td><input style='width: 60%' type='text' id='observaciones' onkeyup='javascript:this.value=this.value.toUpperCase();'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='cantidad'>CANT:</label><input style='width: 50%' type='number' id='cantidad' ></td>\
+                     </tr>\
+                  </table>\
+                  <button id='guardarxPersonal' type='submit' onclick='guardar(this.id);return false' class='btn principal px-5'>GUARDAR</button>\
+                </div>";
+  $("#contenedor-item").html(formulario);
+  mostrarAcabados();
+  mostrarPersonal();
+  botonActivo(item);
+  var Hoy = new Date();
+  var fecha= Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+  if(Hoy.getHours().toString().length==1){
+    if(Hoy.getMinutes().toString().length==1){
+      var hora= "0"+Hoy.getHours()+ ":0" + Hoy.getMinutes();
+    }else{
+       var hora= "0"+Hoy.getHours()+ ":" + Hoy.getMinutes();
+    }
+  }else{
+    if(Hoy.getMinutes().toString().length==1){
+      var hora= Hoy.getHours()+ ":0" + Hoy.getMinutes();
+    }else{
+       var hora= Hoy.getHours()+ ":" + Hoy.getMinutes();
+    }
+  }
+  document.getElementById("return").style.display=null;
+  
+  $("#itemnumero").val(item);
+  $("#fechai").val(fecha);
+  $("#fechaf").val(fecha);
+  $("#horai").val(hora);
+  $("#horaf").val(hora);
+}
+  
+function mostrarOtrosCostos(){
+  var formulario="";
+  formulario+="<div  class='formulario text-center my-3 mt-4 pb-3'>\
+                  <p class='b principal white-text py-1 font-weight-bold'>OTROS COSTOS</p>\
+                  <table style='float: none;text-align: center;width: 100%'>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA INICIO:</td>\
+                        <td><input style='width: 60%' id='fechai' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horai'>HORA INICIO:</label><input style='width: 50%' id='horai' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>FECHA-HORA FIN:</td>\
+                        <td><input style='width: 60%' id='fechaf' type='date'></td>\
+                        <td><label class='text-right font-weight-bold mx-2' for='horaf'>HORA FIN:</label><input style='width: 50%' id='horaf' type='time'></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>TIPO:</td>\
+                        <td><select style='width: 60%' id='tipo'></td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>PERSONAL:</td>\
+                        <td><select style='width: 60%' id='personal'></td>\
+                        <td></td>\
+                     </tr>\
+                     <tr class='my-2'>\
+                        <td  class='text-right font-weight-bold' style='font-size: 108%'>OBSERVACIONES:</td>\
+                        <td><input style='width: 60%' type='text' id='observaciones' onkeyup='javascript:this.value=this.value.toUpperCase();'></td>\
+                     </tr>\
+                  </table>\
+                  <button id='guardarxLimpieza' type='submit' onclick='guardar(this.id);return false' class='btn principal px-5'>GUARDAR</button>\
+                </div>";
+  $("#contenedor-item").html(formulario);
+  mostrarPersonal();
+  var Hoy = new Date();
+  var fecha= Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+  if(Hoy.getHours().toString().length==1){
+    if(Hoy.getMinutes().toString().length==1){
+      var hora= "0"+Hoy.getHours()+ ":0" + Hoy.getMinutes();
+    }else{
+       var hora= "0"+Hoy.getHours()+ ":" + Hoy.getMinutes();
+    }
+  }else{
+    if(Hoy.getMinutes().toString().length==1){
+      var hora= Hoy.getHours()+ ":0" + Hoy.getMinutes();
+    }else{
+       var hora= Hoy.getHours()+ ":" + Hoy.getMinutes();
+    }
+  }
+  document.getElementById("return").style.display=null;
+  
+  $("#fechai").val(fecha);
+  $("#fechaf").val(fecha);
+  $("#horai").val(hora);
+  $("#horaf").val(hora);
+}
+  
+function mostrarfactura(){
+  if(AREACODIGO=="A2" || AREACODIGO=="A3" || AREACODIGO=="A4" || AREACODIGO=="A8" ){
+    document.getElementById("llenadofactura").style.display=null;
+  }
+}
+  
+function guardar(texto){
+  if(texto=="guardarxPersonal"){  
+    var now  = moment($("#fechaf").val()+" "+$("#horaf").val());
+    var then = moment($("#fechai").val()+" "+$("#horai").val());
+    var diferencia = now.diff(then,'HH:mm:ss');
+    if(diferencia < 0){
+      mostrarMensaje("error","Verificar ingreso de Fechas");
+      $("#fechai").focus();
+    }else if($("#acabado").val()=="0"){
+         mostrarMensaje("advertencia","ADVERTENCIA: Seleccione el Trabajo en actividad");
+        $("#acabado").focus();
+    }else if($("#personal").val()=="0"){
+        mostrarMensaje("advertencia","ADVERTENCIA: Seleccione al Personal en actividad");
+        $("#personal").focus();
+    }else if($("#observaciones").val() == null || $("#observaciones").val().length == 0 || /^\s+$/.test($("#observaciones").val())){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#observaciones").focus();
+    }else if($("#cantidad").val() == null || $("#cantidad").val().length == 0 || /^\s+$/.test($("#cantidad").val())){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#cantidad").focus();
+    }else{
+      buscarcontrolinsumo(texto,$("#codigo").val());
+    }
+  }else if(texto=="guardarxLimpieza"){
+    var now  = moment($("#fechaf").val()+" "+$("#horaf").val());
+    var then = moment($("#fechai").val()+" "+$("#horai").val());
+    var diferencia = now.diff(then,'HH:mm:ss');
+    if(diferencia < 0){
+      mostrarMensaje("error","Verificar ingreso de Fechas");
+      $("#fechai").focus();
+    }else if($("#personal").val()=="0"){
+        mostrarMensaje("advertencia","ADVERTENCIA: Seleccione al Personal en actividad");
+        $("#personal").focus();
+    }else if($("#observaciones").val() == null || $("#observaciones").val().length == 0 || /^\s+$/.test($("#observaciones").val())){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#observaciones").focus();
+    }else{
+      registrarOtrosCostos();
+    }
+    
+  }else{
+    if($("#proveedor").val()=="0"){
+      mostrarMensaje("advertencia","ADVERTENCIA: Seleccione al Proveedor en actividad");
+      $("#proveedor").focus();
+    }else if($("#comprobante").val() == null || $("#comprobante").val().length == 0 || /^\s+$/.test($("#comprobante").val())){
+      mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#comprobante").focus();
+    }else if($("#importe").val() == null || $("#importe").val().length == 0 || /^\s+$/.test($("#importe").val())){
+      mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#importe").focus();
+    }else if($("#acabados").val()=="0"){
+         mostrarMensaje("advertencia","ADVERTENCIA: Seleccione el Trabajo en actividad");
+        $("#acabados").focus();
+    }else if($("#observacionesfactura").val() == null || $("#observacionesfactura").val().length == 0 || /^\s+$/.test($("#observacionesfactura").val())){
+      mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#observacionesfactura").focus();
+    }else{
+      buscarcontrolinsumo(texto,$("#codigo").val());
+    }
+  }
+}
+  
+function buscarcontrolinsumo(texto,op){
+  var $datos = {
+    '_codigo': op
+  }
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/Controlador_MostrarControlInsumoDeOP.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+              registrarControlInsumo(texto,op);
+            }
+            else{
+              if(texto=='guardarxPersonal' ){
+                 mostrarCostoxAcabado(datos.CRINSCODIGO,$("#acabado").val());
+              }else{
+                registrarCostosFactura(datos.CRINSCODIGO);
+              }   
+            }
+        }
+    });
+}  
+  
+function registrarCostosAcabados(controlinsumo,costoacabado){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  var now  = $("#fechaf").val()+" "+$("#horaf").val();
+  var then = $("#fechai").val()+" "+$("#horai").val();
+  var dif = moment.utc(moment(now, "YYYY/MM/DD HH:mm:ss").diff(moment(then, "YYYY/MM/DD HH:mm:ss"))).format("HH:mm:ss");
+
+  var costotrabajo =((dif.split(":")[0]*costoacabado) + (dif.split(":")[1]*costoacabado)/60) ;
+  var $datos = {
+    '_controlinsumo': controlinsumo,
+    '_itemnumero': $("#itemnumero").val(),
+    '_fecharegistro': fecharegistro,
+    '_acabado': $("#acabado").val(),
+    '_personal': $("#personal").val(),
+    '_fechainicio': $("#fechai").val(),
+    '_fechafinal': $("#fechaf").val(),
+    '_horainicio': $("#horai").val(),
+    '_horafinal': $("#horaf").val(),
+    '_observaciones': $("#observaciones").val(),
+    '_costo': costotrabajo,
+    '_usuario': USUACODIGO
+  }
+  $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/Controlador_RegistrarCostosAcabado.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+          if(error.status == 401){
+            mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+            mostrarMensaje("error","Error no identificado");
+          }
+        },
+        success: function(datos){
+          if(datos.response=="0"){
+            mostrarMensaje("error","REGISTRO INCORRECTO! ERROR: "+datos.message);
+          }else{
+            mostrarMensaje("exito","REGISTRO INGRESADO CORRECTAMENTE");
+            document.getElementById("return").style.display="none";
+            $("#"+ $("#itemnumero").val()).trigger('click');
+          }
+        }
+    });
+}
+  
+function registrarCostosFactura(controlinsumo){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  var tipomoneda= $("#tipoImporte").val();
+  if(tipomoneda=="S"){
+    var importe= "S/"+$("#importe").val();
+  }else{
+    var importe= "$" +$("#importe").val();
+  }
+   var $datos = {
+    '_controlinsumo': controlinsumo,
+    '_comprobante': $("#comprobante").val(),
+    '_fecharegistro': fecharegistro,
+    '_acabado': $("#acabados").val(),
+    '_proveedor': $("#proveedor").val(),
+    '_observaciones': $("#observacionesfactura").val(),
+    '_importe': importe,
+    '_usuario': USUACODIGO
+  }
+     $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/Controlador_RegistrarCostosFactura.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+          if(error.status == 401){
+            mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+            mostrarMensaje("error","Error no identificado");
+          }
+        },
+        success: function(datos){
+          if(datos.response=="0"){
+            mostrarMensaje("error","REGISTRO INCORRECTO! ERROR: "+datos.message);
+          }else{
+            mostrarMensaje("exito","REGISTRO INGRESADO CORRECTAMENTE");
+            $("#proveedor").val('0');
+            $("#comprobante").val("");
+            $("#importe").val("");
+            $("#tipoImporte").val("S");
+            $("#acabados").val("0");
+            $("#observacionesfactura").val("");
+            
+          }
+        }
+    });
+   
+}
+  
+function registrarOtrosCostos(){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+
+  var $datos = {
+    '_fecharegistro': fecharegistro,
+    '_acabado': $("#acabado").val(),
+    '_personal': $("#personal").val(),
+    '_fechainicio': $("#fechai").val(),
+    '_fechafinal': $("#fechaf").val(),
+    '_horainicio': $("#horai").val(),
+    '_horafinal': $("#horaf").val(),
+    '_observaciones': $("#observaciones").val(),
+    '_usuario': USUACODIGO
+  }
+  $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/Controlador_RegistrarOtrosCostos.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+          if(error.status == 401){
+            mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+            mostrarMensaje("error","Error no identificado");
+          }
+        },
+        success: function(datos){
+          if(datos.response=="0"){
+            mostrarMensaje("error","REGISTRO INCORRECTO! ERROR: "+datos.message);
+          }else{
+            mostrarMensaje("exito","REGISTRO INGRESADO CORRECTAMENTE");
+            document.getElementById("return").style.display="none";
+            $("#"+ $("#itemnumero").val()).trigger('click');
+          }
+        }
+    });
+}
+  
+function retroceder(){
+  document.getElementById("llenadoprincipal").style.display=null;
+  document.getElementById("llenadosecundario").style.display='none';
+  document.getElementById("return").style.display="none";
+}
+</script>

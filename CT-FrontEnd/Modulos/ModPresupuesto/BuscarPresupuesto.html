@@ -1,0 +1,544 @@
+<style>
+
+  table{width: 100%;}
+  table thead tr th {
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
+  table tr td{vertical-align: top;}
+  
+  input[type="checkbox"]{
+    width: 25px;
+    height: 25px;
+    margin-left: 8px;
+    margin-top: 0px;
+  }
+  input{width: 100%;}
+  
+  .descripcion{min-width: 300px;}
+  
+  .valor:hover{background-color: dodgerblue; cursor: pointer;}
+  .click{background-color: dodgerblue;}
+
+</style>
+<table>
+  <thead>
+    <tr><th class="p-2" colspan="2">BUSCAR PRESUPUESTO</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="formulario" style="width: 30%;">
+       <div class="container">
+        <div class="row">
+          <div class="col-12 my-4 h3-responsive font-weight-bold">BUSCAR POR:</div>
+          <div class="col-12 h6 pl-5"><input id="0" onClick="opcion(this.id)" type="checkbox" class="m-0 p-0 mr-3">CODIGO</div>
+          <div class="col-12 h6 pl-5"><input id="1" onClick="opcion(this.id)" type="checkbox" class="m-0 p-0 mr-3">CLIENTE</div>
+          <div class="col-12 h6 pl-5"><input id="2" onClick="opcion(this.id)" type="checkbox" class="m-0 p-0 mr-3">VENDEDOR</div>
+          <div class="col-12 h6 mt-4"><input id="valor" onkeyup="vacio()" type="text" class="m-0 p-0 py-1" disabled></div>
+          <div class="col-12 h6"><input type="button" id="buscar" value="BUSCAR" class="m-0 p-0 btn principal" onkeyup="vacio()" onclick="buscar();return false" ></div>
+          <div class="col-12"><hr></div>
+          <div id="contenedor" class="col-12 text-center h3"></div>
+        </div>
+       </div>
+      </td> 
+      <td>
+       <button  class="word-export" href="javascript:void(0)" >EXPORTAR A WORD</button>
+       <button  onclick="imprimir('export-content');return false">IMPRIMIR</button>
+       <div  style="width: 80%; margin: auto;" class="card-body" >
+       <div id="export-content"  >
+        <table class="my-4" id="vistaPrevia" style="width: 84%;margin-left: 8%;margin-right: 8%" >
+            
+                <tr>
+                  <td id="logoEmpresa" rowspan=4 colspan="2"><img src="Modulos/ModPresupuesto/Logo-Computextos.png" width="220" height="65"></td>
+                  <td class="text-right" id="clienteEmpresa">TELEFONICA DEL PERU</td>  
+                </tr>
+                <tr>
+                  <td id="nPresupuesto" class="h4-responsive font-weight-bold text-right">Presupuesto 3210-19</td> 
+                </tr>
+                <tr>
+                  <td class="text-right" id="fechaRegistroModal">Lince, 13 de Marzo del 2019</td>
+                </tr>
+                <tr>
+                  <td class="text-right font-weight-bold" id="totalVenta">Total: S/1000 + IGV</td>
+                </tr>
+
+          
+            <tr><td id="pContactoTd" class="font-weight-bold" style="padding: 5px; text-decoration: underline"></td></tr>
+                <tr>
+                  <td class="text-left font-weight-bold" >De nuestra consideración:</td>
+                </tr>
+                <tr>
+                  <td class="text-left" colspan="3" >Por medio de la presente es grato saludarles y a la vez hacerles llegar el presupuesto que nos solicitara con las siguientes características:</td>
+                </tr>
+            <tbody id="cuerpovista">
+            </tbody>
+            <tr><td id="valorTotal" class='font-weight-bold pt-3' colspan='3'></td></tr>
+            <tr><td style="padding: 5px"></td></tr>
+                <tr>
+                  <td class="text-left font-weight-bold" style='text-decoration: underline' >Observaciones.-</td>
+                </tr>
+                <tr><td style="padding: 5px"></td></tr>
+                <tr>
+                  <td class="text-left" colspan="3"> - Cliente proporciona archivo y boceto final.</td>
+                </tr>
+                <tr>
+                  <td class="text-left" colspan="3"> - Una vez aprobado el presupuesto enviar orden de compra.</td>
+                </tr>
+                <tr>
+                  <td class="text-left font-weight-bold" colspan="3"> - Forma de pago factura a 30 días.</td>
+                </tr>
+                <tr>
+                  <td class="text-left" colspan="3"> - Acogiéndonos a las normas de demasías industriales, éstas oscilarán en 4% +/-facturándose la cantidad entregada por su precio unitario, sólo en el caso que ésta sea menor a la solicitada. Rogamos tener en cuenta al momento de la aceptación del presupuesto.</td>
+                </tr>
+                <tr><td style="padding: 5px"></td></tr>
+                <tr>
+                  <td class="text-left" colspan="3">Sin otro particular y a la espera de sus gratas órdenes. Quedamos de Uds. como sus S.S.</td>
+                </tr>
+                <tr>
+                 <tr><td style="padding: 5px" colspan="3"></td></tr>
+                  <td class="text-left">Atentamente,</td>
+                  <tr><td style="padding: 10px"></td></tr>
+                </tr>
+                <tfoot>
+                  <tr><td >
+                    <div class="font-weight-bold" id="ejecutiva" style="font-size: 13px;"></div>
+                    <div class="font-weight-bold"style="font-size: 14px;"> GRUPO COMPUTEXTOS S.A.C.</div>
+                  </td></tr>
+                </tfoot>
+          </table>
+        </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>  
+</table>
+
+<script  src="Modulos/ModPresupuesto/jquery.wordexport.js"></script>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModPresupuesto/VistaPresupuesto.js"></script>
+<script>
+  
+if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
+    (function($) {
+        $.fn.wordExport = function(fileName) {
+            fileName = typeof fileName !== 'undefined' ? fileName : "jQuery-Word-Export";
+            var static = {
+                mhtml: {
+                    top: "Mime-Version: 1.0\nContent-Base: " + location.href + "\nContent-Type: Multipart/related; boundary=\"NEXT.ITEM-BOUNDARY\";type=\"text/html\"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset=\"utf-8\"\nContent-Location: " + location.href + "\n\n<!DOCTYPE html>\n<html>\n_html_</html>",
+                    head: "<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<style>\n_styles_\n</style>\n</head>\n",
+                    body: "<body>_body_</body>"
+                }
+            };
+            var options = {
+                maxWidth: 624
+            };
+            // Clone selected element before manipulating it
+            var markup = $(this).clone();
+
+            // Remove hidden elements from the output
+            markup.each(function() {
+                var self = $(this);
+                if (self.is(':hidden'))
+                    self.remove();
+            });
+
+            // Embed all images using Data URLs
+            var images = Array();
+            var img = markup.find('img');
+            for (var i = 0; i < img.length; i++) {
+                // Calculate dimensions of output image
+                var w = Math.min(img[i].width, options.maxWidth);
+                var h = img[i].height * (w / img[i].width);
+                // Create canvas for converting image to data URL
+                var canvas = document.createElement("CANVAS");
+                canvas.width = w;
+                canvas.height = h;
+                // Draw image to canvas
+                var context = canvas.getContext('2d');
+                context.drawImage(img[i], 0, 0, w, h);
+                // Get data URL encoding of image
+                var uri = canvas.toDataURL("image/png");
+                $(img[i]).attr("src", img[i].src);
+                img[i].width = w;
+                img[i].height = h;
+                // Save encoded image to array
+                images[i] = {
+                    type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+                    encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+                    location: $(img[i]).attr("src"),
+                    data: uri.substring(uri.indexOf(",") + 1)
+                };
+            }
+
+            // Prepare bottom of mhtml file with image data
+            var mhtmlBottom = "\n";
+            for (var i = 0; i < images.length; i++) {
+                mhtmlBottom += "--NEXT.ITEM-BOUNDARY\n";
+                mhtmlBottom += "Content-Location: " + images[i].location + "\n";
+                mhtmlBottom += "Content-Type: " + images[i].type + "\n";
+                mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
+                mhtmlBottom += images[i].data + "\n\n";
+            }
+            mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
+
+            //TODO: load css from included stylesheet
+            var styles = "";
+
+            // Aggregate parts of the file together
+            var fileContent = static.mhtml.top.replace("_html_", static.mhtml.head.replace("_styles_", styles) + static.mhtml.body.replace("_body_", markup.html())) + mhtmlBottom;
+
+            // Create a Blob with the file contents
+            var blob = new Blob([fileContent], {
+                type: "application/msword;charset=utf-8"
+            });
+            saveAs(blob, 'Ppto. '+$("#nPresupuesto").html().split(" ")[1]+' '+$("#clienteEmpresa").html()+ ".doc"); nPresupuesto
+        };
+    })(jQuery);
+} else {
+    if (typeof jQuery === "undefined") {
+        console.error("jQuery Word Export: missing dependency (jQuery)");
+    }
+    if (typeof saveAs === "undefined") {
+        console.error("jQuery Word Export: missing dependency (FileSaver.js)");
+    }
+}
+  
+jQuery(document).ready(function($) {
+  $("button.word-export").click(function(event) {
+    $("#export-content").wordExport();
+  });
+});
+  
+function imprimir(nombreDiv){
+  var contenido= document.getElementById(nombreDiv).innerHTML;
+  var contenidoOriginal= document.body.innerHTML;
+  document.body.innerHTML = contenido;
+  window.print();
+  document.body.innerHTML = contenidoOriginal;
+}
+  
+$("#valor").on('keydown', function(e) {
+  if (e.which == 13) {
+      $("#buscar").trigger('click');
+      return false;
+  }
+});
+  
+
+var op; var c=0;
+vacio();    
+    
+ function vacio(){
+    var campo1 =  $("#valor").val();
+    if(campo1 != ""){
+      document.getElementById('buscar').disabled=false;
+    }
+    else{   document.getElementById('buscar').disabled=true;
+    }
+ }    
+
+ function opcion(id){
+    op=id;
+    $(":checkbox")[0].checked = false;
+    $(":checkbox")[1].checked = false;
+    $(":checkbox")[2].checked = false;
+    $(":checkbox")[id].checked = true;
+    switch(op){
+        case '0': document.getElementById('valor').placeholder="Ingrese codigo presupuesto";break;
+        case '1': document.getElementById('valor').placeholder="Ingrese nombre corto cliente";break;
+        case '2': document.getElementById('valor').placeholder="Ingrese nombre vendedor";break;         
+    } 
+
+    $("#valor").val("");
+       vacio();      
+    $("#contenedor").html("");
+    $("#valor").prop("disabled",false);
+
+  }
+  
+ function buscar(){
+   $("#cuerpovista").html("");
+   $("#ejecutiva").html("");
+   
+   var $dato={
+        '_dato': $("#valor").val() }  
+   var  ruta,boxResultado="";
+   switch(op){
+       case '0':  ruta="../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarTodosXCodigo.php" ; break;
+       case '1':  ruta="../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarTodoXCliente.php" ; break;
+       case '2':  ruta="../CT-BackEnd/Controlador/ModPresupuesto/Controlador_MostrarTodoXVendedor.php" ; break;        
+   }
+   $.ajax({
+      url: ruta,
+      type: 'POST',
+      data: $dato,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              $("#contenedor").html("No se pudo establecer conexion con el servidor");
+          }
+          else{
+              $("#contenedor").html("Error no identificado");
+          }
+      },
+      success: function(datos){
+          if(datos.response == 0){
+            switch(op){
+                 case '0': $("#contenedor").html('ESTE CODIGO NO EXISTE'); break;
+                 case '1': $("#contenedor").html('ESTE CLIENTE NO EXISTE'); break;
+                 case '2': $("#contenedor").html('ESTE VENDEDOR NO EXISTE'); break;        
+             }
+          }
+          else{
+            for(var i=0; i<datos.length; i++){
+              boxResultado+="<div class='valor enfasis1 my-1 col-12'  id= '"+datos[i].PRESUPNUMERO+"'onclick='vistaPrevia(this.id);return false'>"+datos[i].PRESUPNUMERO+"</div>"
+            }
+            $("#contenedor").html(boxResultado);
+          }
+      }
+    });
+   
+   }
+ 
+ function vistaPrevia(opcion){
+     
+    var $codigo={
+        '_codigo': opcion }
+     
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModPresupuesto/Controlador_ValidarPresupuesto.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+ 
+          if(datos.response=="0"){
+              console.log('ERROR: '+datos.message);
+          }else{
+            switch(datos[0].EMPCODIGO){
+                  case 'CT': imagen="<img src='Modulos/ModPresupuesto/Logo-Computextos.png' width='220' height='65'>";break;
+                  case 'ER': imagen="<img src='Modulos/ModPresupuesto/Logo-EdicionesReales.png' width='220' height='65'>";break;
+                  case 'ED': imagen="<img src='Modulos/ModPresupuesto/Logo-EditorialEImprentaDesa.png' width='220' height='65'>";break;
+                  case 'GR': imagen="<img src='Modulos/ModPresupuesto/Logo-GraficaReal.png' width='220' height='65'>";break;
+                 default : imagen="<img src='Modulos/ModPresupuesto/Logo-Computextos.png' width='220' height='65'>";break;
+              }
+            $("#pContactoTd").html("Atención: " +datos[0].PRESUPPERS_CONTACTO);
+            $("#logoEmpresa").html(imagen);
+            $("#cliente").html(datos[0].CLIENRAZON_SOCIAL);
+            $("#nPresupuesto").html("Presupuesto "+datos[0].PRESUPNUMERO);
+            var fecha = new Date(datos[0].PRESUPFECHA_REGISTRO);  
+            var mes=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+            $("#fechaRegistroModal").html("Lince, "+ fecha.getDate()  + ' de ' + mes[fecha.getMonth()]+ ' del ' + fecha.getFullYear());
+            var tablaItem="";
+            var preciototal=0;
+            var precioSoles=0;
+            var precioDolares=0;
+            var tipoMonedaSoles ="";
+            var itemstotales = 0;
+            var tipoMonedaDolares ="";
+            var valorTotal= "";
+            var valorVenta= "Total : ";
+            var valorTotalSoles = "VALOR TOTAL EN SOLES : ";
+            var valorTotalDolares = "VALOR TOTAL EN DOLARES : ";
+            var elementos = new Array();      
+            var precio = new Array();      
+            for(var i=0; i<datos.length; i++){
+              elementos[i] = datos[i].ITPRESUCODIGO;
+              if(datos[i].ITPRESUIMPORTE.substr(0,1)=="S"){
+                  precio[i] = datos[i].ITPRESUIMPORTE.substr(3);
+              }else{
+                  precio[i] = datos[i].ITPRESUIMPORTE.substr(1);
+              }
+            }
+            var cantidad = [];
+            var costoItem = [];
+            var repetidos = [];
+            var temporal = [];
+            var texto = [];
+            elementos.forEach((value,index)=>{
+            temporal = Object.assign([],elementos);
+            temporal.splice(index,1);
+
+            if(temporal.indexOf(value)!=-1 && repetidos.indexOf(value)==-1)      repetidos.push(value);
+            }); 
+            var repeat = 0;
+            var dinner = 0;
+            for(var i=0; i<repetidos.length; i++){
+               for(var j=0; j<elementos.length; j++){
+                   if(repetidos[i]==elementos[j]){
+                     repeat=repeat+1;
+                     dinner=dinner+parseFloat(precio[j]);
+                   }
+                 }
+              cantidad[i]=repeat;
+              repeat=0;
+              costoItem[i]=dinner;
+              dinner=0;
+             }     
+            var contador = 0;
+            var posicion = 0;
+            var respuesta = "NO";
+            var tipoItem = "NO";
+            for(var i=0; i<datos.length; i++){
+              if(datos[i].ESTDESCRIPCION=="ACEPTADO"){
+              var item=datos[i].ITPRESUCODIGO;
+              for(var k=0; k<repetidos.length; k++){
+                if(datos[i].ITPRESUCODIGO == repetidos[k]){
+                  tipoItem="SI";
+                  contador= contador+1;
+                  if (contador==cantidad[k]){
+                    respuesta="SI";
+                    posicion=k;
+                    contador=0;
+                  }
+                }
+              }
+
+              item = item.substr(8);
+              itemstotales= item
+              var impresion;
+              var colores;
+              if(datos[i].DETPRESUPNUM_COLOR==4){
+                colores="FULL COLOR";
+              }
+              else{
+                colores=datos[i].DETPRESUPNUM_COLOR+" colores";
+              }
+              if(datos[i].DETPRESUPTIPO_IMPRESION==1){
+                    impresion="SOLO TIRA";
+              }
+              else if(datos[i].DETPRESUPTIPO_IMPRESION==2){
+                    impresion="T/R APARTE";
+              }
+              else  if(datos[i].DETPRESUPTIPO_IMPRESION==3){
+                    impresion="T/R JUNTA";
+              }
+              var acabados="";
+              if (datos[i].DETPRESUPBARNIZ_PLASTI==0 || datos[i].DETPRESUPBARNIZ_PLASTI==null || datos[i].DETPRESUPBARNIZ_PLASTI.length==0){}else{    acabados+=""+datos[i].DETPRESUPBARNIZ_PLASTI+ " <br />"; }
+
+              if (datos[i].DETPRESUPBARNIZ_PLASTI1==0 || datos[i].DETPRESUPBARNIZ_PLASTI1==null || datos[i].DETPRESUPBARNIZ_PLASTI1.length==0){}else{    acabados+=""+datos[i].DETPRESUPBARNIZ_PLASTI1+"  <br />"; }
+
+              if (datos[i].DETPRESUPBARNIZ_PLASTI2==0 || datos[i].DETPRESUPBARNIZ_PLASTI2==null || datos[i].DETPRESUPBARNIZ_PLASTI2.length==0){}else{    acabados+=""+datos[i].DETPRESUPBARNIZ_PLASTI2+" <br />"; }
+
+              if (datos[i].DETPRESUPTROQUEL=="-" || datos[i].DETPRESUPTROQUEL==""){}else{    acabados+="TROQUELADO - "+datos[i].DETPRESUPTROQUEL+" <br />"; } 
+
+              if (datos[i].DETPRESUPDOBLADO_ALCE=="NO"){}else{    acabados+="DOBLADO - "+datos[i].DETPRESUPDOBLADO_ALCE+" <br />"; } 
+
+              if (datos[i].DETPRESUPCOSIDO_COLA_GRAPA=="NO"){}else{    acabados+="ALCE - "+datos[i].DETPRESUPCOSIDO_COLA_GRAPA+" <br />"; }
+
+              if (datos[i].DETPRESUPCAJA_PAQUETE==0 || datos[i].DETPRESUPCAJA_PAQUETE==null || datos[i].DETPRESUPCAJA_PAQUETE.length==0){}
+              else{
+                if(datos[i].DETPRESUPCAJA_PAQUETE=="CAJA"){
+                      acabados+="ENCAJONADO <br />";
+                  }
+                  else{
+                     acabados+="EMPAQUETADO DE "+datos[i].DETPRESUPCAJA_PAQUETE+" unidades X PAQUETE <br />";
+                  }
+              }
+
+              if (datos[i].DETPRESUPCOSTO_COLA_FORRO==0){}else{    acabados+="ENCOLADO Y FORRADO <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_CORTE==0){}else{    acabados+="DEGOLLADO Y CORTE <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_ARMADO==0){}else{    acabados+="ARMADO Y PEGADO DE BOLSILLO <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_OJAL==0){}else{    acabados+="PUESTA DE OJALILLOS <br />"; } 
+
+              if (datos[i].DETPRESUPCOSTO_NYLON==0){}else{    acabados+="NYLON 0.7mm <br />";}
+
+              tablaItem+="<tr>\
+                            <td class='font-weight-bold pt-3' colspan='3' style='text-decoration: underline' >"+ item+ ". "+ datos[i].ITPRESUDESCRIPCION+"</td>\
+                          </tr>\
+                          <tr>\
+                            <td>Cantidad</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+datos[i].DETPRESUPTIRAJE_TOTAL+" unidades</td>\
+                          </tr>\
+                          <tr>\                                                 <td>Impresión</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+colores+" "+ impresion+"</td>\
+                          </tr>\
+                          <tr>\                                                 <td>Material</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+datos[i].DETPRESUPTIP_PAPEL+" "+ datos[i].DETPRESUPGRAMAJE +" GRS."+"</td>\
+                          </tr>\
+                          <tr>\                                                 <td>Medidas</td>\
+                            <td>:</td>\
+                            <td class='descripcion'>"+datos[i].ITPRESUMEDIDAS +"</td>\
+                          </tr>";
+
+              if(acabados!=""){
+                  tablaItem+="<tr>\                                                 <td>Acabados</td>\
+                                <td>:</td>\
+                                <td class='descripcion'>"+acabados+"</td>\
+                            </tr>";
+              }
+              if(tipoItem=="NO"){
+                  tablaItem+="<tr>\                                                 <td>Valor de Venta</td>\
+                            <td>:</td>\
+                            <td class='descripcion red-text font-weight-bold text-left'>"+datos[i].ITPRESUIMPORTE+ " + IGV"+"</td>\
+                          </tr>";
+              }
+              if(respuesta=="SI" ){
+                if(datos[i].ITPRESUIMPORTE.substr(0,1)=="S"){
+                     tablaItem+="<tr>\                                                 <td>Valor de Venta</td>\
+                            <td>:</td>\
+                            <td class='descripcion red-text font-weight-bold text-left'>S./"+costoItem[posicion]+ " + IGV"+"</td>\
+                          </tr>";
+                }else{
+                     tablaItem+="<tr>\                                                 <td>Valor de Venta</td>\
+                            <td>:</td>\
+                            <td class='descripcion red-text font-weight-bold text-left'>$"+costoItem[posicion]+ " + IGV"+"</td>\
+                          </tr>";
+                }
+                respuesta="NO";
+                tipoItem="NO";
+              }
+
+              var inicial=datos[i].ITPRESUIMPORTE.substr(0,1);
+              if( inicial=='$'){
+                  tipoMonedaDolares = inicial; 
+                  precioDolares += parseFloat(datos[i].ITPRESUIMPORTE.substr(1)); 
+              }else if (inicial=='S'){
+                  tipoMonedaSoles = inicial;
+                  precioSoles += parseFloat(datos[i].ITPRESUIMPORTE.substr(3));
+              }  
+
+            
+            }
+            }
+
+            if(precioSoles !=""){
+                valorTotalSoles += tipoMonedaSoles+"/"+precioSoles+" + IGV" + "<br/>";
+                valorVenta += tipoMonedaSoles+"/"+precioSoles+" + IGV" + "<br/>";
+            }
+            if(precioDolares != ""){
+               valorTotalDolares += tipoMonedaDolares + precioDolares +"+ IGV " + "<br/>";
+                valorVenta += tipoMonedaDolares + precioDolares +"+ IGV" + "<br/>";
+            }
+
+            if(valorTotalSoles!="VALOR TOTAL EN SOLES : "){
+                valorTotal+=valorTotalSoles;
+            }
+            if(valorTotalDolares !="VALOR TOTAL EN DOLARES : "){
+                valorTotal += valorTotalDolares;
+            }
+            $("#cuerpovista").html(tablaItem);
+            $("#totalVenta").html(valorVenta);
+            $("#valorTotal").html(valorTotal);
+            $("#ejecutiva").html(" "+datos[0].PERSNOMBRE+" "+datos[0].PERSAPELLIDO_PATERNO+" "+datos[0].PERSAPELLIDO_MATERNO+"");
+        } 
+      }
+  });
+}
+  
+</script>

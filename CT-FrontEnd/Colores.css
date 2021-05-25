@@ -1,0 +1,105 @@
+/*=================================================
+
+GUIA DE COLORES
+
+PALETA DE COLORES DEL SISTEMA CT
+
+=================================================*/
+
+/*----------------------------------------------
+COLORES DE FONDO
+----------------------------------------------*/
+
+/*COLOR PRINCIPAL*/
+.principal{background-color: #2C6783}
+
+/*COLOR SECUNDARIO*/
+.secundario{background-color: #5E97C4}
+
+/*COLOR BOTONES*/
+.boton{background-color: #4B515D}
+
+/*COLOR FORMULARIO*/
+.formulario{background-color: #D7D7D7}
+
+/*COLOR SUBTITULO FORMULARIO*/
+.subform{background-color: #949494}
+
+/*COLOR ENFASIS 1*/
+.enfasis1{background-color: #5EB8C4}
+
+/*COLOR ENFASIS 2*/
+.enfasis2{background-color: #2D529B}
+
+/*COLOR ENFASIS 3*/
+.enfasis3{background-color: #5E65C4}
+
+/*COLOR FUERTE 1*/
+.strong{background-color: #ff7043}
+
+/*COLOR FUERTE 2*/
+.strong2{background-color: #ffe082}
+
+/*COLOR FUERTE 3*/
+.strong3{background-color: #ffca28}
+
+/*COLOR FUERTE 4*/
+.strong4{background-color: #a5d6a7}
+
+/*COLOR FUERTE 5*/
+.strong5{background-color: #4caf50}
+
+/*COLOR ALTERNATIVO 1*/
+.alternative{background-color: #e53935}
+
+/*COLOR ALTERNATIVO 2*/
+.alternative2{background-color: #3e2723}
+
+/*----------------------------------------------
+COLORES DE TEXTO
+----------------------------------------------*/
+
+/*COLOR PRINCIPAL*/
+.principal-text{color: #2C6783}
+
+/*COLOR SECUNDARIO*/
+.secundario-text{color: #5E97C4}
+
+/*COLOR BOTONES*/
+.boton-text{color: #4B515D}
+
+/*COLOR FORMULARIO*/
+.formulario-text{color: #D7D7D7}
+
+/*COLOR SUBTITULO FORMULARIO*/
+.subform-text{color: #949494}
+
+/*COLOR ENFASIS 1*/
+.enfasis1-text{color: #5EB8C4}
+
+/*COLOR ENFASIS 2*/
+.enfasis2-text{color: #2D529B}
+
+/*COLOR ENFASIS 3*/
+.enfasis3-text{color: #5E65C4}
+
+/*COLOR FUERTE 1*/
+.strong-text{color: #ff7043}
+
+/*COLOR FUERTE 2*/
+.strong2-text{color: #ffe082}
+
+/*COLOR FUERTE 3*/
+.strong3-text{color: #ffca28}
+
+/*COLOR FUERTE 4*/
+.strong4-text{color: #a5d6a7}
+
+/*COLOR FUERTE 5*/
+.strong5-text{color: #4caf50}
+
+/*COLOR ALTERNATIVO 1*/
+.alternative-text{background-color: #e53935}
+
+/*COLOR ALTERNATIVO 2*/
+.alternative2-text{background-color: #3e2723}

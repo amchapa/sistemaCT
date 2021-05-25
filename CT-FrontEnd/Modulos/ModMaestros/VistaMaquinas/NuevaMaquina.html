@@ -1,0 +1,220 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">REGISTRO DE NUEVO MAQUINA</h3>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION GENERAL DE MAQUINAS-->
+        <div class="col-12 col-md-5 col-xl-4 form-group text-center">
+         
+          <!--CODIGO-->
+          <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. REGISTRO EN EL SISTEMA-->
+          <h6 class="d-none">Fecha de registro: <span id="fechaRegistro"></span></h6>
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+    <!--DATOS GENERALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombre">Nombre</label>
+          <input required type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar Nombre">
+          <small id="nombreHelp" class="form-text text-muted">Ejemplo: ADAST-BARNIZADORA.</small>
+        </div>
+        
+        <!--DESCRIPCION-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="descripcion">Descripcion</label>
+          <input required type="text" class="form-control" id="descripcion" aria-describedby="descripcionHelp" placeholder="Ingresar Descripcion">
+          <small id="descripcionHelp" class="form-text text-muted">Recomendacion: Ingresar descripcion de la Maquina.</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--COSTO POR HORA-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="costo">Costo por Hora</label>
+          <input required type="number" step="any" min="1" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="costo" aria-describedby="costoHelp" placeholder="Ingresar Costo Por Hora">
+          <small id="costoHelp" class="form-text text-muted">Ejemplo: 12.870</small>
+        </div>
+        
+        
+        <!--AREA-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="area">Area</label>
+          <select required id="area" class="form-control" aria-describedby="areaHelp"></select>
+          <small id="areaHelp" class="form-text text-muted">Campo Obligatorio.</small>
+        </div>
+        
+         <!--ESTADO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="area">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo Obligatorio.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+ 
+  
+    <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" onclick="vMaquinas.validar('VALIDAR');return false" class="btn btn-guardar">Guardar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+  </div>
+   <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+
+</form> 
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaMaquinas/VistaMaquinas.js"></script>
+
+<script type="text/javascript"> 
+    
+var $cambio="";    
+    
+vMaquinas.mostrarEstado();
+vMaquinas.mostrarArea();
+
+document.getElementById("reset").onclick = function() {limpiarMensaje()};  
+    
+/*=============================================
+   VALIDAR REGISTRO DE LA MAQUINA
+=============================================*/
+
+function ValidarMaquinas(){
+    var $validar={
+        '_nombreMaquina': $("#nombre").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Maquinas/Controlador_ValidarMaquinas.php',
+        type: 'POST',
+        data: $validar,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response == 1){
+                UltimoRegistro();
+            }
+            else{
+                if(datos.response == 0){mostrarMensaje("error",'ERROR: '+datos.message);}
+                else{mostrarMensaje("error",'ERROR: La maquina ya existe. Por favor verificar el nombre de la maquina.');}
+            }
+        }
+    });
+}    
+
+
+/*=============================================
+   GENERAR EL CODIGO SIGUIENTE
+=============================================*/    
+function UltimoRegistro(){
+       $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Maquinas/Controlador_UltimoRegistro.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                RegistrarMaquina(datos[0].CODIGO);
+            }
+            
+
+        }
+    });  
+}    
+    
+    
+/*=============================================
+   ENVIAR FORMULARIO
+=============================================*/
+
+function RegistrarMaquina(cambio){
+    
+ 
+    var $maquina={
+        '_codigo': cambio,
+        '_nombre': $("#nombre").val(),
+        '_costo': $("#costo").val(),
+        '_descripcion': $("#descripcion").val(),
+        '_area': $("#area").val(),
+        '_estado': $("#estado").val()
+        
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Maquinas/Controlador_RegistrarMaquina.php',
+        type: 'POST',
+        data: $maquina,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+            }
+        }
+    });
+}     
+    
+    
+/*=============================================
+   LIMPIAR
+=============================================*/    
+    
+ function limpiarMensaje(){
+     $("#resultado").text("");
+ }     
+
+
+</script>

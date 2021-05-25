@@ -1,0 +1,239 @@
+/*=============================================
+  GENERAL        
+=============================================*/
+html, body{
+    overflow: hidden;
+    scrollbar-face-color:#2C6783;
+    scrollbar-track-color:#F5F5F5;
+    scrollbar-shadow-color:rgba(0,0,0,0.1);
+    scrollbar-highlight-color:#05B7FF;
+}
+
+/*--ESTILO MENU LATERAL--*/
+#barraIzq{
+    height: 91%;
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: visible;
+    z-index: 1;
+}
+.list-group-item:hover{background: blue}
+.list-group-item{margin:1px 0px}
+
+/*--ESTILO CONTENEDOR PRINCIPAL--*/
+#contenido{
+    height: 91%;
+    position: absolute;
+    top: 65px;
+    right: 0;
+    overflow-y: auto;
+}
+
+/*--ESTILO GENERAL DE UN TITULO H3 Y SUBTITULO H4--*/
+.titulo{
+  color: var(--principal); font-weight: bold; text-align: center; text-transform: uppercase;
+  margin-bottom: 0.9rem; margin-top: 0.9rem; 
+}
+.subtitulo{
+  color: black; font-weight: bold; text-align: center; text-transform: uppercase;
+  margin-bottom: 0.9rem; margin-top: 0.9rem; 
+}
+
+/*--ESTILO GENERAL TEXTO--*/
+.text-link{color: var(--textLink); cursor: pointer;}
+
+/*--CARGANDO--*/
+#loading{text-align: center; margin: auto;}
+
+/*=============================================
+  MENSAJES EXITO, ERROR, ADVERTENCIA     
+=============================================*/
+
+.toast{
+  position: fixed;
+  top: 10%;
+  right: 1%;
+  color: white;
+  text-transform: capitalize;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  border: 0;
+  padding: 0.3rem;
+}
+.toast.show {opacity: .95;}
+.toast.show:hover {box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.3);}
+
+/*=============================================
+  BARRA DE DESPLAZAMIENTO         
+=============================================*/
+
+::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.1);
+	background-color: #F5F5F5;
+	border-radius: 10px;
+}
+::-webkit-scrollbar{
+    background-color: #F5F5F5; 
+    width: 12px;
+}
+::-webkit-scrollbar-thumb{
+	border-radius: 10px;
+	background-color: #FFF;
+	background-image: -webkit-gradient(linear,
+									   40% 0%,
+									   75% 94%,
+									   from(#5EB8C4),
+									   to(#2D529B),
+									   color-stop(.5,#5E65C4))
+}
+
+/*=============================================
+  MEDIA RESPONSIVE
+=============================================*/
+
+@media (max-width:650px){ #barraIzq{top:56px;}}
+@media (min-width:651px){ #barraIzq{top:65px;}}
+
+@media print{
+  
+  #barraIzq{display: none;}
+  #contenido{overflow: hidden;}
+  button.btn, small{display: none;}
+}
+
+/*=============================================
+  COLORES
+=============================================*/
+  
+:root {
+  --principal: #2C6783;
+  --secundario: #5E97C4; 
+
+  --enfasis1: #0097a7; 
+  --enfasis2: #2D529B; 
+  --enfasis3: #673ab7; 
+
+  --strong1: #ff7043; 
+  --strong2: #03a9f4; 
+  --strong3: #4caf50; 
+
+  --light1: #cfd8dc;
+  --light2: #ffe082; 
+  --light3: #a5d6a7; 
+
+  --alternative1: #e53935; 
+  --alternative2: #3e2723; 
+
+  --formInvalid: #e57373;
+  --formValid: #e8f0fe;
+  
+  --textLink: #2196f3;
+}
+
+/*=============================================
+  ESTILOS VISTAS
+=============================================*/
+
+/*--ESTILO GENERAL TITULO VISTA--*/
+section.menu .tituloSeccion{
+  background-color: black; 
+  border-radius: 5px; 
+  color: white; text-align: center; text-transform: uppercase;
+  padding-top: 0.15rem; padding-bottom: 0.15rem;
+}
+
+/*--ESTILO GENERAL BOTONES VISTA--*/
+section.menu button{background-color: var(--principal); color: white; border-radius: 5px; }
+
+section.menu button.btnGeneral:hover, section.menu button.btnSecundario1:hover, section.menu button.btnSecundario2:hover, section.menu button.btnSecundario3:hover, section.menu button.btnSecundario4:hover, section.menu button.btnSecundario5:hover, section.menu button.btnSecundario6:hover, section.menu button.btnSecundario7:hover{color: white; background: var(--principal);}
+
+section.menu button.btnGeneral{background: var(--secundario);}
+section.menu button.btnSecundario1{background: var(--enfasis1);}
+section.menu button.btnSecundario2{background: var(--enfasis2);}
+section.menu button.btnSecundario3{background: var(--enfasis3);}
+section.menu button.btnSecundario4{background: var(--strong2);}
+section.menu button.btnSecundario5{background: var(--strong3);}
+section.menu button.btnSecundario6{background: var(--formInvalid);}
+section.menu button.btnSecundario7{background: var(--strong1);}
+
+/*=============================================
+  ESTILOS FORMULARIO 1
+=============================================*/
+
+/*--ESTILO GENERAL CONTENEDOR INPUT--*/
+form div.card{margin-top: 1rem; margin-bottom: 1rem;}
+form .card-header{background-color: var(--light1);}
+
+/*--ESTILO GENERAL INPUT--*/
+form input:invalid,form select:invalid{border-color: var(--formInvalid);}
+form input:valid,form select:valid{background-color: var(--formValid);}
+
+/*--ESTILO GENERAL FIELDSET--*/
+form fieldset.fieldset{border: 2px groove #cfd8dc61; padding: 1rem;}
+form legend{width: auto; color: var(--secundario); font-weight: bold;}
+
+/*--CAMPO IMAGEN--*/
+form img.img-thumbnail{width: 160px; height: 160px;}
+form label.foto{border: 3px solid var(--light1); border-radius: 90px; padding: 0.1rem 0.5rem; margin: 0.2rem; font-size: 80%;}
+form label.foto:hover{background-color:var(--strong1); font-size: 100%; color: white; transition: 0.4s;}
+
+/*--OPCIONES DEL FORMULARIO--*/
+form div#opcionesFormulario{margin: 1rem;}
+form button.btn-guardar{background-color: var(--enfasis3); color: white; font-weight: bold;}
+form button.btn-reset{background-color: var(--enfasis2); color: white; font-weight: bold;}
+form button.btn-titulo{background-color: var(--strong1); color: white; font-weight: bold; padding: 0 1.5rem;}
+form button.btn-titulo2{background-color: var(--alternative2); color: white; font-weight: bold; padding: 0 1.5rem;}
+form button.btn-guardar:hover,form button.btn-reset:hover{font-size: 110%; color: white; transition: 0.4s;}
+form button.btn-titulo:hover{color: black; transition: 0.4s;}
+form button.btn-titulo2:hover{color: orange; transition: 0.4s;}
+form .btn-group{margin-bottom: 0.4rem;}
+form .btn-group button{padding: 0.4rem 1rem;}
+
+/*--ESTILO GENERAL TABLA--*/
+form table.table thead tr th, form table.table tbody tr td{vertical-align: middle;}
+form table.table thead tr th{text-align: center; font-weight: bold; padding: 0.4rem;}
+form table.table tbody tr td{padding: 0.2rem;}
+form table.table thead tr:first-child{background-color: var(--strong1);}
+form table.table thead tr:first-child th{text-align: left; color: white;}
+
+/*--ESTILO GENERAL CAROUSEL--*/
+form #estilos div.carousel-item div.col-12:hover{
+  background: #2C6783;
+  cursor: pointer;
+  color: white;
+}
+form #estilos div.carousel-item div.col-12:hover h1{
+  background: #2C6783;
+  cursor: pointer;
+}
+
+/*=============================================
+  ESTILOS FORMULARIO 2 - MENOS MARGENES
+=============================================*/
+
+form.form2 .card-header {padding: 0.1rem 1rem;}
+form.form2 .card-body {padding: 0.2rem 1rem;}
+form.form2 label {margin-bottom: .1rem;}
+form.form2 .h5, h5 {font-size: 1.15rem;}
+
+/*=============================================
+  ESTILOS LISTADO
+=============================================*/
+
+/*--ESTILO GENERAL DE UNA TABLA DE UN LISTADO--*/
+#listado #tablaListado th,#listado #tablaListado #cuerpoTabla td{padding: 14px 10px; vertical-align: middle; text-align: center;}
+#listado #tablaListado-min th,#listado #tablaListado-min #cuerpoTabla td{padding: 0px; vertical-align: middle; text-align: center;}
+#listado #tablaListado-min thead tr:first-child th{padding: 1rem;}
+#listado .tituloSeccion{
+  background-color: var(--light1);
+  text-align: center; font-weight: bold; font-size: 110%;
+  padding-top: 0.15rem; padding-bottom: 0.15rem;
+}
+
+/*--ESTILO GENERAL VARIAS TABLAS DENTRO DE UN LISTADO--*/
+#listado section#tablas table.table th{text-align: center; padding: 0.1rem;}
+#listado section#tablas table.table td{padding: 0.8rem;}
+
+/*--ESTILO GENERAL CONTENEDOR INFORMACION GENERAL--*/
+#listado div.card{margin-top: 1rem; margin-bottom: 1rem;}
+#listado .card-body {padding: 0.2rem 1rem;}
+#listado img.img-thumbnail{width: 160px; height: 160px;}

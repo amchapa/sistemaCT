@@ -1,0 +1,197 @@
+<form>
+<!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 id="tituloRegistro" class="h3-responsive titulo font-weight-bold">REGISTRO DE INGRESO DE PRODUCTO</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="busqueda" class="card text-center">
+  <h5 class="card-header h5">BÚSQUEDA</h5>
+  <div class="card-body" style="margin-left: 20%;margin-right: 10%"> 
+    <div class="form-row">
+     <!--CODIGO DEL PRODUCTO-->
+      <div class="col-12 col-md-6 form-group">
+        <select id="codigoBusqueda" style="width: 100%"></select>
+      </div>
+
+      <!--BUSQUEDA-->
+      <div class="col-12 col-md-6 form-group">
+        <button type="button"  class="btn btn-guardar" onclick="cargarBusqueda();return false">MOSTRAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!--DATOS DEL NUEVO PRODUCTO-->
+  <div class="card text-center" style="margin-left: 5%;margin-right: 5%">
+    <h5 class="card-header h5">Datos Principales</h5>
+    <input id='codigoProductoPrincipal' type="hidden">
+    <div class="card-body form-inline justify-content-center">
+        <div id='resumen1' class="mx-4"></div>
+        <div id='resumen2' class="mx-4"></div>
+        <div id='resumen3' class="mx-4"></div>
+        <div id='resumen4' class="mx-4"></div>
+    </div>
+  </div>
+  
+  <!-- DATOS DE INGRESO-->
+  <div class="card" style="margin-left: 5%; margin-right: 5%">
+    <h5 class="card-header h5">Datos de Ingreso</h5>
+    <div class="card-body">
+      <div class="form-row">
+       <!--NRO GUIA-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="nroguia">NRO GUIA</label>
+          <input required type="text" class="form-control" id="nroguia" placeholder="Ingresar Nro Guia" aria-describedby="nroguiaHelp" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="nroguiaHelp" class="form-text text-muted">Ejemplo: 000-0000000</small>
+        </div>
+        
+        <!--NRO FACTURA-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="nrofactura">NRO FACTURA</label>
+          <input required type="text" class="form-control" id="nrofactura" placeholder="Ingresar Nro Factura" aria-describedby="nrofacturaHelp" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="nrofacturaHelp" class="form-text text-muted">Ejemplo: 000-0000000</small>
+        </div>
+        
+        <!--PROVEEDOR-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="proveedor">PROVEEDOR</label>
+          <select required id="proveedor" class="form-control" aria-describedby="proveedorHelp"></select>
+          <small id="proveedorHelp" class="form-text text-muted">Campo obligatorio</small>
+        </div>
+        
+        <!--CANTIDAD-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="cantidad">CANTIDAD</label>
+          <input required type="number" class="form-control" id="cantidad" aria-describedby="cantidadHelp" >
+          <small id="cantidadHelp" class="form-text text-muted">Ejemplo: 50</small>
+        </div>
+        
+        <!--PRECIO UNITARIO-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="preciounitario">PRECIO UNITARIO</label>
+          <input required type="number" class="form-control" id="preciounitario" aria-describedby="preciounitarioHelp" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="preciounitarioHelp" class="form-text text-muted">Ejemplo: $50.00</small>
+        </div>
+        
+        <!--EMPRESA ASIGNADA-->
+        <div class="col-12 col-md-6 form-group">
+          <label class='font-weight-bold' for="empresa">EMPRESA ASIGNADA</label>
+          <select required id="empresa" class="form-control" aria-describedby="empresaHelp"></select>
+          <small id="empresaHelp" class="form-text text-muted">Campo obligatorio</small>
+        </div>  
+        
+    </div>
+  </div>
+  </div>
+
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+     <button type="button"  class="btn btn-guardar" onclick="validar();return false">Guardar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+  </div>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen();return false"></i></div>
+  <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+  
+</form>
+
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+
+<script type="text/javascript">
+  
+mostrarProductos("codigoBusqueda");
+mostrarProveedor('proveedor');
+mostrarEmpresa('empresa')
+document.getElementById("reset").onclick = function() {limpiarMensaje()};
+
+//--LIMPIAR--
+ function limpiarMensaje(){
+     $("#resultado").text("");
+      $("#proveedor").val("0")
+ }
+
+function validar(){
+  
+  var R1 = $("#nroguia").val();
+  var R2 = $("#nrofactura").val();
+  var R3 = $("#proveedor").val();
+  var R4 = $("#cantidad").val();
+  var R5 = $("#preciounitario").val();
+  var R6 = $("#empresa").val();
+  
+  if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+      $('advertencia',"REGISTRAR NRO DE GUIA");  
+      $("#nroguia").focus();
+    }else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+      $('advertencia',"REGISTRAR NRO DE FACTURA");  
+      $("#nrofactura").focus();    
+    }else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+      $('advertencia',"SELEECIONAL PROVEEDOR");  
+      $("#proveedor").focus();       
+    }else if(R4 == null || R4.length == 0 || /^\s+$/.test(R4)){
+      $('advertencia',"INGRESAR CANTIDAD");  
+      $("#cantidad").focus();       
+    }else if(R5 == null || R5.length == 0 || /^\s+$/.test(R5)){
+      $('advertencia',"INGRESAR PRECIO UNITARIO");  
+      $("#preciounitario").focus();       
+    }else if(R6 == null || R6.length == 0 || /^\s+$/.test(R6)){
+      $('advertencia',"SELEECIONAL EMPRESA");  
+      $("#empresa").focus();       
+    }else{
+      registrarDatosIngreso();
+    }
+}
+  
+
+function cargarBusqueda(){
+  mostrarProductoDetalles($("#codigoBusqueda").val());
+}  
+  
+function registrarDatosIngreso(){
+  var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  
+  var $datos={
+    '_fecha':fecharegistro,
+    '_nroguia': $("#nroguia").val(),
+    '_nrofactura': $("#nrofactura").val(),
+    '_proveedor': $("#proveedor").val(),
+    '_cantidad': $("#cantidad").val(),
+    '_unitario': $("#preciounitario").val(),
+    '_empresa': $("#empresa").val(),
+    '_producto': $("#codigoProductoPrincipal").val(),
+    '_usuario': USUACODIGO
+  }
+  
+  $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_RegistrarIngresoProducto.php",
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+               mostrarMensaje("exito", "DATOS INGRESADOS CORRECTAMENTE");
+               sumarStockAccion($("#codigoProductoPrincipal").val(),"INGRESOS");
+            }
+        }
+    });
+}
+</script>

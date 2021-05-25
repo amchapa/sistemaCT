@@ -1,0 +1,306 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">REGISTRO DE NUEVO SERVICIO</h3>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--INFORMACION GENERAL DEL SERVICIO-->
+        <div class="col-12 col-md-5 col-xl-4 form-group text-center">
+         
+          <!--CODIGO-->
+          <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. REGISTRO EN EL SISTEMA-->
+          <h6 class="d-none">Fecha de registro: <span id="fechaRegistro"></span></h6>
+          
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  
+    <!--DATOS PERSONALES-->
+    <div class="card">
+       <h5 class="card-header h5">DATOS GENERALES</h5>
+       <div class="card-body">
+
+           <div class="form-row">
+
+            <!--CODIGO SERVICIO-->
+            <div class="col-12 col-md-6 form-group">
+              <label for="servcodigo">Codigo Servicio</label>
+              <input required type="text" class="form-control" id="servcodigo" aria-describedby="servcodigoHelp" placeholder="Ingresar Codigo de Servicio">
+              <small id="servcodigoHelp" class="form-text text-muted">Ejemplo: IN-BARNIZ.</small>
+            </div>
+
+            <!--NOMBRE SERVICIO-->
+            <div class="col-12 col-md-6 form-group">
+              <label for="servnombre">Nombre Servicio</label>
+              <input required type="text" class="form-control" id="servnombre" aria-describedby="servnombreHelp" placeholder="Ingresar Nombre de Servicio">
+              <small id="servnombreHelp" class="form-text text-muted">Ejemplo: SERVICIO BARNIZ.</small>
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--ESTADO-->
+            <div class="col-12 col-md form-group">
+              <label for="estcodigo">Estado del Servicio</label>
+              <select required id="estcodigo" class="form-control" aria-describedby="estcodigoHelp"></select>
+              <small id="estcodigoHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+             <!--FAMILIA-->
+            <div class="col-12 col-md form-group">
+              <label for="servfam">Familia</label>
+              <select required id="servfam" class="form-control" aria-describedby="servfamoHelp"></select>
+              <small id="servfamHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+            <!--SUBFAMILIA-->
+            <div class="col-12 col-md form-group">
+              <label for="servsubfam">Sub Familia</label>
+              <select required id="servsubfam" class="form-control" aria-describedby="servsubfamHelp"></select>
+              <small id="servsubfamHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+        <!--DATOS EXTRAS-->
+
+        <div class="card">
+        <h5 class="card-header h5">DATOS ESPECIFICOS</h5>
+        <div class="card-body">
+            <div class="row">  
+
+            <!--CALCULO LINEAL-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="servcal">Calculo Lineal</label>
+                <select required id="servcal" class="form-control" aria-describedby="servcalHelp">
+                  <option value="No">No</option>
+                  <option value="Si" >Si</option>
+                </select>
+              <small id="servcalHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+            <!--ANCHO DEL SERVICIO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="servancho">Ancho del Servicio</label>
+              <input type="number" class="form-control" id="servancho" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" aria-describedby="servanchoHelp" placeholder="Ingresar Ancho de Servicio">
+              <small id="servanchoHelp" class="form-text text-muted">Recomendacion: Ingresar el ancho del servicio.</small>
+            </div>
+
+            <!--PRECIO UNITARIO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="servpreciounitario">Precio Unitario</label>
+              <input required type="number" class="form-control" id="servpreciounitario" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" aria-describedby="servpreciounitarioHelp" placeholder="Ingresar Precio Unitario del Servicio">
+              <small id="servpreciounitarioHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--TIPO DE SERVICIO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="tipserv">Tipo de Servicio</label>
+                <select required id="tipserv" class="form-control" aria-describedby="tipservHelp">
+                  <option value="Fijo">Fijo</option>
+                  <option value="Modificado">Modificable</option>
+                  <option value="Especial">Especial</option>
+                </select>
+              <small id="tipservHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+            <!--FACTOR DE SERVICIO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="servfactor">Factor del Servicio</label>
+              <input type="number" class="form-control" id="servfactor" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" aria-describedby="servfactorHelp" placeholder="Ingresar Factor de Servicio">
+              <small id="servfactorHelp" class="form-text text-muted">Recomendacion: Ingresar el factor del servicio.</small>
+            </div>
+
+            <!--TIPO DE MONEDA-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="servmoneda">Tipo de moneda</label>
+                <select required id="servmoneda" class="form-control" aria-describedby="servmonedaHelp">
+                  <option value="Soles">Soles</option>
+                  <option value="Dolares">Dolares</option>
+                </select>
+              <small id="servmonedaHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--DESCUENTO DE SERVICIO-->
+            <div class="col-12 col-md-6 form-group">
+              <label for="servdescuento">Descuento del Servicio</label>
+              <input type="text" class="form-control" id="servdescuento" aria-describedby="servdescuentoHelp" placeholder="Ingresar Descuento de Servicio">
+              <small id="servdescuentoHelp" class="form-text text-muted">Recomendacion: Ingresar el descuento del servicio.</small>
+            </div>
+
+            <!--FACTOR DE SERVICIO-->
+            <div class="col-12 col-md-6 form-group">
+              <label for="servpreciopapel">Precio del Papel</label>
+              <input type="number" class="form-control" id="servpreciopapel" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" aria-describedby="servpreciopapelHelp" placeholder="Ingresar Precio de Papel">
+              <small id="servpreciopapelHelp" class="form-text text-muted">Recomendacion: Ingresar el precio de papel.</small>
+            </div>
+
+            </div>
+        </div>
+        </div>       
+           </div>
+       </div>
+    </div>
+
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" onclick="validar();return false" class="btn btn-guardar">Guardar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+  </div> 
+ 
+ <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+ 
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaServicios/VistasServicios.js"></script>
+
+<script type="text/javascript">
+    
+var opcionFamilia = "Elegir Familia";
+var opcionSubFamilia = "Elegir SubFamilia";
+      
+vServicio.mostrarEstado();
+vServicio.mostrarFamilia();
+vServicio.mostrarSubFamilia(opcionFamilia);
+    
+document.getElementById("reset").onclick = function() {limpiarMensaje()};    
+
+//--SELECCION DE FAMILIA--
+$("#servfam").change(function() {
+    opcionFamilia = $("#servfam option:selected").val();
+    vServicio.mostrarSubFamilia(opcionFamilia);
+});
+    
+/*=============================================
+    VALIDAR FORMULARIO
+=============================================*/    
+function validar(){
+    
+    var S1 = $("#servcodigo").val();
+    var S2 = $("#servnombre").val();
+    var S3 = $("#servcal").val();
+    var S4 = $("#servpreciounitario").val();
+    var S5 = $("#tipserv").val();
+    var S6 = $("#servmoneda").val();
+    var S7 = $("#estcodigo").val();
+    var S8 = $("#servsubfam").val();
+    
+    if(S1 == null || S1.length == 0 || /^\s+$/.test(S1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#servcodigo").focus();
+    }
+    else if(S2 == null || S2.length == 0 || /^\s+$/.test(S2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#servnombre").focus();
+    }
+    else if(S3 == null || S3.length == 0 || /^\s+$/.test(S3)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#servcal").focus();
+    }
+    else if(S4 == null || S4.length == 0 || /^\s+$/.test(S4)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#servpreciounitario").focus();
+    }
+    else if(S5 == null || S5.length == 0 || /^\s+$/.test(S5)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#tipserv").focus();
+    }
+    else if(S6 == null || S6.length == 0 || /^\s+$/.test(S6)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#servmoneda").focus();
+    }
+    else if(S7 == null || S7.length == 0 || /^\s+$/.test(S7)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#estcodigo").focus();
+    }
+    else if(S8 == null || S8.length == 0 || /^\s+$/.test(S8)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#servsubfam").focus();
+    }
+    else if( S1.length>20 ){
+        mostrarMensaje("error","ERROR: El campo Código no debe ser mayor a 20");
+        $("#servcodigo").focus();
+    }
+    else{
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        RegistrarServicio();
+    }
+                     
+}
+    
+/*=============================================
+   ENVIAR FORMULARIO
+=============================================*/
+function RegistrarServicio(){
+    
+    var $servicio={
+        '_codigo':$("#servcodigo").val(),
+        '_nombre':$("#servnombre").val(),
+        '_calculo':$("#servcal").val(),
+        '_ancho':$("#servancho").val(),
+        '_preciou':$("#servpreciounitario").val(),
+        '_tipo':$("#tipserv").val(),
+        '_factor':$("#servfactor").val(),
+        '_moneda':$("#servmoneda").val(),
+        '_descuento':$("#servdescuento").val(),
+        '_estado':$("#estcodigo").val(),
+        '_subfam':$("#servsubfam").val(),
+        '_papel':$("#servpreciopapel").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Servicios/Controlador_RegistrarServicio.php',
+        type: 'POST',
+        data: $servicio,
+        dataType: 'json',
+        error: function(error){
+            
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }  
+            
+        },
+        success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+            }
+        }
+        
+    });
+        
+    
+}
+    
+/*=============================================
+   LIMPIAR
+=============================================*/    
+function limpiarMensaje(){
+     $("#resultado").text("");
+ }  
+    
+</script>

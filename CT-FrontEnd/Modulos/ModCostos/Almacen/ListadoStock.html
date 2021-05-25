@@ -1,0 +1,360 @@
+ <form>
+  <div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">LISTADO STOCK</div>
+  
+  <div class="card text-center" style="margin-left: 10%;margin-right: 10%">
+    <h5 class="card-header h5">SELECCIONAR PRODUCTO</h5>
+    
+    <div class="container-fluid">
+      <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="9000">
+          <div class="carousel-inner row w-100 mx-auto" >
+    
+         <div class="carousel-item active">
+         
+          <div class="card-body form-inline justify-content-center">
+            <input type="text" id="codigoProducto" class="form-control">
+            <button id="BusquedaXcodigo" class="btn btn-reset" onclick="buscarXCodigo(this.id);return false" >BUSCAR X CODIGO</button>
+          </div>
+         </div>
+          
+         <div class="carousel-item ">
+          <div class="card-body form-inline justify-content-center">
+            <select class="form-control" id="tipoProducto" onchange="mostrarOpciones();return false" aria-describedby="personalHelp"></select>
+            <button class="btn btn-reset" onclick="cargarDatos();return false" >BUSCAR X TIPO PRODUCTO</button>
+          </div>
+         </div>
+          
+         <div class="carousel-item ">
+          <div class="card-body form-inline justify-content-center">
+            <select class="form-control" id="producto" onchange="return false" aria-describedby="personalHelp" style="width: 600px">
+            <option value="0" >-- Elegir tipo producto</option></select>
+            <button id="BusquedaProducto" class="btn btn-reset" onclick="buscarXCodigo(this.id);return false" >BUSCAR X CODIGO</button>
+          </div>
+         </div>
+    
+        </div>
+        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+              <i class="fa fa-chevron-left fa-lg text-muted"></i>
+              <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next text-faded" href="#carouselExample" role="button" data-slide="next">
+              <i class="fa fa-chevron-right fa-lg text-muted"></i>
+              <span class="sr-only">Next</span>
+          </a>
+      </div>
+    </div>
+  </div>
+  
+  <div id="tableExport" class="my-4">
+    <div id="campo1" class="card my-4" >
+      <table id="tablaDatos1" class='table  text-center' cellspacing='0'>
+        <thead id="cabezal1"></thead>
+        <tbody id="cuerpoTabla1"></tbody>
+      </table>
+    </div>
+  </div>
+  
+</form>
+  <button class="btn boton" id="boton-descarga">Exportar</button>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+$('.carousel').carousel('pause');
+mostrarFamiliaProductos('tipoProducto');
+var campos=0;
+var numero=0;
+  
+function cargarDatos(){
+  for(var i=2;i<16;i++){
+    $('#campo'+i).remove();
+    numero=0;
+  }
+  
+  if($("#tipoProducto").val()=="todos"){
+      cargarTodo();
+  }else{
+      cargarFamilia($("#tipoProducto").val(),1);
+  }
+}
+ 
+function cargarTodo(){
+  
+   $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarFamiliaProductos.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxAcabados+="<option value='0' selected>Elegir Tipo Producto</option>";
+            $("#"+ID).html(boxAcabados);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxAcabados+="<option value='0' selected>Elegir Tipo Producto</option>";
+                $("#"+ID).html(boxAcabados);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    var codigofamiliy=datos[i].FAMPROCODIGO;
+                    for(var j=0; j<1000;j++){
+                      if(j==500){
+                        cargarFamilia(codigofamiliy);
+                      }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function cargarFamilia(codigoFam){
+  
+  var $datos= {
+    '_codigo': codigoFam
+  }
+  
+  $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarProductoXFamilia.php",
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+          }
+        },
+        success: function(datos){
+          if(datos.response=="0"){
+            
+          }else{
+            numero=numero+1
+            mostrarListado(datos,numero);
+          }
+        }
+    });
+}
+  
+function mostrarListado(datos,tablas){
+      
+  var titulos="";
+  titulos+="<tr><th colspan='12' class='th-sm h5 text-center' >LISTADO FAMILIA - "+datos[0].FAMPRONOMBRE+"</th></tr>\
+    <th class='th-sm '>PRODUCTO</th>\
+    <th class='th-sm '>MARCA</th>\
+    <th class='th-sm '>TAMAÑO</th>\
+    <th class='th-sm '>GRAMAJE</th>\
+    <th class='th-sm '>STOCK DISPONIBLE</th>\
+    <th class='th-sm '>PRECIO UNITARIO</th>\
+    <th class='th-sm '>PRECIO TOTAL</th>\
+    <th class='th-sm '>STOCK CT</th>\
+    <th class='th-sm '>STOCK ER</th>\
+    <th class='th-sm '>STOCK ED</th>\
+    <th class='th-sm '>STOCK GR</th></tr>";
+
+  var tablaContenido="";
+  var preciototalxproducto,marca,tamaño,gramaje,precioUnitario;
+
+  for(var i=0;i<datos.length;i++){
+
+  if(datos[i].PROMARCA==""){
+    marca = "No Disponible";
+  }else{
+    marca = datos[i].PROMARCA;
+  }
+
+  if(datos[i].PROTAMAÑO==""){
+    tamaño = "No Disponible";
+  }else{
+    tamaño = datos[i].PROTAMAÑO;
+  }
+
+  if(datos[i].PROGRAMAJE==""){
+    gramaje = "No Disponible"
+  }else{
+    gramaje = datos[i].PROGRAMAJE;
+  }
+
+  if(datos[i].P_UNITARIO=="null"){
+    precioUnitario = 0;
+  }else{
+    precioUnitario = datos[i].P_UNITARIO;
+  }    
+
+  preciototalxproducto= parseInt(datos[i].STODISPONIBLE)*parseInt(precioUnitario);
+  tablaContenido+="<tr class='text-center'>\
+                <td>"+datos[i].PROCODIGO+" "+datos[i].PRONOMBRE+"</td>\
+                <td>"+marca+"</td>\
+                <td>"+tamaño+"</td>\
+                <td>"+gramaje+"</td>\
+                <td>"+datos[i].STODISPONIBLE+"</td>\
+                <td>"+precioUnitario+"</td>\
+                <td>"+preciototalxproducto.toFixed(2)+"</td>\
+                <td>"+datos[i].STO_CT+"</td>\
+                <td>"+datos[i].STO_ER+"</td>\
+                <td>"+datos[i].STO_ED+"</td>\
+                <td>"+datos[i].STO_GR+"</td>\
+            </tr>";
+  }
+    
+  var newDiv = document.createElement("div");
+  var newtable = document.createElement("table");
+  var tableCabezal = document.createElement("thead");
+  var tableBody = document.createElement("tbody");
+
+  if(document.getElementById('campo' + tablas)){
+    $("#cabezal"+tablas).html(titulos);
+    $("#cuerpoTabla"+tablas).html(tablaContenido);
+    if(campos==0){
+      campos=campos+1;
+      $('#tablaDatos'+ tablas).DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+      });
+    }
+  }else{
+    newDiv.setAttribute("id", "campo"+tablas);
+    newtable.setAttribute("id", "tablaDatos"+tablas);
+    tableCabezal.setAttribute("id", "cabezal"+tablas);
+    tableBody.setAttribute("id", "cuerpoTabla"+tablas);
+    newDiv.appendChild(newtable)
+    newtable.appendChild(tableCabezal)
+    newtable.appendChild(tableBody)
+    $(newDiv).insertAfter($("#campo"+(tablas-1)+""));
+    $("#campo" + tablas).addClass("card my-4");
+    $("#cabezal"+tablas).html(titulos);
+    $("#cuerpoTabla"+tablas).html(tablaContenido);
+    $('#tablaDatos'+ tablas).DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+    });
+  }
+
+  $("#tablaDatos"+tablas+"_wrapper").addClass("my-4");
+  $("#tablaDatos" + tablas).addClass("table text-center");
+  $("#tablaDatos" + tablas).removeClass("dataTable");
+  document.getElementById('tablaDatos'+tablas).style.width='100%'
+}
+  
+function buscarXCodigo(accion){
+  
+  for(var i=2;i<16;i++){
+    $('#campo'+i).remove()
+    numero=0;
+  }
+  if(accion=="BusquedaXcodigo"){
+    var codigo= $("#codigoProducto").val();
+  }else{
+    var codigo= $("#producto").val();
+  }
+  
+  var $datos= {
+    '_codigo': codigo
+  }
+  
+  $.ajax({
+      url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarProductoXCodigo.php",
+      type: 'POST',
+      data: $datos,
+      dataType: 'json',
+      error: function(error){
+        if(error.status == 401){
+            mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+        }
+        else{
+            mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+        }
+      },
+      success: function(datos){
+
+        if(datos.response=="0"){
+             mostrarMensaje("error","No se encontró información");
+        }else{
+            mostrarListadoUnico(datos);
+        }
+      }
+  }); 
+}
+  
+function mostrarListadoUnico(datos){
+  var titulos="";
+  titulos+="<tr><th colspan='11' class='th-sm h5 text-center'>"+ datos.PRONOMBRE+"</th></tr>\
+      <th class='th-sm  '>PRODUCTO</th>\
+      <th class='th-sm  '>MARCA</th>\
+      <th class='th-sm  '>TAMAÑO</th>\
+      <th class='th-sm  '>GRAMAJE</th>\
+      <th class='th-sm  '>STOCK DISPONIBLE</th>\
+      <th class='th-sm  '>PRECIO UNITARIO</th>\
+      <th class='th-sm  '>PRECIO TOTAL</th>\
+      <th class='th-sm  '>STOCK CT</th>\
+      <th class='th-sm  '>STOCK ER</th>\
+      <th class='th-sm  '>STOCK ED</th>\
+      <th class='th-sm  '>STOCK GR</th></tr>";
+  $("#cabezal1").html(titulos);
+  var tablaContenido="";
+  var preciototalxproducto,marca,tamaño,gramaje,precioUnitario=0;
+  
+    if(datos.PROMARCA==""){
+      marca = "No Disponible";
+    }else{
+      marca = datos.PROMARCA;
+    }
+    
+    if(datos.PROTAMAÑO==""){
+      tamaño = "No Disponible";
+    }else{
+      tamaño = datos.PROTAMAÑO;
+    }
+    
+    if(datos.PROGRAMAJE==""){
+      gramaje = "No Disponible"
+    }else{
+      gramaje = datos.PROGRAMAJE;
+    }
+    
+    if(datos.P_UNITARIO=="null" || datos.P_UNITARIO=="undefined"){
+      precioUnitario = 0;
+    }else{
+      precioUnitario = datos.P_UNITARIO;
+    }
+    preciototalxproducto= parseInt(datos.STODISPONIBLE)*parseInt(precioUnitario);
+    tablaContenido+="<tr>\
+                  <td>"+datos.PROCODIGO+" "+datos.PRONOMBRE+"</td>\
+                  <td>"+marca+"</td>\
+                  <td>"+tamaño+"</td>\
+                  <td>"+gramaje+"</td>\
+                  <td>"+datos.STODISPONIBLE+"</td>\
+                  <td>$ "+precioUnitario+"</td>\
+                  <td>$ "+preciototalxproducto.toFixed(2)+"</td>\
+                  <td>"+datos.STO_CT+"</td>\
+                  <td>"+datos.STO_ER+"</td>\
+                  <td>"+datos.STO_ED+"</td>\
+                  <td>"+datos.STO_GR+"</td>\
+              </tr>"; 
+
+  $("#cuerpoTabla1").html(tablaContenido);
+  if(campos==0){
+      campos=campos+1;
+      $('#tablaDatos1').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false
+      });
+    }
+  
+}
+
+
+</script>

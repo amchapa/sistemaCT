@@ -1,0 +1,349 @@
+
+<div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4"></div>
+<table id="tablaDatos" class='table table-striped table-bordered text-center' cellspacing='0' >
+<thead id="cabezal"></thead>
+<tbody id="cuerpoTabla"></tbody>
+</table>
+<!-- MODAL -->
+  <div class="modal fade" id="listadoEdicion" tabindex="-1" role="dialog" aria-labelledby="listadoPersonalTitulo"
+    aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header ">
+          <h5 class="modal-title blue-text h4 font-weight-bold">Actualizar Datos</h5>
+          <button id="closeModal" type="button" class="close red white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <input id="codigoActualizar" type="hidden">
+          
+          <div id="actualizarTipoProducto" class="form-row">
+            
+            <div class="col-12 col-md-6 form-group">
+            <label for="nombreTipoProducto" class="font-weight-bold">Nombre</label>
+            <input required type="text" class="form-control" id="nombreTipoProducto" aria-describedby="nombreTipoProductoHelp" placeholder="Ingresar Nombre">
+            <small id="nombreTipoProductoHelp" class="form-text text-muted">Ejemplo:REPUESTOS, PAPELES</small>
+            </div>
+            <div class="col-12 col-md-6 form-group">
+            <label for="estadoTipoProducto" class="font-weight-bold">Estado</label>
+            <select required id="estadoTipoProducto" class="form-control" aria-describedby="estadoTipoProductoHelp">
+            <option value="62">ACTIVO</option>
+            <option value="63">INACTIVO</option>
+            </select>
+            <small id="estadoTipoProductoHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+            
+          </div>
+          
+          <div id='actualizarFamiliaPapel' class="form-row">
+            
+            <div class="col-12 col-md-6 form-group">
+              <label for="codigo" class="font-weight-bold">Código</label>
+              <input required type="text" class="form-control" id="codigo" aria-describedby="codigoHelp" placeholder="Ingresar Nombre">
+              <small id="codigoHelp" class="form-text text-muted">Ejemplo: AD </small>
+            </div>
+            <div class="col-12 col-md-6 form-group">
+              <label for="nombre" class="font-weight-bold">Nombre</label>
+              <input required type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar Nombre">
+              <small id="nombreHelp" class="form-text text-muted">Ejemplo: ADHESIVO </small>
+            </div>
+            <div class="col-12 col-md-6 form-group">
+              <label for="estado" class="font-weight-bold">Estado</label>
+              <select required id="estado" class="form-control" aria-describedby="estadoHelp">
+              <option value="64">ACTIVO</option>
+              <option value="65">INACTIVO</option>
+              </select>
+              <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+            
+          </div>
+            <form><div id="opcionesFormulario" class="form-inline justify-content-center">
+             <button type="button" id="editarModal*Productos"  class="btn btn-guardar" onclick="actualizar(this.id);return false">Guardar</button>
+             <button type="button" id="editarModal*Papeles"  class="btn btn-guardar" onclick="actualizar(this.id);return false">Guardar</button>
+          </div></form>
+        </div>
+
+      </div>
+
+  </div>
+  </div>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript">
+
+function cargarDatos(tipo,numero){
+  if(numero!=0){
+    $("#tablaDatos").DataTable().destroy();
+  }
+  
+  var url="";
+  var titulos="";
+  
+  if(tipo=="productos"){
+      $("#encabezadoPrincipal").html("LISTADO PRINCIPAL DE TIPOS DE PRODUCTOS")
+      url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarFamiliaProductos.php';
+  }else{
+    $("#encabezadoPrincipal").html("LISTADO PRINCIPAL DE FAMILIA PAPEL")
+      url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarFamiliaPapel.php';
+  }
+  titulos+="<tr><th class='th-sm'>CODIGO</th>\
+      <th class='th-sm'>NOMBRE</th>\
+      <th class='th-sm'>FECHA DE REGISTRO</th>\
+      <th class='th-sm'>ESTADO</th><th class='th-sm'>EDITAR</th></tr>";
+  $("#cabezal").html(titulos)
+  
+  $.ajax({
+      url: url ,
+      type: 'GET',
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error",'ERROR: '+datos.message);
+          }else{
+              mostrarDatos(datos,tipo);
+          }
+      }
+  }); 
+}
+  
+/*MOSTRAR DATOS SEGUN EL TIPO*/
+function mostrarDatos(datos,tipo){
+  var tablaContenido="";
+  var estcodigo="";
+  
+  for(var i=0; i<datos.length; i++){
+    
+    if(tipo=='productos'){
+      
+        if(datos[i].ESTCODIGO=='62'){
+          estcodigo="ACTIVO"
+        }else{
+          estcodigo="INACTIVO"
+        }
+         tablaContenido+="<tr>\
+                      <td>"+datos[i].FAMPROCODIGO+"</td>\
+                      <td>"+datos[i].FAMPRONOMBRE+"</td>\
+                      <td>"+datos[i].FAMPROCODIGOFECHA_REGISTRO+"</td>\
+                      <td>"+estcodigo+"</td>\
+                      <td><button id='editarProducto*"+datos[i].FAMPROCODIGO+"' class='btn green mx-2' onclick='editar(this.id)'>/</button><button id='estadoProducto*"+datos[i].FAMPROCODIGO+"' class='btn red mx-2' onclick='actualizar(this.id)'>X</button></td>\
+                  </tr>"
+    }else{
+      
+      if(datos[i].ESTCODIGO=='64'){
+        estcodigo="ACTIVO"
+      }else{
+        estcodigo="INACTIVO"
+      }
+      
+         tablaContenido+="<tr>\
+                      <td>"+datos[i].FAMPACODIGO+"</td>\
+                      <td>"+datos[i].FAMPANOMBRE+"</td>\
+                      <td>"+datos[i].FAMPACODIGOFECHA_REGISTRO+"</td>\
+                      <td>"+estcodigo+"</td>\
+                      <td><button id='editarPapel*"+datos[i].FAMPANUMERO+"' class='btn green mx-2' onclick=editar(this.id)>/</button><button id='estadoPapel*"+datos[i].FAMPANUMERO+"' class='btn red mx-2' onclick=actualizar(this.id)>X</button></td>\
+                  </tr>"
+    }
+  }
+  $("#cuerpoTabla").html(tablaContenido);
+  $('#tablaDatos').DataTable( {
+      dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+        ],
+        buttons: [
+            {
+                extend: 'pageLength',
+                text: "VER 10 FILAS"
+            },
+          {
+              extend: 'print',
+              title: 'LISTADO',
+              text: 'IMPRIMIR',
+              className: 'btn boton'
+          },
+          {
+              extend: 'pdfHtml5',
+              download: 'open',
+              title: 'LISTADO',
+              text: 'EXPORTAR PDF',
+              className: 'btn boton'
+          }
+      ]
+  } );
+  $('.dataTables_length').addClass('bs-select');
+}
+  
+function editar(codigo){
+  var opcion = codigo.split('*');
+  
+  if(opcion[0]=="editarProducto"){
+    $('#listadoEdicion').modal('show');
+    document.getElementById('actualizarFamiliaPapel').style.display='none';
+    document.getElementById('editarModal*Papeles').style.display='none';
+    document.getElementById('actualizarTipoProducto').style.display=null;
+    document.getElementById('editarModal*Productos').style.display=null;
+      $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarFamiliaProductos.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                for(var i=0;i<datos.length;i++){
+                  if(opcion[1]==datos[i].FAMPROCODIGO){
+                    $("#codigoActualizar").val(opcion[1]);
+                    $("#nombreTipoProducto").val(datos[i].FAMPRONOMBRE);
+                    $("#estadoTipoProducto").val(datos[i].ESTCODIGO);
+                  }
+                }
+            }
+          }
+      }); 
+  }else{
+    $('#listadoEdicion').modal('show');
+    document.getElementById('actualizarTipoProducto').style.display='none';
+    document.getElementById('editarModal*Productos').style.display='none';
+    document.getElementById('actualizarFamiliaPapel').style.display=null;
+    document.getElementById('editarModal*Papeles').style.display=null;
+      $.ajax({
+        url: '../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarFamiliaPapel.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                for(var i=0;i<datos.length;i++){
+                  if(opcion[1]==datos[i].FAMPANUMERO){
+                    $("#codigoActualizar").val(opcion[1]);
+                    $("#codigo").val(datos[i].FAMPACODIGO);
+                    $("#nombre").val(datos[i].FAMPANOMBRE);
+                    $("#estado").val(datos[i].ESTCODIGO);
+                  }
+                }
+            }
+          }
+      }); 
+  }                  
+}
+  
+function actualizar(texto){
+  var $datos;
+  var url="";
+   var Hoy = new Date();
+  var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+  var tipo="";
+  switch(texto.split("*")[0]){
+      
+      case('estadoProducto'):
+        tipo="productos"
+        $datos={
+          '_codigo':texto.split("*")[1],
+          '_nombre':"NO",
+          '_fecha':fecharegistro,
+          '_estado':63,
+          '_usuario':USUACODIGO
+        }
+        url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_ActualizarFamiliaProductos.php';
+        break;
+      
+      case('estadoPapel'):
+      tipo="papeles"
+        $datos={
+          '_codigo':texto.split("*")[1],
+          '_corto':'NO',
+          '_nombre':"NO",
+          '_fecha':fecharegistro,
+          '_estado':65,
+          '_usuario':USUACODIGO
+        }
+        url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_ActualizarFamiliaPapel.php';
+        break;
+      
+      case('editarModal'):
+      
+        if(texto.split("*")[1]=='Productos'){
+          tipo="productos"
+          $datos={
+            '_codigo':$("#codigoActualizar").val(),
+            '_nombre':$("#nombreTipoProducto").val(),
+            '_fecha':fecharegistro,
+            '_estado':$("#estadoTipoProducto").val(),
+            '_usuario':USUACODIGO
+          }
+          url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_ActualizarFamiliaProductos.php';
+          
+        }else{
+          tipo="papeles"
+          $datos={
+            '_codigo':$("#codigoActualizar").val(),
+            '_corto':$("#codigo").val(),
+            '_nombre':$("#nombre").val(),
+            '_fecha':fecharegistro,
+            '_estado':$("#estado").val(),
+            '_usuario':USUACODIGO
+          }
+          url='../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_ActualizarFamiliaPapel.php';
+          
+        }
+        break;
+  };
+  
+  $.ajax({
+      url: url ,
+      type: 'POST',
+      data:$datos,
+      dataType: 'json',
+      error: function(error){
+          if(error.status == 401){
+              mostrarMensaje("error","Archivos no encontrados");
+          }
+          else{
+              mostrarMensaje("error","Error no identificado");
+          }
+      },
+      success: function(datos){
+
+          if(datos.response=="0"){
+              mostrarMensaje("error",'ERROR: '+datos.message);
+          }else{
+             mostrarMensaje("exito","DATOS ACTUALIZADOS");
+            cargarDatos(tipo,1)
+          }
+      }
+  }); 
+  
+}
+</script>

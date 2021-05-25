@@ -1,0 +1,132 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+ 
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script>
+    
+mostrarEstado();
+    
+//--GENERAR OPCIONES DE ESTADO--
+function mostrarEstado(){
+    var boxEstado="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Empresa/Controlador_MostrarEstado.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxEstado+="<option value='' selected>Elegir Estado</option>";
+            $("#estado").html(boxEstado);
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                boxEstado+="<option value='' selected>Elegir Estado</option>";
+                $("#estado").html(boxEstado);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEstado+="<option value='' selected>Elegir Estado</option>";
+                    }
+                    boxEstado+="<option value='"+datos[i].ESTCODIGO+"'>"+datos[i].ESTDESCRIPCION+"</option>";
+                }
+                $("#estado").html(boxEstado);
+            }
+        }
+    });  
+} 
+    
+/*=============================================
+    VALIDAR FORMULARIO
+=============================================*/
+    
+function validar(){
+
+    var R1  = $("#descripcion").val();
+    var R2  = $("#ruc").val();
+    var R3  = $("#abreviatura").val();
+    var R4  = $("#domicilio").val();
+    var R5  = $("#estado").val();
+    var R6  = $("#telefono1").val();
+    
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        $("#descripcion").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        $("#ruc").focus();
+    }
+    else if(R3 == null || R3.length == 0 || /^\s+$/.test(R3)){
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        $("#abreviatura").focus();
+    }
+    else if(R4 == null || R4.length == 0 || /^\s+$/.test(R4)){
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        $("#domicilio").focus();
+    }
+    else if(R5 == null || R5.length == 0 || /^\s+$/.test(R5)){
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        $("#estado").focus();
+    }
+    else if(R6 == null || R6.length == 0 || /^\s+$/.test(R6)){
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+        $("#telefono1").focus();
+    }
+    else{
+        mostrarMensaje("exito","EXITO: Validación de datos correcta...");
+    }
+        
+} 
+    
+function RegistrarEmpresa(){    
+    var $empresa={
+
+    '_descripcion':$("#descripcion").val(),
+    '_ruc':$("#ruc").val(),
+    '_abreviatura':$("#abreviatura").val(),
+    '_domicilio':$("#domicilio").val(),
+    '_estado':$("#estado").val(),
+    '_fax':$("#fax").val(),
+    '_telf1':$("#telefono1").val(),
+    '_telf2':$("#telefono2").val()
+        
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Empresa/Controlador_RegistrarEmpresa.php',
+        type: 'POST',
+        data: $empresa,
+        dataType: 'json',
+        error: function(error){
+            
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }  
+            
+        },
+        success: function(datos){
+
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+            }
+        }
+        
+    });
+    
+}    
+
+
+</script>

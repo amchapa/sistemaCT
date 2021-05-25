@@ -1,0 +1,149 @@
+<style type="text/css">
+
+    .b{border-radius: 5px;}
+    .h:hover{color: white; background: #2D529B;}
+    
+</style>
+
+<!--OPCIONES DE LA VISTA-->
+ <div class="w-responsive mx-auto my-5">
+  <div class="row text-center">
+   
+    <!--OPCION NUEVA EMPRESA-->
+    <div class="col"><button class="btn h btn-lg b boton" onclick="NuevaEmpresa();return false" >Nueva Empresa</button></div>
+    <!--OPCION ACTUALIZAR EMPRESA-->
+    <div class="col"><button class="btn h btn-lg b boton" id="actualizarEmpresa" data-toggle="modal" data-target="#listadoEmpresas">Actualizar Empresa</button></div>
+    
+  </div>
+</div>
+
+<!--LISTADO DE BUSQUEDAS DE LA VISTA-->
+<div class="w-responsive mx-auto my-5">
+    <div class="text-center boton b white-text py-1">LISTADO EMPRESAS</div>
+    
+    <!--LISTADO DE EMPRESAS X NOMBRE-->
+    <div class="formulario text-center mt-4 pb-3">
+        <p class="b subform white-text py-1">LISTAR CARTERA DE CLIENTES X EMPRESA</p>
+        <form action="POST">
+           <div class="form-group col-12 col-lg-8 col-xl-6 mx-auto">
+            <label class="mr-auto pr-2" for="Empresa">Empresa</label>
+            <select name="Empresa" class="w-responsive" id="Empresa"></select>
+           </div>
+           <button type="button" id="listarXEmpresa" class="px-5">Listar</button>
+        </form>
+        
+    </div>
+    
+</div>
+
+<!-- MODAL LISTAR EMPRESAS -->
+<div class="modal fade" id="listadoEmpresas" tabindex="-1" role="dialog" aria-labelledby="listadoEmpresasTitulo"
+  aria-hidden="true">
+<div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header principal">
+        <h5 class="modal-title white-text font-weight-bold">Elegir Empresa</h5>
+        <button id="closeModal" type="button" class="close white-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <select name="empresa" id="empresa"></select>
+        <button id="opEmpresa" data-dismiss="modal">Buscar</button>
+      </div>
+
+    </div>
+    
+</div>
+</div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaEmpresas/VistaEmpresas.js"></script>
+
+<script>    
+
+/*=============================================
+    CARGAR EMPRESAS
+=============================================*/
+    
+mostrarEmpresas();    
+    
+function mostrarEmpresas(){
+    var boxEmpresas="";
+    
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Empresa/Controlador_MostrarTodosEmpresa.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxEmpresas+="<option value='' selected>Elegir Empresa</option>";
+            $("#empresa").html(boxEmpresas);
+            $("#Empresa").html(boxEmpresas);
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                boxEmpresas+="<option value='' selected>Elegir Empresa</option>";
+                $("#empresa").html(boxEmpresas);
+                $("#Empresa").html(boxEmpresas);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEmpresas+="<option value='' selected>Elegir Empresa</option>";
+                    }
+                    boxEmpresas+="<option value='"+datos[i].EMPCODIGO+"'>"+datos[i].EMPDESCRIPCION+"</option>";
+                }
+                $("#empresa").html(boxEmpresas);
+                $("#Empresa").html(boxEmpresas);
+            }
+        }
+    });  
+    
+}
+     
+/*=============================================
+    ELEGIR OPCION DE LISTADO
+=============================================*/
+
+var select="";    
+    
+$("#listarXEmpresa").click(function(){
+    select=$("#Empresa").val();
+    if(select != ""){
+        ListarEmpresas(select);
+    }else{mostrarMensaje("error","Seleccionar Empresa")}
+    
+});       
+    
+/*=============================================
+   BUSCAR X NOMBRE DE LA EMPRESA
+=============================================*/
+    
+var opEmpresa=0;
+var buscar="NO";
+var empresa;
+    
+$("#actualizarEmpresa").click(function(){
+    opEmpresa=1;
+});
+    
+$("#opEmpresa").click(function(){
+    buscar="SI";
+    empresa=$("#empresa").val();
+}); 
+    
+$("#listadoEmpresas").on('hidden.bs.modal', function(){
+    if (opEmpresa != 0 && buscar=="SI"&& $("#empresa option:selected").text() != "Elegir Empresa"){
+        ActualizarEmpresa(empresa);
+    }else{mostrarMensaje("error","Seleccionar Empresa")}
+});     
+    
+</script>

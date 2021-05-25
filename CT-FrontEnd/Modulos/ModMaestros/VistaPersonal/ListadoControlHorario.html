@@ -1,0 +1,218 @@
+<div id="encabezado" class="container font-weight-bold h2-responsive principal-text text-center my-4"></div>
+<div id="titulo" class="container font-weight-bold h4-responsive principal-text text-center"></div>
+
+<table id="tablaListado" class='table table-striped table-bordered text-center' cellspacing='0' width='100%'>
+  <thead><tr id="tituloColumnas"></tr></thead>
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+ 
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+ 
+   <!--LOADING-->
+  <section id="loading">
+    <img src="/CT-FrontEnd/Index/CT-Logo.png" alt="Computextos S.A.C.">
+    <div class="spinner-border principal-text" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </section>
+
+ <!-- MENSAJE -->
+<div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script type="text/javascript" src="Bootstrap/js/zip.js"></script>
+<script type="text/javascript" src="Bootstrap/js/jquery-3.3.1.js"></script>
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+
+cargarDatos(select,opcion)
+    
+function cargarDatos(selection,tipo){
+    
+    var url= "";
+    var $opcion;
+    var titulos="";
+    var mensaje;
+    $opcion={'_codigo':selection.split("/")[0],'_finicio':selection.split("/")[1],'_ffinal':selection.split("/")[2]}
+    if(tipo=="PERSONAL"){
+        url="../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarControlHorarioxPersonal.php";
+        titulos+="<th class='th-sm'>#</th>\
+        <th class='th-sm'>FECHA DE INGRESO</th>\
+        <th class='th-sm'>FECHA DE SALIDA</th>\
+        <th class='th-sm'>HORA DE INGRESO</th>\
+        <th class='th-sm'>HORA DE SALIDA</th>\
+        <th class='th-sm'>HORAS COMPLETADAS</th>\
+        <th class='th-sm'>OBSERVACIONES</th>";
+    }else if(tipo=="TODO"){     
+        url="../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarControlHorarioxPersonal.php";
+        mensaje="LISTADO CONTROL DE HORARIO DESDE "+selection.split("/")[1]+" HASTA "+selection.split("/")[2];
+        titulos+="<th class='th-sm'>#</th>\
+        <th class='th-sm'>APELLIDOS</th>\
+        <th class='th-sm'>NOMBRES</th>\
+        <th class='th-sm'>EMPRESA</th>\
+        <th class='th-sm'>FECHA DE INGRESO</th>\
+        <th class='th-sm'>FECHA DE SALIDA</th>\
+        <th class='th-sm'>HORA DE INGRESO</th>\
+        <th class='th-sm'>HORA DE SALIDA</th>\
+        <th class='th-sm'>HORAS COMPLETADAS</th>\
+        <th class='th-sm'>OBSERVACIONES</th>";
+    }else{
+        url="../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarControlHorarioxFechas.php";
+        mensaje="LISTADO CONTROL DE HORARIO DESDE "+selection.split("/")[1]+" HASTA "+selection.split("/")[2];
+        titulos+="<th class='th-sm'>#</th>\
+        <th class='th-sm'>APELLIDOS</th>\
+        <th class='th-sm'>NOMBRES</th>\
+        <th class='th-sm'>FECHA DE INGRESO</th>\
+        <th class='th-sm'>FECHA DE SALIDA</th>\
+        <th class='th-sm'>HORA DE INGRESO</th>\
+        <th class='th-sm'>HORA DE SALIDA</th>\
+        <th class='th-sm'>HORAS COMPLETADAS</th>\
+        <th class='th-sm'>OBSERVACIONES</th>";
+    }
+
+    $("#tituloColumnas").html(titulos);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: $opcion, 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                console.log("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                if(tipo=="PERSONAL"){
+                    mensaje="LISTADO CONTROL DE HORARIO DE "+ (datos[0].PERSNOMBRE+ " "+ datos[0].PERSAPELLIDO_MATERNO).toUpperCase();
+                }else if(tipo=="TODO"){
+                    mensaje="LISTADO CONTROL DE HORARIO DE TODO EL PERSONAL";
+                }
+                mostrarDatosControlHorario(datos,tipo,mensaje);
+                $("#encabezado").text(mensaje);
+            }
+        }
+    }); 
+     
+}
+
+function mostrarDatosControlHorario(datos,tipo,mensaje){
+    
+    var tablaServicios="";
+    for(var i=0; i<datos.length; i++){
+        
+        var now  = datos[i].FECHA_CONT_HOR_SALIDA+" "+datos[i].HORA_SALIDA;
+        var then = datos[i].FECHA_CONT_HOR_INGRESO+" "+datos[i].HORA_INGRESO;
+
+        var now1  = moment(now,"YYYY-MM-DD HH:mm:ss");
+        var then1 = moment(then,"YYYY-MM-DD HH:mm:ss");
+              
+      var dif = moment.utc(moment(now, "YYYY/MM/DD HH:mm:ss").diff(moment(then, "YYYY/MM/DD HH:mm:ss"))).format("HH:mm:ss")
+      var hours= now1.diff(then1,'h')
+      var minutes= now1.diff(then1,'m')
+      var second= now1.diff(then1,'s')
+      //var dif = hours +":"+(minutes-(60*hours))+":"+(second-(minutes*60));
+      
+        if(tipo == "PERSONAL"){
+            
+            tablaServicios+="<tr>\
+                <td>"+(i+1)+"</td>\
+                <td>"+convertDatetoString(datos[i].FECHA_CONT_HOR_INGRESO)+"</td>\
+                <td>"+convertDatetoString(datos[i].FECHA_CONT_HOR_SALIDA)+"</td>\
+                <td>"+datos[i].HORA_INGRESO+"</td>\
+                <td>"+datos[i].HORA_SALIDA+"</td>";
+
+          if(datos[i].HORA_SALIDA=="00:00:00"){
+            tablaServicios+="<td>00:00:00</td>";
+          }else{
+            tablaServicios+="<td>"+dif+"</td>";
+          }
+            tablaServicios+="<td>"+datos[i].OBSERVACIONES+"</td>\
+            </tr>";
+        }else if(tipo == "TODO"){
+            tablaServicios+="<tr>\
+                <td>"+(i+1)+"</td>\
+                <td>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+"</td>\
+                <td>"+datos[i].PERSNOMBRE+"</td>\
+                <td>"+datos[i].EMPCODIGO+"</td>\
+                <td>"+convertDatetoString(datos[i].FECHA_CONT_HOR_INGRESO)+"</td>\
+                <td>"+convertDatetoString(datos[i].FECHA_CONT_HOR_SALIDA)+"</td>\
+                <td>"+datos[i].HORA_INGRESO+"</td>\
+                <td>"+datos[i].HORA_SALIDA+"</td>";
+
+          if(datos[i].HORA_SALIDA=="00:00:00"){
+            tablaServicios+="<td>00:00:00</td>";
+          }else{
+            tablaServicios+="<td>"+dif+"</td>";
+          }
+            tablaServicios+="<td>"+datos[i].OBSERVACIONES+"</td>\
+            </tr>";
+        }else{
+            tablaServicios+="<tr>\
+                <td>"+(i+1)+"</td>\
+                <td>"+datos[i].PERSAPELLIDO_PATERNO+" "+datos[i].PERSAPELLIDO_MATERNO+"</td>\
+                <td>"+datos[i].PERSNOMBRE+"</td>\
+                <td>"+convertDatetoString(datos[i].FECHA_CONT_HOR_INGRESO)+"</td>\
+                <td>"+convertDatetoString(datos[i].FECHA_CONT_HOR_SALIDA)+"</td>\
+                <td>"+datos[i].HORA_INGRESO+"</td>\
+                <td>"+datos[i].HORA_SALIDA+"</td>";
+
+          if(datos[i].HORA_SALIDA=="00:00:00"){
+            tablaServicios+="<td>00:00:00</td>";
+          }else{
+            tablaServicios+="<td>"+dif+"</td>";
+          }
+            tablaServicios+="<td>"+datos[i].OBSERVACIONES+"</td>\
+            </tr>";
+        }
+    }
+    
+    $("#cuerpoTabla").html(tablaServicios);
+    $('#tablaListado').DataTable( {
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+        ],
+        buttons: [
+            {
+                extend: 'pageLength',
+                text: "VER 10 FILAS"
+            },
+            {
+                extend: 'excel',
+                title: mensaje,
+            },
+            {
+                extend: 'print',
+                title: mensaje
+            },
+            {
+                extend: 'pdfHtml5',
+                title: mensaje
+            }                                  
+        ],
+        select: {style: 'multi'}
+        
+    } );
+    $('.dataTables_length').addClass('bs-select');
+    $("#loading").html("");  
+}
+    
+function convertDatetoString(fechaAConvertir){
+    var fecha = new Date(fechaAConvertir);
+    var dias = new Array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+    fecha.setDate(fecha.getDate()+1);
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return dias[fecha.getDay()]+" "+fecha.toLocaleDateString("es-ES", options);
+}
+
+    
+</script>

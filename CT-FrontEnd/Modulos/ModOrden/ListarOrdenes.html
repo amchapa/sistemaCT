@@ -1,0 +1,238 @@
+<form>
+<div id="encabezadoPrincipal" class="container font-weight-bold h2-responsive principal-text text-center my-4">LISTAR ORDENES</div>
+
+<div id="ListadoPrincipal">
+ 
+ <!-- LISTADO DE ORDENES DE PRODUCCION -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+    <div  class="h5-responsive font-weight-bold my-2" style="margin-left: 8%"> LISTADO X ORDEN DE PRODUCCION</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="orProduccion" ></select>
+     <button class="text-right btn btn-titulo mx-4" id='1' onclick="cargarDatos(this.id); return false">BUSCAR</button>
+      </div>
+ </div>
+ 
+ <!-- LISTADO DE ORDEN X CLIENTE -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+     <div  class="h5-responsive font-weight-bold my-2" style="margin-left: 8%"> LISTADO POR CLIENTE</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="cliente"></select>
+     <button class="text-right btn btn-titulo mx-4" id='2' onclick="cargarDatos(this.id); return false">BUSCAR</button>
+     </div>
+     
+ </div>
+ 
+ <!-- LISTADO DE ORDEN X VENDEDOR -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+     <div  class="h5-responsive font-weight-bold my-2" style="margin-left: 8%"> LISTADO POR EJECUTIVA</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="vendedor">
+        <option value="49">PEPE</option>
+        <option value="35">FABIOLA</option>
+        <option value="39">YRMA</option>
+        <option value="54">MILAGROS</option>
+        <option value="28">LIZ</option>
+        <option value="74">ALAN</option>
+      </select>
+      <button class="text-right btn btn-titulo mx-4" id='3' onclick="cargarDatos(this.id); return false">BUSCAR</button>
+     </div>
+ </div>
+  
+  <!-- LISTADO DE ORDEN X ESTADO -->
+ <div class="card my-3" style="width:80%; margin-left:10%">
+     <div  class="h5-responsive font-weight-bold my-2" style="margin-left: 8%"> MOSTRAR ORDEN DE PRODUCCION X ESTADO</div>
+     <div class="form-inline">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 50%" id="estado">
+        <option value="19">ABIERTA</option>
+        <option value="20">PREFACTURADA</option>
+        <option value="21">ENTREGADA</option>
+        <option value="22">FACTURADA</option>
+        <option value="23">BOLETA</option>
+        <option value="24">CANCELADA</option>
+        <option value="25">LETRA</option>
+        <option value="26">ANULADA</option>
+        <option value="27">STAND BY</option>
+        <option value="28">REEMPLAZADO</option>
+        <option value="0">TODOS</option>
+      </select>
+     <button class="text-right btn btn-titulo mx-4" id='4' onclick="cargarDatos(this.id); return false">MOSTRAR</button>
+     </div>  
+ </div>
+  
+</div>
+
+<div id="ListadoDeOrdenes" class="card my-4">
+<div id="titulo" class="container font-weight-bold h3-responsive my-3 strong-text text-center"></div>
+
+<table id="tablaOrdenes" class='table table-striped table-bordered text-center my-3' style="border-top-color: #007bff" cellspacing='0' >
+  <thead><tr id="tituloColumnas"></tr></thead>
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+</div>
+
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModOrden/VistaPrincipal.js"></script>
+
+<script>
+slider2.mostrarClientesConItemOP();
+slider2.mostrarOrdProduccion();
+var inicializar=0;
+
+function cargarDatos(id){
+  
+  if(inicializar!=0 ){
+    $('#tablaOrdenes').DataTable().destroy();
+  }
+  var titulos="";var $datos;
+  var codigo="",ruta="";
+  titulos+="<th  class='th-sm font-weight-bold text-center'>CLIENTE</th>\
+            <th  class='th-sm font-weight-bold text-center'>ORDEN DE TRABAJO</th>\
+            <th  class='th-sm font-weight-bold text-center'>DETALLES</th>\
+            <th  class='th-sm font-weight-bold text-center'>FECHA DE PEDIDO</th>\
+            <th  class='th-sm font-weight-bold text-center'>FECHA DE ENTREGA</th>\
+            <th  class='th-sm font-weight-bold text-center'>VENDEDOR</th>\
+            <th  class='th-sm font-weight-bold text-center'>ITEMS</th>\
+            <th  class='th-sm font-weight-bold text-center'>ESTADO</th>\
+          ";
+  $("#tituloColumnas").html(titulos);
+  switch(id){
+    case('1'): codigo=$("#orProduccion").val(); ruta='../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenXCodigo.php'; break;
+    case('2'): codigo=$("#cliente").val(); ruta='../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenesXCliente.php'; break;
+    case('3'): codigo=$("#vendedor").val(); ruta='../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenesXVendedor.php'; break;
+    case('4'):
+      switch($("#estado").val()){
+        case('0'): ruta='../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarTodoOrdenes.php'; break;
+        default: ruta='../CT-BackEnd/Controlador/ModOrden/Controlador_MostrarOrdenesXEstado.php'; break;
+      } codigo=$("#estado").val(); break;
+ }
+  
+  $datos = {
+    '_dato': codigo
+  }
+   $.ajax({
+        url: ruta,
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            $("#resultado").text("NO HAY RESULTADOS PARA LA BÚSQUEDA");
+            $("#cuerpoTabla").html("");
+        },
+        success: function(datos){
+            mostrarDatos(datos,id);
+        }
+    });
+  
+}
+
+function mostrarDatos(datos,id){
+  var tablaOrdenes="";
+  if(datos.response=="0"){
+    $("#resultado").text("NO HAY RESULTADOS PARA LA BÚSQUEDA");
+    mostrarMensaje("error","NO HAY RESULTADOS PARA LA BÚSQUEDA");
+  }else{
+    var vendedor = "";
+    for(var i=0; i<datos.length;i++){  
+        switch(datos[i].OPVENDEDOR){
+          case('49'): vendedor="JOSE RAMOS LEDESMA"; break;
+          case('35'): vendedor="FABIOLA MORALES"; break;
+          case('39'): vendedor="YRMA PAUCAR"; break;
+          case('54'): vendedor="MILAGROS SALINAS"; break;
+          case('28'): vendedor="LIZA GUERRERO"; break;
+          case('74'): vendedor="ALAN LAVANDA";break;
+        }
+        var año = '20'+datos[i].OPCODIGO.substr(0,2);
+        var mes = datos[i].OPCODIGO.substr(2,2);
+        var dia = datos[i].OPCODIGO.substr(4,2);
+        var fecha = new Date( año,mes,dia);
+        var options = {  year: 'numeric', month: 'numeric', day: 'numeric' };
+        fecha=fecha.toLocaleDateString("es-ES", options);
+        tablaOrdenes+="<tr>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].CLIENNOMBRE_CORTO+"</a></td>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].OPCODIGO+"</a></td>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].OPDETALLE+"</a></td>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+fecha+"</a></td>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].OPFECHAENTREGA+"</a></td>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+vendedor+"</a></td>\
+                        <td><a id='"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].PRESUPCANT_ITEM+"</a></td>\
+                        <td><a id='estado*"+datos[i].OPCODIGO+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].ESTDESCRIPCION+"</a></td>\
+                      </tr>";
+    }
+    switch(id){
+      case('1'): $("#titulo").html("ORDEN DE PRODUCCION - " +$("#orProduccion").val()); break;
+      case('2'): $("#titulo").html("ORDEN DE PRODUCCION - " +$("#cliente option:selected").text());  break;
+      case('3'): $("#titulo").html("ORDEN DE PRODUCCION - " + vendedor); break;
+      case('4'):
+        switch($("#estado").val()){
+          case('0'): $("#titulo").html("ORDEN DE PRODUCCION - TODOS"); break;
+          default:  $("#titulo").html("ORDEN DE PRODUCCION - " +$("#estado option:selected").text());  break;
+        } 
+    }
+    mostrarMensaje("exito","DATOS CARGADOS");
+  }
+  inicializar=parseInt(inicializar)+1;
+  $("#cuerpoTabla").html(tablaOrdenes);
+  $('#tablaOrdenes').DataTable({
+              dom: 'Bfrtip',
+              lengthMenu: [
+                  [ 10, 25, 50, -1 ],[ 'VER 10 FILAS', 'VER 25 FILAS', 'VER 50 FILAS', 'TODO' ]
+              ],
+              buttons: [
+                  {
+                      extend: 'pageLength',
+                      text: "VER 10 FILAS"
+                  },
+                  {
+                      extend: 'print',
+                      title: $("#titulo").html(),
+                      text: 'IMPRIMIR'
+                  },
+                  {
+                      extend: 'pdfHtml5',
+                      download: 'open',
+                      title: $("#titulo").html(),
+                      text: 'EXPORTAR PDF'
+                  }
+              ]
+          });
+  
+  $("#ListadoDeOrdenes").removeClass('d-none');
+  document.getElementById("tablaOrdenes_wrapper").style.width = "80%";
+  document.getElementById("tablaOrdenes_wrapper").style.marginLeft = "10%";
+  $("#tablaOrdenes_wrapper").addClass("my-4");
+  $("#tablaOrdenes_filter input:eq(0)").focus();
+}
+  
+  
+function seleccionarLink(opcodigo){
+  if(opcodigo.split("*")[0]=="estado"){
+    var url='Modulos/ModOrden/CambiarEstadoOrden.html';
+    var codigo = opcodigo.split("*")[1];
+  }else{
+    var url='Modulos/ModOrden/SeguimientoOrden.html';
+    var codigo= opcodigo;
+  }
+  
+  $.ajax({  
+        url: url,  
+        success: function(data) { 
+            $('#cuerpo').html(data);  
+            clearInterval(intervalo)
+             if(opcodigo.split("*")[0]=="estado"){
+               $("#numOrden").val(codigo);
+               $("#buscarOrden").click();
+             }
+        }  
+    }); 
+  
+}
+</script>

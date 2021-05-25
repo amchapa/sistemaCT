@@ -1,0 +1,121 @@
+<div id="encabezado" class="container font-weight-bold h2-responsive principal-text text-center">LISTAR CLIENTES X EMPRESA</div>
+<div id="titulo" class="container font-weight-bold h4-responsive principal-text text-center"></div>
+
+<table id="tablaEmpresas" class='table table-striped table-bordered' cellspacing='0' width='100%'>
+  <thead><tr>
+      <th class='th-sm'>CODIGO</th>
+      <th class='th-sm'>RAZON SOCIAL</th>
+      <th class='th-sm'>EMP</th>
+      <th class='th-sm'>EJEC</th>
+      <th class='th-sm'>DIRECCION</th>
+      <th class='th-sm'>T/IDEN</th>
+      <th class='th-sm'>NUM/IDEN</th>
+      <th class='th-sm'>TELEFONO</th>
+    </tr></thead>
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+ 
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaEmpresas/VistaEmpresas.js"></script>
+<script  type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+    
+$("#titulo").text(select);
+    
+cargarDatos(select);
+
+/*=============================================
+    CARGAR DATOS TODOS CLIENTES
+=============================================*/    
+    
+function cargarDatos(select){
+    
+    var $opcion={'_empresa': select};
+
+    $.ajax({
+        url: "../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarClientesEmp.php",
+        type: 'POST',
+        data: $opcion, 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                mostrarDatosCliente(datos);
+            }
+        }
+    }); 
+     
+}
+    
+/*=============================================
+    MOSTRAR DATOS TODOS CLIENTES
+=============================================*/        
+    
+function mostrarDatosCliente(datos){
+    var tablaClientes="";
+    
+    for(var i=0; i<datos.length; i++){
+        var ejec ="";
+    
+        switch(datos[i].CLIENVENDEDOR){
+            case "35" : ejec ="FM" ; break;
+            case "39" : ejec ="YP" ; break;
+            case "54" : ejec ="MS" ; break;
+            case "28" : ejec ="LG" ; break;
+            default : ejec ="" ; break;
+        }
+        
+        tablaClientes+="<tr>\
+        <td>"+datos[i].CLIENCODIGO+"</td>\
+        <td>"+datos[i].CLIENRAZON_SOCIAL+"</td>\
+        <td>"+datos[i].EMPCODIGO+"</td>\
+        <td>"+ejec+"</td>\
+        <td>"+datos[i].CLIENDOMICILIO+"</td>\
+        <td>"+datos[i].CLIENTIPIDEN+"</td>\
+        <td>"+datos[i].CLIENNUM_IDENTIFICACION+"</td>\
+        <td>"+datos[i].CLIENTELEFONO1+"</td>\
+    </tr>"
+        
+    }
+
+    tablaClientes+="\</tbody></table>";
+
+    
+    $("#cuerpoTabla").append(tablaClientes);
+    $('#tablaEmpresas').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                title: 'LISTADO EMPRESAS',
+                text: 'IMPRIMIR',
+                className: 'btn boton'
+            },
+            {
+                extend: 'pdfHtml5',
+                download: 'open',
+                title: 'LISTADO EMPRESAS',
+                text: 'EXPORTAR PDF',
+                className: 'btn boton'
+            }
+        ]
+    } );
+    $('.dataTables_length').addClass('bs-select');
+    
+}    
+
+</script>

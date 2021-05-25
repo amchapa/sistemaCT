@@ -1,0 +1,327 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">Actualizar personal de baja</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">
+         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          
+        </div>
+        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">
+         
+          <!--CODIGO-->
+          <h6 class="d-none">Codigo: <span id="codigo">000000</span></h6>
+          
+          <!--F. INGRESO A LA EMPRESA-->
+          <label for="fIngreso">Fecha de Ingreso</label>
+          <input required type="date" class="form-control" id="fIngreso" aria-describedby="fIngresoHelp">
+          <small id="fIngresoHelp" class="form-text text-muted">Ingresar Fecha de Ingreso al Grupo Computextos.</small>
+          
+          <!--ESTADO-->
+          <label for="estado" style="margin-top: 1rem;">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp"></select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+          
+        </div>
+
+      </div>
+   
+   
+    </div>
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5">Datos Personales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--APELLIDO PATERNO-->
+        <div class="col-12 col-md form-group">
+          <label for="aPaterno">Apellido Paterno</label>
+          <input required readonly type="text" class="form-control" id="aPaterno" aria-describedby="aPaternoHelp" placeholder="Ingresar apellido paterno">
+          <small id="aPaternoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--APELLIDO MATERNO-->
+        <div class="col-12 col-md form-group">
+          <label for="aMaterno">Apellido Materno</label>
+          <input required readonly type="text" class="form-control" id="aMaterno" aria-describedby="aMaternoHelp" placeholder="Ingresar apellido materno">
+          <small id="aMaternoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+        <!--NOMBRE-->
+        <div class="col-12 col-md form-group">
+          <label for="nombre">Nombres</label>
+          <input required readonly type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar nombres">
+          <small id="nombreHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <!--OPCIONES DEL FORMULARIO-->
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+    <button type="button" id="guardar" class="btn btn-guardar">Guardar</button>
+    <button id="reset" class="btn btn-reset">Reestablecer</button>
+  </div>
+ 
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaPersonal/VistaPersonal.js"></script>
+<script type="text/javascript">
+
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function() {
+    cargarDatos(personal);
+});   
+  
+//--EVENTO CLICK >> GUARDAR--    
+$("#guardar").click(function(){
+    if($("#estado").val()=="8"){
+        ActualizarPersonal();
+    }else{
+        verificarCondLaboral(personal);
+    }
+    //verificarCondLaboral(personal)
+});
+  
+//--EVENTO CLICK >> LIMPIAR--    
+$("#reset").click(function(){
+    cargarDatos(personal);
+}); 
+        
+//--CARGAR DATOS DEL PERSONAL--  
+function cargarDatos(personal){
+    
+   var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarDatosPersonal.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mostrarMensaje("exito",'INFORMACION CARGADA EXITOSAMENTE');
+                $("#codigo").val(datos.PERSCODIGO);
+                $("#fIngreso").val(datos.PERSFECHA_INGRESO);
+                $("#nombre").val(datos.PERSNOMBRE);
+                $("#aPaterno").val(datos.PERSAPELLIDO_PATERNO);
+                $("#aMaterno").val(datos.PERSAPELLIDO_MATERNO);
+                if(datos.PERSFOTO!=""){
+                  document.getElementById('previewFoto').src = datos.PERSFOTO;
+                }
+                vPersonal.mostrarEstado(true,datos.ESTCODIGO);     
+            }
+        }
+    }); 
+ } 
+    
+function verificarCondLaboral(personal){
+    var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarDatosPersonal.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                if(datos.PERSCONDICION_LABORAL=="Contrato"){
+                    mostrarUltimoContrato($personal);
+                }else{
+                    ActualizarPersonal();
+                }    
+            }
+        }
+    }); 
+    
+}
+    
+function mostrarUltimoContrato($personal){
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_MostrarPersonalContratado.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                var mayor, detmayor, posicion;
+                
+                for(var i=0 ; i<datos.length ;i++){
+                    if(i==0){
+                        mayor = parseInt(datos[i].CONTRCODIGO.substr(1));
+                    }else{
+                        if(mayor<parseInt(datos[i].CONTRCODIGO.substr(1))){
+                          mayor=parseInt(datos[i].CONTRCODIGO.substr(1));
+                      }
+                    }
+                }
+                
+                for(var j=0 ; j<datos.length ;j++){
+                    if(datos[j].CONTRCODIGO == "C"+mayor){
+                        for (var i=0; i<datos.length;i++){
+                            if(i==0){
+                                mayor = parseInt(datos[i].DETCONTRCODIGO.split("-")[1]);
+                                posicion=i;
+                            }else{
+                                if(mayor<parseInt(datos[i].DETCONTRCODIGO.split("-")[1])){
+                                  mayor=parseInt(datos[i].DETCONTRCODIGO.split("-")[1]);
+                                  posicion=i;
+                              }
+                            }
+                            
+                        }
+                    }
+                }
+                
+                var hoy = new Date();
+                var fechafija = vPersonal.cambioFechaDate(datos[posicion].DETCONTRFECHA_CONTRATACION);
+                var fechaFinal = new Date(fechafija.getFullYear(),fechafija.getMonth()+parseInt(datos[posicion].DETCONTRTIEMPO), fechafija.getDate());
+                var fechaCambio = monthDiff(fechafija, hoy)
+                                
+                if(hoy.getTime() < fechaFinal.getTime()){
+                    //Renuncia
+                    CulminaContrato(datos[posicion].DETCONTRCODIGO,fechaCambio,"54");
+                }else{
+                    //Vencimiento
+                    CulminaContrato(datos[posicion].DETCONTRCODIGO,datos[posicion].DETCONTRTIEMPO,"55");
+                }
+            }
+        }
+    });
+}
+  
+//--ENVIAR FORMULARIO--
+function ActualizarPersonal(){
+    var $personal={
+        '_codigo': $("#codigo").val(),
+        '_estado': $("#estado").val(),
+        '_fechaIngreso' : $("#fIngreso").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_ActualizarEstadoPersonal.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","EXITO AL ACTUALIZAR LOS DATOS! Personal actualizado");
+            }
+        }
+    });
+}
+    
+    
+function CulminaContrato(codigo,meses,estado){
+    var $personal={
+        '_codigo' : codigo ,
+        '_estPersonal': $("#estado").val(),
+        '_estContrato': 48,
+        '_estDetalle' : estado,
+        '_meses': meses,
+        '_conLaboral' : "ReciboxHonorarios"
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Personal/Controlador_ActualizarEstadoContratoyPersonal.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","EXITO AL ACTUALIZAR LOS DATOS! Personal actualizado");
+            }
+        }
+    });
+}
+    
+function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth() + 1;
+    months += d2.getMonth();
+    months +=1
+    return months <= 0 ? 0 : months;
+}
+    
+</script>

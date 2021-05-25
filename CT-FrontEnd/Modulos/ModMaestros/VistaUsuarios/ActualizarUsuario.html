@@ -1,0 +1,231 @@
+<!--DISEÑO GENERAL DE LA VISTA-->
+<form>
+
+  <!--DATOS GENERALES-->
+<div class="card">
+    <div class="card-body">
+
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo">ACTUALIZAR DATOS DEL USUARIO</h3>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--IMAGEN DEL PERSONAL-->
+        <div class="col-12 col-md-3 col-xl-2 form-group text-center">         
+          <img id="previewFoto" class="img-thumbnail"><br>
+          <label class="foto" for="foto">Seleccionar imagen</label>
+          <input type="file" id="foto" name="archivo" hidden accept="image/*">          
+        </div>        
+        <!--INFORMACION GENERAL DEL PERSONAL-->
+        <div class="col-12 col-md-5 col-xl-4 form-group">         
+          <!--CODIGO USUARIO-->
+          <label for="codigo">Código usuario</label>
+          <input required readonly type="text" class="form-control" id="codigo" aria-describedby="codigoHelp">          
+          <button type="button" id="guardar" onclick="validarFormulario();return false" class="btn enfasis3 py-2">Actualizar</button>          
+        </div>
+      </div>   
+    </div>
+  </div>
+  
+  
+<!--DATOS PERSONALES-->
+<div class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+        
+        <div class="form-row">
+            
+        <!--APELLIDO PATERNO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="apellidos">Apellidos</label>
+          <input required readonly type="text" class="form-control" id="apellidos" aria-describedby="apellidosHelp" placeholder="Ingresar Apellidos">
+          <small id="apellidosHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+           
+        <!--NOMBRES-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombre">Nombres</label>
+          <input required readonly type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar Nombres">
+          <small id="nombreHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+           
+        <div class="w-100"></div>
+           
+        <!--USUARIO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="usuario">Usuario</label>
+          <input required readonly type="text" class="form-control" id="usuario" aria-describedby="usuarioHelp" placeholder="Ingresar usuario" onchange="verificarExistencia()">
+          <small id="usuarioHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+           
+        <!--CONTRASEÑA-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="contraseña">Contraseña</label>
+          <input required type="text" class="form-control" id="contraseña" aria-describedby="contraseñaHelp" placeholder="Ingresar Contraseña" min="5">
+          <small id="contraseñaHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+            
+            
+        </div>
+    </div>
+    
+</div>
+
+ <!--ESTADO DEL REGISTRO-->
+ <div id="resultado" class="text-center orange h3-responsive my-1 py-1 mx-auto font-weight-bold" style="border: 1px grey solid">REGISTRO EN PROCESO</div>
+
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaUsuarios/VistaUsuario.js"></script>
+<script type="text/javascript">
+    
+cargarDatos(personal);
+    
+function cargarDatos(personal){
+    
+    var $personal={
+        '_personal' : personal
+   }
+    
+   $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_MostrarDatosUsuario.php',
+        type: 'POST',
+        data: $personal,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#apellidos").val(datos.PERSAPELLIDO_PATERNO +" "+datos.PERSAPELLIDO_MATERNO);
+                $("#nombre").val(datos.PERSNOMBRE);
+                if(datos.PERSFOTO!=""){
+                  document.getElementById('previewFoto').src = datos.PERSFOTO;
+                } 
+                $("#codigo").val(datos.USUACODIGO);
+                $("#usuario").val(datos.USUAUSUARIO);
+                $("#contraseña").val(datos.USUAPASSWORD);
+            }
+        }
+    });
+}
+
+/*=============================================
+    VALIDAR DATOS DEL FORMULARIO
+=============================================*/  
+  
+function validarFormulario(){
+  
+    var R1 = $("#usuario").val();
+    var R2 = $("#contraseña").val();
+    
+    if(R1 == null || R1.length == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#usuario").focus();
+    }
+    else if(R2 == null || R2.length == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#contraseña").focus();
+    }
+    else if(R2 < 5 ){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#contraseña").focus();;
+    }
+    else {
+        ActualizarUsuario()
+    }
+        
+} 
+
+/*=============================================
+    VERIFICAR EXISTENCIA DEL USUARIO
+=============================================*/    
+  
+function verificarExistencia(){
+    var $validar={
+        '_usuario': $("#usuario").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_ValidarUsuario.php',
+        type: 'POST',
+        data: $validar,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 1){
+                $("#usuario").removeClass("red");
+                $("#usuario").addClass("green");
+            }
+            else{
+                if(datos.response == 0){
+                  mostrarMensaje("error","REGISTRO INCORRECTO! ERROR: "+datos.message);
+                }
+                else{
+                    mostrarMensaje("error","REGISTRO INCORRECTO! El usuario ya existe. Por favor verificar el nombre de usuario.");
+                  $("#usuario").text(datos.USUAUSUARIO)
+                  $("#usuario").removeClass("green");
+                  $("#usuario").addClass("red");
+                }
+            }
+        }
+    });
+} 
+  
+/*=============================================
+   ENVIAR FORMULARIO
+=============================================*/
+
+function ActualizarUsuario(){
+    var $usuario={
+        '_codigo': $("#codigo").val(),
+        '_usuario': $("#usuario").val(),
+        '_password': $("#contraseña").val()
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Usuario/Controlador_ActualizarUsuario.php',
+        type: 'POST',
+        data: $usuario,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }
+            else{
+                $("#resultado").text("Resultados grabados satisfactoriamente");
+            }
+        }
+    });
+}
+    
+</script>
+
+

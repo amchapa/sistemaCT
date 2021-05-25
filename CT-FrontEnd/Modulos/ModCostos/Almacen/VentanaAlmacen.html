@@ -1,0 +1,234 @@
+<section id="menuAlmacen" class="menu">
+<!--OPCIONES DE PRODUCTOS-->
+  <section id="menuAlmacen-Productos">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion font-weight-bold">Tipo - Familia</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION REGISTRAR PRODUCTOS -->
+        <div class="col"><button id='producto' onclick="ventanaRegistrarProductos(this.id);return false" class="btn btn-lg btnSecundario4"><i class="fas fa-link fa-4x"></i><br>Registrar Tipo Productos</button></div>
+        
+        <!--OPCION ACTUALIZAR PRODUCTOS -->
+        <div class="col"><button id="productos" onclick="ventanaListadoTiposFamilia(this.id)" class="btn btn-lg btnSecundario4" data-toggle="modal" data-target="#listado"><i class="fas fa-list-ol fa-4x"></i><br>Listado Tipo Producto</button></div>
+  
+       <!--OPCION REGISTRAR FAMILIA -->
+        <div class="col"><button id='papel' onclick="ventanaRegistrarProductos(this.id);return false"class="btn btn-lg btnSecundario4"><i class="fas fa-link fa-4x"></i><br>Registrar Familia Papel</button></div>
+        
+        <!--OPCION ACTUALIZAR PRODUCTOS -->
+        <div class="col"><button id='papeles' onclick="ventanaListadoTiposFamilia(this.id)" class="btn btn-lg btnSecundario4"><i class="fas fa-list-ol fa-4x"></i><br>Listado Familia Papel</button></div>
+        
+      </div>
+      
+    </div>
+  </section>
+<!--OPCIONES DE PRODUCTOS-->
+  <section id="menuAlmacen-Precio">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion font-weight-bold">PRODUCTO</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION REGISTRAR ACABADOS-->
+        <div class="col"><button id='registrar' onclick="ventanaRegistrarProducto(this.id);return false" class="btn btn-lg btnSecundario5"><i  class="fa fa-cubes fa-4x" ></i><br>Registrar Nuevo Producto</button></div>
+        
+        <!--OPCION ACTUALIZAR ACABADOS-->
+        <div class="col"><button id='actualizar'  onclick="mostrarModal(this.id);return false"  class="btn btn-lg btnSecundario5"><i class="fa fa-random fa-4x"></i><br>Actualizar Producto</button></div>
+
+        <!--OPCION LISTAR ACABADOS-->
+        <div class="col"><button onclick="ventanaListadoPreciosXKilo();return false" class="btn btn-lg btnSecundario5"><i class="fas fa-list-ol fa-4x"></i><br>Listado Precios X Kilo</button></div>
+
+      </div>
+      
+    </div>
+  </section>
+  <!--OPCIONES DE PRODUCTOS-->
+  <section id="menuAlmacen-Stock">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion font-weight-bold">Stock</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION REGISTRAR INGRESO PRODUCTO-->
+        <div class="col"><button id="registraringreso" onclick="mostrarModal();return false" class="btn btn-lg btnSecundario6"><i class="fas fa-plus-square fa-4x"></i><br>Registrar Ingreso</button></div>
+
+        <!--OPCION REGISTRAR SALIDA PRODUCTO-->
+        <div class="col"><button onclick="ventanaRegistrarSalidaProducto();return false" class="btn btn-lg btnSecundario6"><i class="fas fa-plus-square fa-4x"></i><br>Registrar Salida</button></div>
+
+        <!--OPCION LISTADO STOCK-->
+        <div class="col"><button onclick="ventanaListadoStock();return false" class="btn btn-lg btnSecundario6"><i class="fas fa-list-ol fa-4x"></i><br>Listado Stock</button></div>
+
+      </div>
+      
+    </div>
+  </section>
+  <!--OPCIONES DE REPORTES-->
+  <section id="menuAlmacen-Reportes">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion font-weight-bold">REPORTE</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION LISTAR ACABADOS-->
+        <div class="col"><button onclick="ventanaListadoIngresos();return false" class="btn btn-lg btnSecundario7"><i class="fas fa-list fa-4x"></i><br>Listado Ingreso</button></div>
+        <div class="col"><button onclick="ventanaListadoSalidas();return false" class="btn btn-lg btnSecundario7"><i class="fas fa-list fa-4x"></i><br>Listado Salida</button></div>
+        <div class="col"><button onclick="ventanaListadoProductos();return false" class="btn btn-lg btnSecundario7"><i class="fas fa-list-ol fa-4x"></i><br>Listado  Productos</button></div>
+
+      </div>
+      
+    </div>
+  </section> 
+  
+    <!--OPCIONES DE REPORTES-->
+  <section id="menuAlmacen-Reportes">
+    <div class="w-responsive mx-auto my-3">
+     
+      <!--TITULO DE LA SECCION-->
+      <div class="tituloSeccion font-weight-bold">SIMULADOR FACTURAS</div>
+      
+      <!--OPCIONES DE LA SECCION-->
+      <div class="row text-center my-3">
+
+        <!--OPCION LISTAR ACABADOS-->
+        <div class="col"><button onclick="ventanaFactura();return false" class="btn btn-lg btnSecundario7"><i class="fas fa-list fa-4x"></i><br>FACTURAS</button></div>
+
+      </div>
+      
+    </div>
+  </section>  
+
+</section>
+
+<div class="modal fade" id="modalOpcion" role="dialog" aria-labelledby="modalDatosTitulo" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="top: 200px">
+      <div class="modal-header white">
+        <h5 id="tituloEstilo" class="modal-title black-text font-weight-bold">ELEGIR PRODUCTO</h5>
+        <span id="noVisible" style="display: none"></span>
+        <button id="closeModal" type="button" class="close red-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>        
+      <div class="modal-body">
+        <div class="form-row">
+             <select id="codigoProductoModal" onchange="actualizando()" style="width: 100%"></select>
+        </div>
+        <div class="form-row my-2">
+            <button id="actualizando" class="btn btn-titulo principal white-text" onclick="actualizarProductoModal(this.id);return false" style="width: 45%;margin-left: 30%" type="button" data-dismiss="modal">ACTUALIZAR</button>
+            <button id="registrandoIngreso" class="btn btn-titulo principal white-text" onclick="OpcionProductoModal(this.id);return false" style="width: 45%;margin-left: 30%" type="button" data-dismiss="modal">INGRESAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSalida" tabindex="-1" role="dialog" aria-labelledby="modalDatosTitulo" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="top: 200px">
+      <div class="modal-header white">
+        <h5 id="tituloEstilo" class="modal-title black-text font-weight-bold">ELEGIR OPCION</h5>
+        <span id="noVisible" style="display: none"></span>
+        <button id="closeModal" type="button" class="close red-text font-weight-bold" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>        
+      <div class="modal-body">
+        <div class="form-row">
+             <div class="col-12 col-md-6 form-group">
+              <label class='font-weight-bold' for="centrocostos">CENTRO DE COSTOS</label>
+              <select required id="centrocostos" onchange="mostrarAreaModal()" class="form-control" aria-describedby="centrocostosHelp">
+               <option value="0" selected disabled>Elegir método</option>
+               <option value="PRODUCCION">PRODUCCION</option>
+               <option value="VENTAS">VENTAS</option>
+               <option value="ADMINISTRACION">ADMINISTRACIÓN</option>
+               <option value="DISTRIBUCION">DISTRIBUCIÓN</option>
+               </select>
+              <small id="centrocostosHelp" class="form-text text-muted">Campo obligatorio</small>
+            </div>
+            
+            <div class="col-12 col-md-6 form-group">
+              <label class='font-weight-bold' for="area">ÁREA</label>
+              <select required id="area"  onchange="mostrarOpciones()" class="form-control" aria-describedby="areaHelp">
+                <option value="0" >-- Elegir Centro de Costos</option>
+              </select>
+              <small id="areaHelp" class="form-text text-muted">Campo obligatorio</small>
+            </div>
+          
+            <div id="cuadroOT" class="col-12 col-md-12 form-group" style="display: none">
+              <label class='text-center font-weight-bold' for="ordenDeTrabajo">CODIGO OT</label>
+              <div class="form-inline">
+                <input id='ordenDeTrabajo'  class="form-control" aria-describedby="ordenDeTrabajoHelp">
+                <button id='buttonot' class="btn btn-titulo principal form-control" onclick="verificarExistenciaOT()">VERIFICAR OT</button>
+              </div>
+              <small id="ordenDeTrabajoHelp" class="form-text text-left">Ejemplo: 190101001</small>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <button id="salidasinot" class="btn btn-titulo principal white-text" onclick="SalidasModal(this.id);return false" style="width: 45%;margin-left: 30%" type="button" data-dismiss="modal">SALIDA SIN OT</button>
+            <button id="salidaconot" class="btn btn-titulo principal white-text" onclick="SalidasModal(this.id);return false" style="width: 45%;margin-left: 30%" type="button">SALIDA CON OT</button>
+            <button id="registrandoSalida"  class="btn btn-titulo principal white-text" onclick="SalidasModal(this.id);return false" style="width: 45%;margin-left: 30%" type="button" data-dismiss="modal">REGISTRAR SALIDA CON OT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+
+<script type="text/javascript">
+document.getElementById('registrandoSalida').style.display='none';
+mostrarProductos('codigoProductoModal');
+  
+function mostrarModal(accion){
+  if(accion=="actualizar"){
+    document.getElementById('actualizando').style.display=null;
+    document.getElementById('registrandoIngreso').style.display='none';
+  }else{
+    document.getElementById('actualizando').style.display='none';
+    document.getElementById('registrandoIngreso').style.display=null;
+  }
+  $('#modalOpcion').modal('show');
+}
+
+function mostrarAreaModal(){
+  switch($("#centrocostos").val()){
+      case('PRODUCCION'): mostrarMaquinas('area'); break;
+      case('VENTAS'): mostrarVenta('area'); break;
+      case('ADMINISTRACION'): mostrarAreas('area'); break;
+      case('DISTRIBUCION'): mostrarDistribucion('area'); break;
+  }
+}
+  
+function actualizando(){
+  if($("#codigoProductoModal").val()=="0"){
+     document.getElementById('actualizar').disabled=true;
+  }else{
+      document.getElementById('actualizar').disabled=false;
+  }
+}
+  
+function OpcionProductoModal(accion){
+  $('.modal-backdrop').remove();
+  
+  if(accion=="actualizando"){
+    ventanaRegistrarProducto($("#codigoProductoModal").val());
+  }else{
+    ventanaRegistrarIngresoProducto($("#codigoProductoModal").val())
+  }
+}
+
+</script>

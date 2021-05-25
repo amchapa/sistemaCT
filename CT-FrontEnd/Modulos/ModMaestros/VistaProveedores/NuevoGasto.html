@@ -1,0 +1,281 @@
+<!--<style>
+    td{min-width: 100px;}
+</style>-->
+
+<!--<form method="post" novalidate>
+<div class="table-responsive">
+
+ <table class="table my-3">
+  <thead class="black white-text" align="center">
+    <tr>
+      <th colspan="5">GASTOS DE LA EMPRESA</th>
+      <th id="fechaRegistro" class="text-right"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="formulario">Proveedor :</td>
+      <td><select name="proveedor" id="proveedor" class="w-responsive"></select></td>
+      <td class="formulario">Fecha Emision :</td>
+      <td><input type="datetime-local" class="w-responsive" id="fEmision" required></td>
+      <td class="formulario">Fecha Vencimiento :</td>
+      <td><input type="datetime-local" class="w-responsive" id="fVencimiento" required></td>
+    </tr>
+    <tr>
+      <td class="formulario">Fecha Pago :</td>
+      <td><input type="text" class="w-responsive" id="contactoEmpresa" required></td>
+      <td class="formulario">Importe :</td>
+      <td><input  type="number" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11"  class="w-responsive" required id="telefonoContacto"></td>
+      <td class="formulario">N Comprobante :</td>
+      <td><input  type="number" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="w-responsive" required id="telefonoContacto"></td>
+    </tr>
+    <tr>
+      <td class="formulario">Moneda :</td>
+      <td>
+         <select  class="w-responsive" name="moneda" id="moneda">
+          <option class="w-responsive" value="Soles">Soles</option>
+          <option class="w-responsive" value="Dolares">Dolares</option>
+         </select>  
+      </td>
+      <td class="formulario">Tipo :</td>
+      <td><select name="tipo" id="tipo" class="w-responsive"></select></td>
+      <td class="formulario">Categorias :</td>
+      <td><select name="categoria" id="categoria" class="w-responsive"></select></td>
+    </tr>
+    <tr>
+      <td class="formulario">Empresa :</td>
+      <td><select name="empresa" id="empresa" class="w-responsive"></select></td>
+      <td class="formulario">Archivo :</td>
+      <td><input  type="file" class="w-responsive" required id="telefonoContacto"></td>
+      <td class="formulario">Orden :</td>
+      <td><input  type="number" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="w-responsive" required id="telefonoContacto"></td>
+    </tr>
+    <tr>
+      <td class="formulario">Observaciones :</td>
+      <td><input  type="text" required id="telefonoContacto"></td>
+    </tr>
+  </tbody>
+</table>
+ <hr>
+ <div class="text-center">
+    <button type="button" onclick="validar();return false" class="btn boton">Guardar</button>
+    <button type="reset" class="btn boton" id="reset">Limpiar</button>
+ </div>
+ <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+</div>
+</form>-->
+
+
+
+
+
+<form>
+    <div class="card">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 text-center">
+                    <h3 class="h3-responsive titulo">REGISTRAR NUEVO GASTO</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <h5 class="card-header h5">GASTOS DE LA EMPRESA</h5>
+        <div class="card-body">
+            <div class="form-row">
+    
+            <!--PROVEEDOR-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="proveedor">Proveedor</label>
+              <select required name="proveedor" id="proveedor" class="form-control" aria-describedby="proveedorHelp"></select>
+              <small id="proveedorHelp" class="form-text text-muted">Campo obligatorio.</small>
+            </div>
+
+            <!--FECHA EMISION-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="fEmision">Fecha Emision</label>
+              <input type="datetime-local" class="form-control" id="fEmision" aria-describedby="fEmisionHelp" placeholder="Ingresar Fecha de Emisión" required>
+              <small id="fEmisionHelp" class="form-text text-muted">Ejemplo:21/03/2019</small>
+            </div>
+            
+            <!--FECHA DE VENCIMIENTO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="fVencimiento">Fecha Vencimiento</label>
+              <input required type="number" class="form-control" id="fVencimiento" aria-describedby="fVencimientoHelp" placeholder="Ingresar Fecha de Vencimiento">
+              <small id="fVencimientoHelp" class="form-text text-muted">Ejemplo:15/06/1967</small>
+            </div>
+
+            <div class="w-100"></div>
+
+            <!--FECHA PAGO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="fechaPago">Fecha Pago</label>
+              <input type="text" class="form-control" id="fechaPago" aria-describedby="fechaPagoHelp" required>
+              <small id="fechaPagoHelp" class="form-text text-muted">Ejemplo:---</small>
+            </div>
+
+             <!--IMPORTE-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="importe">Importe</label>
+              <input  type="number" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11"  class="form-control" required id="importe" aria-describedby="importeHelp">
+            </div>
+
+            <!--N. COMPROBANTE-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="numComprob">N Comprobante</label>
+              <input  type="number" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" required id=numComprob>
+            </div>
+            
+            <div class="w-100"></div>
+
+            <!--MONEDA-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="moneda">Moneda</label>
+              <select  class="form-control" name="moneda" id="moneda">
+                  <option class="w-responsive" value="Soles">Soles</option>
+                  <option class="w-responsive" value="Dolares">Dolares</option>
+                 </select>
+            </div>
+
+             <!--TIPO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="tipo">Tipo</label>
+              <select name="tipo" id="tipo" class="form-control"></select>
+            </div>
+
+            <!--CATEGORIA-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="categoria">Categoria</label>
+              <select name="categoria" id="categoria" class="form-control"></select>
+            </div>
+         
+            <div class="w-100"></div>
+
+            <!--EMPRESA-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="empresa">Empresa</label>
+              <select name="empresa" id="empresa" class="form-control"></select>
+            </div>
+
+             <!--ARCHIVO-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="archivo">Archivo</label>
+              <input  type="file" class="form-control" id="archivo">
+            </div> 
+            
+            <!--ORDEN-->
+            <div class="col-12 col-md-4 form-group">
+              <label for="orden">Orden</label>
+              <input  type="number" min="1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" class="form-control" id="orden">
+            </div>
+            
+            <div class="w-100"></div>
+
+            <!--OBSERVACIONES-->
+            <div class="col-12  form-group">
+              <label for="observaciones">Observaciones</label>
+              <input  type="text" class="form-control" id="observaciones">
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+    <div class="form-inline justify-content-center">
+        <button type="button" class="btn btn-guardar">Guardar</button>
+        <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+     </div>
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaProveedores/VistaProveedores.js"></script>
+
+<script type="text/javascript"> 
+    
+/*=============================================
+    CARGAR EMPRESAS
+=============================================*/
+    
+mostrarEmpresa(); 
+mostrarProveedores();  
+    
+function mostrarEmpresa(){
+    var boxEmpresa="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarEmpresa.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+            boxEmpresa+="<option value='' selected>Elegir Empresa</option>";
+            $("#empresa").html(boxEmpresa);
+        },
+        success: function(datos){
+            
+            if(datos.response=="0"){
+                boxEmpresa+="<option value='' selected>Elegir Empresa</option>";
+                $("#empresa").html(boxEmpresa);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxEmpresa+="<option value='' selected>Elegir Empresa</option>";
+                    }
+                    boxEmpresa+="<option value='"+datos[i].EMPCODIGO+"'>"+datos[i].EMPDESCRIPCION+"</option>";
+                }
+                $("#empresa").html(boxEmpresa);
+            }
+        }
+    });  
+}   
+    
+/*=============================================
+    CARGAR PROVEEDORES
+=============================================*/  
+    
+function mostrarProveedores(){
+    var boxProveedor="";
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Proveedor/Controlador_MostrarTodosProveedores.php',
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                console.log("Archivos no encontrados");
+            }
+            else{
+                console.log("Error no identificado");
+            }
+            boxProveedor+="<option value='' selected>Elegir Proveedor</option>";
+            $("#proveedor").html(boxProveedor);
+        },
+        success: function(datos){
+            
+            if(datos.response=="0"){
+                boxProveedor+="<option value='' selected>Elegir Proveedor</option>";
+                $("#proveedor").html(boxProveedor);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxProveedor+="<option value='' selected>Elegir Proveedor</option>";
+                    }
+                    boxProveedor+="<option value='"+datos[i].PROVEEDCODIGO+"'>"+datos[i].PROVEEDRAZON_SOCIAL+"</option>";
+                }
+                $("#proveedor").html(boxProveedor);
+            }
+        }
+    });  
+}     
+    
+    
+</script> 
+
+
+
+

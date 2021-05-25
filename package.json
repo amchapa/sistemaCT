@@ -1,0 +1,32 @@
+{
+  "name": "sistemact",
+  "version": "1.0.0",
+  "description": "Administrative management system created from scratch for the Computextos Group",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amchapa/sistemaCT.git"
+  },
+  "keywords": [
+    "javascript",
+    "html",
+    "css",
+    "jquery",
+    "ajax",
+    "php",
+    "mvc",
+    "bootstrap",
+    "json",
+    "responsive",
+    "dom"
+  ],
+  "author": "Angy Milagros Chapa Principe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amchapa/sistemaCT/issues"
+  },
+  "homepage": "https://github.com/amchapa/sistemaCT#readme"
+}

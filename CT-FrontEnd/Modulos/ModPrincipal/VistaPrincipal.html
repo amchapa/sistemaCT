@@ -1,0 +1,263 @@
+    <!--=================================
+        VISTA PRINCIPAL
+    ==================================-->
+    
+    <!--ESTILOS DE LA VISTA-->
+    <link rel="stylesheet" href="Modulos/ModPrincipal/VistaPrincipal.css">
+
+    <div class="row">
+
+       <!--COLUMNA IZQUIERDA - CENTRAL-->
+       <div class="col-md-8 col-lg-9 col-xl-10 conten">
+
+            <!--SEGUIMIENTO DE ORDENES-->
+            <div class="row">
+
+                <!--RELOJ + SEGUIMIENTO DE ORDENES-->
+                <div class="col-xl-4">
+
+                    <!--RELOJ-->
+                    <div class="row my-3 justify-content-center">
+                        <i class="fas fa-3x fa-spinner fa-spin"></i>
+                        <div class="clock h1-responsive" onclick="clock();return false"></div>
+                    </div>
+
+                    <!--REGISTRO DE ORDENES-->
+                    <div id="opestado" class="yellow my-auto py-3 lighten-3 px-4">
+
+                        <h5 class="h5-responsive text-center font-weight-bold">Registro de órdenes</h5>
+
+                    </div>
+
+                </div>
+
+                <!--GRAFICO DE SEGUIMIENTO-->
+                <div class="col-xl-8 py-4"><canvas id="lineChart"></canvas></div>
+
+            </div>
+
+            <!--FILTROS--> 
+            <div class="row p-3">
+
+                <!--TRABAJADORES DE TURNO-->     
+            <div id="TTurno" class="col-xl-4 table-reponsive table-wrapper-scroll-y green lighten-3">
+              <h5 class="h5-responsive text-center font-weight-bold my-2">Trabajadores de turno</h5> 
+            </div>
+
+                <!--BUSQUEDAS BOTONES--> 
+            <div class="col-xl-4">
+                <button id="P-NuevoPresupuesto" type="button" onclick="ventanaNuevoPresupuesto();return false" class="btn btn-unique btn-block my-3">Nuevo Presupuesto</button>
+                <button id="P-NuevaOrden" type="button" onclick="buscarNuevaOrden();return false" class="btn btn-unique btn-block my-3">Nueva Orden</button>
+                <button id="P-CambiarEstadoOrden" type="button" onclick="ventanaCambiarEstadoOrden();return false" class="btn btn-unique btn-block my-3">Cambiar Estado Orden</button>
+                <button id="P-BuscarOrden" type="button" onclick="ventanaBuscarOrden();return false" class="btn btn-unique btn-block my-3">Buscar Orden</button>
+            </div>
+
+                <!--ULTIMOS CLIENTES--> 
+            <div id="UClientes" class="col-xl-4 table-reponsive table-wrapper-scroll-y blue lighten-3">
+              <h5 class="h5-responsive text-center font-weight-bold my-2">Ultimos Clientes</h5>
+            </div>          
+
+            </div>         
+
+       </div>
+
+       <!--COLUMNA DERECHA "ORDENES DE PRODUCCION PENDIENTES"-->
+       <div class="col-md-4 col-lg-3 col-xl-2 grey lighten-1 text-center opScroll">
+
+           <!--TITULO-->
+           <h5 class="h5-responsive text-center font-weight-bold mt-2">Ordenes Producción Pendientes</h5>
+           <hr class=" mt-2 mb-3">
+
+           <!--CONTENIDO OP PENDIENTES-->
+           <div id="OPPendientes">
+
+               <!--OP 1-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">N° ORDEN</div>
+                   <div class="white mb-3">Descripcion breve</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Folletos telefonica</div>
+               </div>
+               
+                              <!--OP 1-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">N° ORDEN</div>
+                   <div class="white mb-3">Descripcion breve</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Folletos telefonica</div>
+               </div>
+               
+                                             <!--OP 1-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">N° ORDEN</div>
+                   <div class="white mb-3">Descripcion breve</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Tripticos telefonica</div>
+               </div>
+
+               <!--OP 2-->
+               <div>
+                   <div class="white font-weight-bold border-bottom">1525220124</div>
+                   <div class="white mb-3">Folletos telefonica</div>
+               </div>
+
+           </div>
+
+       </div>
+
+    </div>
+    
+   <!-- MENSAJE -->
+    <div class="toast" data-autohide="true" data-delay="9000"><div class="toast-body"></div></div>
+    <!--ARCHIVOS JS DE LA VISTA-->
+    <script type="text/javascript" src="Modulos/ModPrincipal/VistaPrincipal.js"></script>

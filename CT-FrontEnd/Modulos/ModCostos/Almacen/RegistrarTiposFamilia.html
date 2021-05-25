@@ -1,0 +1,145 @@
+<form>
+<!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 id="tituloRegistro" class="h3-responsive titulo font-weight-bold"></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--DATOS DEL NUEVO PRODUCTO-->
+  <div id="tipoproducto" class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+
+      <div class="form-row">
+    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombreTipoProducto">Nombre</label>
+          <input required type="text" class="form-control" id="nombreTipoProducto" aria-describedby="nombreTipoProductoHelp" placeholder="Ingresar Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="nombreTipoProductoHelp" class="form-text text-muted">Ejemplo:REPUESTOS, PAPELES</small>
+        </div>
+
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="estadoTipoProducto">Estado</label>
+          <select required id="estadoTipoProducto" class="form-control" aria-describedby="estadoTipoProductoHelp">
+          <option value="62">ACTIVO</option>
+          <option value="63">INACTIVO</option>
+          </select>
+          <small id="estadoTipoProductoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+
+  <!--DATOS DEL NUEVO PAPEL-->
+  <div id="familiapapel" class="card">
+    <h5 class="card-header h5">Datos Generales</h5>
+    <div class="card-body">
+      <div class="form-row">
+    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="codigo">Código</label>
+          <input required type="text" class="form-control" id="codigo" aria-describedby="codigoHelp" placeholder="Ingresar Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="codigoHelp" class="form-text text-muted">Ejemplo: AD </small>
+        </div>    
+        <!--NOMBRE-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="nombre">Nombre</label>
+          <input required type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Ingresar Nombre" onkeyup="javascript:this.value=this.value.toUpperCase();">
+          <small id="nombreHelp" class="form-text text-muted">Ejemplo: ADHESIVO </small>
+        </div>
+        <!--ESTADO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="estado">Estado</label>
+          <select required id="estado" class="form-control" aria-describedby="estadoHelp">
+          <option value="64">ACTIVO</option>
+          <option value="65">INACTIVO</option>
+          </select>
+          <small id="estadoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div id="opcionesFormulario" class="form-inline justify-content-center">
+     <button type="button"  class="btn btn-guardar" onclick="registrarTipoFamilia();return false">Guardar</button>
+    <button type="reset" class="btn btn-reset" id="reset">Limpiar</button>
+  </div>
+
+  <div id="resultado" class="text-center h3-responsive principal-text my-3 font-weight-bold"></div>
+  
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+
+</form>
+
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript">
+  
+document.getElementById("reset").onclick = function() {limpiarMensaje()};
+
+//--LIMPIAR--
+ function limpiarMensaje(){
+     $("#resultado").text("");
+ }
+
+  function registrarTipoFamilia(){
+    var $datos,url;
+    var Hoy = new Date();
+    var fecharegistro = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+    if($("#tituloRegistro").html()=="REGISTRO DE TIPOS DE PRODUCTOS"){
+      $datos={
+        
+        '_nombre': $("#nombreTipoProducto").val(),
+        '_fecha': fecharegistro,
+        '_estado':$("#estadoTipoProducto").val(),
+        '_usuario':USUACODIGO
+      }
+      url="../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_RegistrarFamiliaProductos.php"
+    }else{
+      
+       $datos={
+        '_corto':$("#codigo").val(),
+         '_nombre':$("#nombre").val(),
+        '_fecha':fecharegistro,
+        '_estado':$("#estado").val(),
+        '_usuario':USUACODIGO
+      }
+      url="../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_RegistrarFamiliaPapel.php"
+    }
+    
+     $.ajax({
+        url: url,
+        type: 'POST',
+        data:$datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+                mostrarMensaje("exito","DATOS CORRECTAMENTE REGISTRADOS");
+            }
+        }
+    });
+  }
+
+</script>

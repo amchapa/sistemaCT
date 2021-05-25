@@ -1,0 +1,108 @@
+<form>
+  <div id="encabezadoPrincipal" class="container font-weight-bold h1-responsive principal-text text-center my-4">LISTADO PRECIOS X KILO</div>
+  
+  <div id="tableExport" class="my-4">
+    <div id="campo1" class="card my-4" >
+      <table id="tablaDatos1" class='table  text-center' cellspacing='0'>
+        <thead id="cabezal1"></thead>
+        <tbody id="cuerpoTabla1"></tbody>
+        <tfoot id="pie1"></tfoot>
+      </table>
+    </div>
+     <div id="campo2" class="card my-4" >
+      <table id="tablaDatos2" class='table  text-center' cellspacing='0'>
+        <thead id="cabezal2"></thead>
+        <tbody id="cuerpoTabla2"></tbody>
+        <tfoot id="pie2"></tfoot>
+      </table>
+    </div>
+  </div>
+  
+</form>
+  <button class="btn boton" id="boton-descarga">Exportar</button>
+  <button class="btn principal" >Nuevo</button>
+  <div id="return" style="float: right; margin-right:15%"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaAlmacen()"></i></div>
+
+<script src="Bootstrap/js/select2.min.js"></script>
+<link href="Bootstrap/css/select2.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="Modulos/ModCostos/Almacen/VistaAlmacen.js"></script>
+<script type="text/javascript" src="Bootstrap/js/tablaDinamica.js"></script>
+
+<script type="text/javascript">
+
+cargarDatos();
+function cargarDatos(){
+
+    
+     $.ajax({
+        url: "../CT-BackEnd/Controlador/ModCostos/ModAlmacen/Controlador_MostrarPreciosXKilo.php",
+        type: 'GET',
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+  
+            if(datos.response=="0"){
+                mostrarMensaje("error","" + datos.message);
+            }else{
+              mostrarDatos(datos)
+            }
+        }
+    });    
+}
+  
+function mostrarDatos(datos){
+  
+  var titulos1="",tablaContenido1="";
+  titulos1+="<tr><th colspan='5' class='th-sm h5 text-center' >LISTA DE VARIABLES PARA LOS PAPELES X KILO</th></tr>\
+  <th class='th-sm '>PAPEL</th>\
+  <th class='th-sm '>DE GRAMAJE</th>\
+  <th class='th-sm '>HASTA</th>\
+  <th class='th-sm '>TIPO</th>\
+  <th class='th-sm '>PRECIOS X KILO</th></tr>";
+  
+  $("#cabezal1").html(titulos1);
+  
+  for(var i=0;i<datos.length;i++){
+    
+    
+    tablaContenido1+="<tr class='text-center'>\
+                <td>"+datos[i].FAMPACODIGO+"</td>\
+                <td>"+datos[i].PREKRANGO_GRAMAJE.split(" - ")[0]+"</td>\
+                <td>"+datos[i].PREKRANGO_GRAMAJE.split(" - ")[1]+"</td>\
+                <td>"+datos[i].PREKTIPO+"</td>\
+                <td>"+datos[i].PREKPRECIO+"</td>\
+            </tr>";
+  }
+  
+  $("#cuerpoTabla2").html(tablaContenido1);
+  
+  var titulos2="",tablaContenido2="";
+  titulos2+="<tr><th colspan='5' class='th-sm h5 text-center' >LISTA DE VARIABLES PARA LOS PAPELES X HOJAS</th></tr>\
+  <th class='th-sm '>PAPEL</th>\
+  <th class='th-sm '>DE GRAMAJE</th>\
+  <th class='th-sm '>CALIBRE</th>\
+  <th class='th-sm '>TIPO</th>\
+  <th class='th-sm '>PRECIOS X HOJAS</th></tr>";
+  
+  $("#cabezal2").html(titulos2);
+  
+  for(var i=0;i<datos.length;i++){
+    tablaContenido2+="<tr class='text-center'>\
+                <td>"+datos[i].FAMPACODIGO+"</td>\
+                <td>"+datos[i].PREKRANGO_GRAMAJE+"</td>\
+                <td>"+datos[i].PREKCALIBRE+"</td>\
+                <td>"+datos[i].PREKTIPO+"</td>\
+                <td>"+datos[i].PREKPRECIO+"</td>\
+            </tr>";
+  }
+  
+  $("#cuerpoTabla2").html(tablaContenido2);
+}
+</script>

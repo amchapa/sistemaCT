@@ -1,0 +1,106 @@
+<form>
+<div id="encabezadoPrincipal" class="container font-weight-bold h2-responsive principal-text text-center my-4">REEMPLAZAR ORDEN</div>
+  
+ <div class="card my-3" style="width:80%; margin-left:10%">
+    <div  class="h5-responsive font-weight-bold my-2" style="margin-left:8%">SELECCIONAR ORDEN DE TRABAJO</div>
+     <div class="form-inline my-2">
+     <select class="form-control text-center font-weight-bold" style="margin-left: 10%; width: 30%" id="cliente" ></select>
+     <select class="form-control text-center font-weight-bold" style="margin-left: 5%; width: 30%" id="ordenTrabajo" >
+       <option value="0">Elegir Orden de Produccion</option></select>
+     <button id="agregar" class="text-right btn btn-titulo  mx-4" onclick="slider5.mostrarOTSeleccionada(); return false">AGREGAR</button>
+      </div>
+ </div> 
+   
+ <div class="card my-3" style="width:80%; margin-left:10%">
+    <div  class="h5-responsive font-weight-bold my-2" style="margin-left:8%;">O/T SELECCIONADAS</div>
+     <div class="form-inline">
+     <table id="infoTabla" style="width:80%;margin-left: 2%">
+       <thead id="cabezalTabla" class="strong text-white font-weight-bold">
+       </thead>
+       <tbody id="cuerpoTabla">
+       </tbody>
+     </table>
+     <button id="reemplazar" class="text-right btn btn-titulo" style="margin-left: 2%" onclick="slider5.crearCodigoOT();return false" disabled >REEMPLAZAR</button>
+      </div>
+ </div>
+  
+ <div id="NuevaOrdendeProduccion" class="card my-5 d-none" style="width:80%; margin-left:10%" >
+   <div id="codigoNuevaOP" class="h4-responsive font-weight-bold my-2 text-center" style="margin-left:8%;"></div>
+   <!-- VENDEDOR -->
+   <div class="form-inline">
+   <div class="h5-responsive font-weight-bold my-2" style="margin-left:8%;width: 30%">EJECUTIVA :</div>
+   <select class="form-control text-center font-weight-bold" style="width:50%;margin-left:3%" id="vendedor">
+        <option value="49">PEPE</option>
+        <option value="35">FABIOLA</option>
+        <option value="39">YRMA</option>
+        <option value="54">MILAGROS</option>
+        <option value="28">LIZ</option>
+        <option value="74">ALAN</option>
+      </select>
+   </div>
+   <!-- NUMERO DE ITEM -->
+   <div class="form-inline">
+   <div class="h5-responsive font-weight-bold my-2" style="margin-left:8%;width: 30%">NRO DE ITEMS :</div>
+   <input type="text" class="form-control mx-4" style="width:50%;margin-left:10%" id="itemsReemplaza">
+   </div>
+   <!-- DETALLE -->
+   <div class="form-inline">
+   <div class="h5-responsive font-weight-bold my-2" style="margin-left:8%;width: 30%">DETALLES :</div>
+   <input type="text" class="form-control mx-4" style="width:50%;margin-right:10%" id="detallesReemplaza">
+   </div>
+   <!-- FECHA DE ENTREGA -->
+   <div class="form-inline">
+   <div class="h5-responsive font-weight-bold my-2" style="margin-left:8%;width: 30%">FECHA DE ENTREGA :</div>
+   <input type="date" class="form-control mx-4" style="width:50%;margin-left:10%" id="fechaentregaReemplaza">
+   </div>
+   <!-- ESTADO -->
+   <div class="form-inline">
+   <div class="h5-responsive font-weight-bold my-2" style="margin-left:8%;width: 30%">ESTADO :</div>
+   <select class="form-control text-center font-weight-bold" style="width:50%;margin-left:3%" id="estado">
+        <option value="19">ABIERTA</option>
+        <option value="20">PREFACTURADA</option>
+        <option value="21">ENTREGADA</option>
+        <option value="22">FACTURADA</option>
+        <option value="23">BOLETA</option>
+        <option value="24">CANCELADA</option>
+        <option value="25">LETRA</option>
+        <option value="26">ANULADA</option>
+        <option value="27">STAND BY</option>
+        <option value="28">REEMPLAZADO</option>
+        <option value="0">TODOS</option>
+      </select>
+   </div>
+   <button  class="text-center btn btn-titulo" style="width:20%; margin-left:30%" onclick="slider5.guardarTodo(); return false" >GUARDAR</button> 
+   <div id="return" style="float: right; margin-right:15%;"><i class="fa fa-arrow-left fa-5x" aria-hidden="true" onclick="ventanaReemplazarOrden()"></i></div>
+
+ </div>
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModOrden/VistaPrincipal.js"></script>
+<script>
+  
+var Hoy = new Date();
+  var fecha= Hoy.getFullYear() + "-" + (Hoy.getMonth() +1) + "-" + Hoy.getDate();
+  $("#fechaentregaReemplaza").val(fecha);  
+var nuevoNumeroItem=0;
+slider2.mostrarClientesConItemOP();
+/* MOSTRAR LAS ORDEN DE PRODUCCION DEL CLIENTE*/
+$("#cliente").change(function(){
+  if($("#cliente").val()==0){
+    var boxCliente="<option value='0' selected>Elegir Orden de Produccion</option>";
+    $("#ordenTrabajo").html(boxCliente);
+  }else{
+    slider2.cargarOT($("#cliente").val());
+  }
+});
+  
+/* ELIMINAR FILA DE LA TABLA*/
+$(function () {
+    $(document).on('click', '.borrar', function (event) {
+        event.preventDefault();
+        $(this).closest('tr').remove();
+    });
+});
+
+</script>

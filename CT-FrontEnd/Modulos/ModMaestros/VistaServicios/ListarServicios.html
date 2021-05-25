@@ -1,0 +1,159 @@
+<div id="encabezado" class="container font-weight-bold h2-responsive principal-text text-center">LISTAR SERVICIO</div>
+<div id="titulo" class="container font-weight-bold h4-responsive principal-text text-center"></div>
+
+<table id="tablaServicios" class='table table-striped table-bordered text-center' cellspacing='0' width='100%'>
+  <thead><tr id="tituloColumnas"></tr></thead>
+  <tbody id="cuerpoTabla"></tbody>
+</table>
+ 
+<div id="resultado" class="container font-weight-bold h3-responsive principal-text text-center"></div>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModMaestros/VistaServicios/VistasServicios.js"></script>
+
+<script type="text/javascript">
+    
+$("#encabezado").text("LISTAR SERVICIOS - "+opcion);
+
+cargarDatos(opcion, select);
+
+/*=============================================
+    CARGAR DATOS DEL SERVICIO X FAMILIA
+=============================================*/    
+    
+function cargarDatos(opcion, select){
+    
+    var url= "";
+    var $opcion;
+    var titulos="";
+    
+    if(opcion=="NOMBRE"){
+        titulos+="<th class='th-sm text-center'>SERVICIOS</th>";
+        $("#titulo").text(select);
+    }else{
+        titulos+="<th class='th-sm'>CODIGO</th>\
+      <th class='th-sm'>NOMBRE</th>\
+      <th class='th-sm'>CAL. LINEAL</th>\
+      <th class='th-sm'>ANCHO</th>\
+      <th class='th-sm'>PRECIO UNIT.</th>\
+      <th class='th-sm'>TIPO DE SERV.</th>\
+      <th class='th-sm'>FAMILIA</th>\
+      <th class='th-sm'>SUB FAMILIA</th>\
+      <th class='th-sm'>PRECIO PAPEL</th>\
+      <th class='th-sm'>ESTADO</th>";
+    }
+    $("#tituloColumnas").html(titulos);
+    
+    switch(opcion){
+        case "NOMBRE" :       
+            url= "../CT-BackEnd/Controlador/ModMaestros/Controlador_Servicios/Controlador_MostrarServicioDes.php";
+            $opcion={'_nombre': select};
+            break;
+            
+        case "FAMILIA" :  
+            url= "../CT-BackEnd/Controlador/ModMaestros/Controlador_Servicios/Controlador_MostrarServicioFam.php";
+            $opcion={'_familia': select};
+            break;
+            
+        case "CODIGO" :  
+            url= "../CT-BackEnd/Controlador/ModMaestros/Controlador_Servicios/Controlador_MostrarServicioDes.php";
+            $opcion={'_nombre': select};
+            break;
+    };
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: $opcion, 
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+                $("#resultado").text("NO HAY RESULTADOS PARA LA BUSQUEDA");
+            }else{
+                mostrarDatosServicio(opcion, datos);
+            }
+        }
+    }); 
+     
+}
+    
+/*=============================================
+    MOSTRAR DATOS TODOS SERVICIOS X FAMILIA
+=============================================*/        
+    
+function mostrarDatosServicio(opcion, datos){
+    
+    var tablaServicios="";
+    
+    for(var i=0; i<datos.length; i++){
+        if(opcion == "NOMBRE"){
+            tablaServicios+="<tr>\
+                <td ><a id='"+datos[i].SERVDESCRIPCION+"' onclick='seleccionarLink(this.id);return false'>"+datos[i].SERVDESCRIPCION+"</a></td>\
+                </tr>";
+        }else{
+            if(opcion=="FAMILIA"){
+                $("#titulo").text(datos[i].FAMDESCRIPCION);
+            }else{
+                $("#titulo").text(datos[i].SERVDESCRIPCION);
+            }
+            tablaServicios+="<tr>\
+                <td>"+datos[i].SERVCODIGO+"</td>\
+                <td>"+datos[i].SERVDESCRIPCION+"</td>\
+                <td>"+datos[i].SERVCALCULO_LINEAL+"</td>\
+                <td>"+datos[i].SERVANCHO+"</td>\
+                <td>"+datos[i].SERVPRECIO_UNITARIO+"</td>\
+                <td>"+datos[i].SERVTIPO+"</td>\
+                <td>"+datos[i].FAMDESCRIPCION+"</td>\
+                <td>"+datos[i].SUBFAMDESCRIPCION+"</td>\
+                <td>"+datos[i].SERVPRECIO_PAPEL+"</td>\
+                <td>"+datos[i].ESTDESCRIPCION+"</td>\
+            </tr>"
+        }
+    }
+    
+    $("#cuerpoTabla").html(tablaServicios);
+    $('#tablaServicios').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                title: 'LISTADO PERSONAL',
+                text: 'IMPRIMIR',
+                className: 'btn boton'
+            },
+            {
+                extend: 'pdfHtml5',
+                download: 'open',
+                title: 'LISTADO PERSONAL',
+                text: 'EXPORTAR PDF',
+                className: 'btn boton'
+            }
+        ]
+    } );
+    $('.dataTables_length').addClass('bs-select');
+    
+}
+    
+/*=============================================
+    MOSTRAR DATOS SEGUN EL NOMBRE SELECCIONADO
+=============================================*/      
+    
+function seleccionarLink(id){
+
+    $("#cuerpoTabla").html("");
+    $("#tituloColumnas").html("");
+    opcion="CODIGO";
+    cargarDatos(opcion, id);
+    $('#tablaServicios').DataTable().destroy();
+}    
+    
+</script>

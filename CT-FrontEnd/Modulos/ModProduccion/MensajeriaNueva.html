@@ -1,0 +1,800 @@
+<style>
+
+.selectHorario{
+    display:inline-block;
+    width:168px;
+    vertical-align:middle;
+}
+
+</style>
+
+<form>
+
+  <!--DATOS GENERALES-->
+  <div class="card">
+    <div class="card-body">
+     
+      <div class="row justify-content-center">
+        
+        <!--TITULO DE LA VISTA-->
+        <div class="col-12 col-md-8 text-center">
+          <h3 class="h3-responsive titulo" id="titulo"></h3>
+        </div>
+
+      </div>
+   
+    </div>
+  </div>
+  
+  <div class="card" id="registroAnteriores">
+     <h5 class="card-header h5" id="encabezadoListado" style="text-align: center"></h5>
+     <div class="card-body">
+         <table id="tablaListado" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead><tr>
+            <th style="text-align:center">Imprimir</th>
+            <th style="text-align:center">Distrito</th>
+            <th style="text-align:center">Tipo</th>
+            <th style="text-align:center">Costo Movilidad</th>
+            <th style="text-align:center">Fecha</th>
+            <th style="text-align:center">Hora</th>
+            <th style="text-align:center">Contacto</th>
+            <th style="text-align:center">Telefono</th>
+          </tr></thead>
+        <tbody id="cuerpoTabla"></tbody>
+      </table>
+     </div>
+      
+  </div>
+  
+  <!--DATOS PERSONALES-->
+  <div class="card">
+    <h5 class="card-header h5" id="encabezadoText" style="text-align: center"></h5>
+    <div class="card-body">
+
+      <div class="form-row">
+      
+      <!--PAIS-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="pais">Pais</label>
+          <select  id="pais" class="form-control" aria-describedby="paisHelp">
+              <option value="1" selected>Perú</option>
+          </select>
+          <small id="paisHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--PROVINCIA-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="prov">Provincia</label>
+          <select  id="prov" class="form-control" aria-describedby="provHelp"></select>
+          <small id="provHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <!--DISTRITO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="distrito">Distrito</label>
+          <select  id="distrito" class="form-control" aria-describedby="distritoHelp"></select>
+          <small id="distritoHelp" class="form-text text-muted">Campo obligatorio.</small>
+        </div>
+        
+        <div class="w-100"></div>
+    
+        <!--OT-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="ordProduc">OT</label>
+          <input type="number" class="form-control" id="ordProduc" aria-describedby="ordProducHelp" placeholder="Ingresar OT" disabled>
+          <small id="ordProducHelp" class="form-text text-muted">Ejemplo:190511001</small>
+        </div>
+        
+        <!--TIPO DE MENSAJERIA-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="tipMensaje">Tipo de Mensajeria</label>
+          <select  id="tipMensaje" class="form-control" aria-describedby="tipMensajeHelp">
+              <option value="0" >Seleccionar Tipo</option>
+              <option value="archivo">Archivos</option>
+              <option value="prueba" >Pruebas</option>
+              <option value="servTercero" >Servicios de Terceros</option>
+              <option value="trabTermin" >Trabajos Terminados</option>
+              <option value="otros" >Otros</option>
+            </select>
+        </div>
+        
+        <!--SELECCIONE-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="selecc">Seleccione</label>
+          <select  id="selecc" class="form-control" aria-describedby="seleccHelp">
+          </select>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--OTROS-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="otros">Solo llenar en opcion Otros: </label>
+          <textarea id="otros" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+        </div>
+        
+        <!--DIRECCION-->
+        <div class="col-12 col-md-6  form-group">
+          <label for="direccion">Direccion: </label>
+          <textarea id="direccion" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--DESCRIPCION-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="descripcion">Descripcion: </label>
+          <textarea id="descripcion" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+        </div>
+        
+        <!--COMENTARIO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="comentario">Comentario: </label>
+          <textarea id="comentario" class="md-textarea form-control" rows="2" cols='50' onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--OPCIONES-->
+        <div class="col-12 col-md-4 form-group">
+            <label for="comentario">Opciones(Marcar 1 por lo menos):</label>
+             <div class="form-inline w-100">
+                 <div class="form-inline px-3">
+                     <input id="despachoMaterial" type="checkbox">
+                     <label for="">Despacho Material</label>
+                 </div>
+                 <div class="form-inline px-3">
+                     <input id="mensajeriaDocumentos" type="checkbox">
+                     <label for="">Mensajeria Documentos</label>
+                 </div>
+             </div>
+        </div>
+        
+        <!--GUIA-->
+        <div class="col-12 col-md-2 form-group">
+          <label for="guia">Imprimir Guia:</label>
+          <select  id="guia" class="form-control selectHorario" aria-describedby="seleccHelp">
+              <option value="no">No</option>
+              <option value="si">Si</option>
+            </select>
+        </div>
+        
+        <!--FACTURA-->
+        <div class="col-12 col-md-2 form-group">
+          <label for="factura">Imprimir Factura:</label>
+          <select  id="factura" class="form-control selectHorario" aria-describedby="seleccHelp">
+              <option value="no">No</option>
+              <option value="si">Si</option>
+            </select>
+          </div>
+        
+        <!--MONTO-->
+        <div class="col-12 col-md-4 form-group" style="display: table-cell; vertical-align: middle;">
+          <label for="monto">Monto Cotizado Por movilidad:</label>
+          <div>S/<input type="number" id="monto" size="width: 50px;" value="0">NUEVOS SOLES</div>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--PESO BRUTO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="pesoBruto">Peso Bruto del Despacho:</label>
+          <input type="number" id="pesoBruto" size="width: 50px;"  aria-describedby="pesoBrutoHelp" value="0"> Kgs
+          <small id="pesoBrutoHelp" class="form-text text-muted">Ejemplo : Cuanto pesan 30,000 tripticos 21 x 9.9 cms en papel de 150 grs. Se calcula el triptico abierto,Osea 0.297 x 0.21 x 0.150 x 30,000 = El peso de este trabajo es 280.66 Kgs. </small>
+        </div>
+        
+        <!--PAQUETES-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="numPaq">Número de Paquetes:</label>
+          <input type="number" id="numPaq" size="width: 50px;"  aria-describedby="numPaqHelp" value="0">
+          <small id="numPaqHelp" class="form-text text-muted">El # de paquetes se debe calcular teniendo en cuenta que cada paquete pese entre 5 a 7 Kgs. , en el ejemplo anterior serian 50 paquetes , Osea cada paquete tendrá 600 tripticos</small>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--FECHA DE DESTINO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="fechaDestino">Fecha de destino:</label>
+          <input id="fechaDestino" type="date">
+        </div>
+        
+        <!--HORARIO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="horario">Horario</label>
+          <select  id="horario" class="form-control selectHorario" aria-describedby="horarioHelp">
+              <option value="0" >Seleccione</option>
+              <option value="dia">Durante el Dia</option>
+              <option value="mañana" >En la Mañana</option>
+              <option value="tarde" >En la Tarde</option>
+              <option value="noche" >En la Noche</option>
+              <option value="madrugada" >En la Madrugada</option>
+              <option value="entrega" >Plazo Entrega</option>
+            </select>
+        </div>
+        
+        <!--RANGO DE HORARIO-->
+        <div class="col-12 col-md-4 form-group">
+          <label for="horarioInicial">De</label>
+          <select  id="horarioInicial" class="form-control selectHorario">
+              <option value="0">Seleccione</option>
+            </select>
+          <label for="horarioFinal">Hasta</label>
+          <select  id="horarioFinal" class="form-control selectHorario">
+              <option value="0">Seleccione</option>
+            </select>
+        </div>
+        
+        <div class="w-100"></div>
+        
+        <!--CONTACTO ENTREGA-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="contactoEntrega">Contacto Entrega:</label>
+          <input id="contactoEntrega" type="text" class="w-responsive">
+        </div>
+        
+        <!--TELEFONO CONTACTO-->
+        <div class="col-12 col-md-6 form-group">
+          <label for="telefonoContacto">Telefono Contacto:</label>
+          <input id="telefonoContacto" type="text" class="w-responsive">
+        </div>
+
+
+      </div>
+   
+    </div>
+  </div>
+
+  <!--OPCIONES DE BOTONES-->
+  <div id="buttonDiv" class="form-inline justify-content-center">
+    <button id="registrarButton" type="button" class="btn btn-guardar">Registrar</button>
+    <button id="updateButton" type="button" class="btn btn-guardar">Actualizar</button>
+  </div>
+ 
+</form>
+
+<!--ARCHIVOS JS DE LA VISTA-->
+<script type="text/javascript" src="Modulos/ModProduccion/VistaProduccion.js"></script>
+<script type="text/javascript">
+
+var enviarCodigo=0;
+//--INICILIZAR FUNCIONES--  
+$(document).ready(function(){
+    selectHours();
+    mostrarProvincia("Perú");
+    cambiarValoresSelect("0");
+    if(tipo=="nuevo"){
+        document.getElementById("titulo").innerHTML="PROGRAMAR MENSAJERIA";
+        $("#registroAnteriores").removeClass("d-none");
+        $("#updateButton").addClass("d-none");
+        opcionProvincia = "Elegir Provincia";
+        mostrarDistrito(opcionProvincia);
+        if(opcion!=""){
+            $("#ordProduc").val(opcion);
+            mostrarInfoOrdProd(opcion);
+            mostrarRegistroXOt(opcion);
+        }
+    }else if(tipo=="actualizar"){
+        document.getElementById("titulo").innerHTML="ACTUALIZAR MENSAJERIA -"+ opcion;
+        $("#registrarButton").addClass("d-none");
+        $("#registroAnteriores").addClass("d-none");
+        setTimeout(completeDataToUpdate,500,opcion);
+    }else if(tipo=="similar"){
+        document.getElementById("titulo").innerHTML="MENSAJERIA EJEMPLO -"+ opcion;
+        $("#registrarButton").addClass("d-none");
+        $("#registroAnteriores").addClass("d-none");
+        setTimeout(completeDataToUpdate,500,opcion);
+    }
+});    
+    
+$(document).ready(function(){
+    $("#registrarButton").click(function(){
+        validation();
+    });
+
+    $("#updateButton").click(function(){
+        actualizarDespacho();
+    });
+
+    $("#tipMensaje").change(function(){
+        cambiarValoresSelect(document.getElementById("tipMensaje").value)
+    });
+    
+    //--SELECCION DE PROVINCIA--
+    $("#prov").change(function() {
+        opcionProvincia = $("#prov option:selected").text();
+        mostrarDistrito(opcionProvincia);
+    });
+
+});    
+
+/*FUNCION PARA VALIDACION*/
+function validation(){
+    var R1 = $("#prov").val();
+    var R2 = $("#distrito").val();
+    var R3 = $("#fechaDestino").val();
+    var R4 = document.getElementById("despachoMaterial").checked;
+    var R5 = document.getElementById("mensajeriaDocumentos").checked;
+    var R6= $("#direccion").val();
+    
+    if(R1 == null || R1 == 0 || /^\s+$/.test(R1)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#prov").focus();
+    }
+    else if(R2 == null || R2 == 0 || /^\s+$/.test(R2)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#distrito").focus();
+    }
+    else if(R3 == null || R3 == "" || R3.length == "" || /^\s+$/.test(R3)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#fechaDestino").focus();
+    }
+    else if(R4 == false && R5 == false){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco"); 
+    }
+    else if(R6 == null || R6.length == 0 || /^\s+$/.test(R6)){
+        mostrarMensaje("advertencia","ADVERTENCIA: El campo no debe ir vacío o lleno solamente espacios en blanco");
+        $("#direccion").focus();
+    }else{
+        registrarDespacho();
+    }
+}
+    
+/*FUNCION PARA LLENAR SELECT DE TIPO DE MENSAJERIA*/    
+function cambiarValoresSelect(cod){
+    var lista="";
+    switch(cod){
+        case '0':
+          lista+="<option value='0' selected><---------------------------------------------</option>";
+          break;
+        case 'archivo':
+          lista+="<option value='TipoArchivos' selected>Tipo Archivos</option><option value='Recoger'>Recoger</option><option value='Entregar'>Entregar</option>"
+          break;
+        case 'prueba':
+          lista+="<option value='TipoPruebas' selected>Tipo Pruebas</option><option value='Entregar'>Entregar</option><option value='Esperar'>Esperar</option><option value='Recoger'>Recoger</option>"
+          break;
+        case 'servTercero':
+          lista+="<option value='TipoServicio' selected>Tipo Servicio</option><option value='Troquel'>Troquel</option><option value='Barniz'>Barniz</option><option value='Anillado'>Anillado</option><option value='Plastificado'>Plastificado</option><option value='Encuadernado'>Encuadernado</option><option value='Troquelado'>Troquelado</option><option value='Otros'>Otros</option>"
+          break; 
+        case 'trabTermin':
+          lista+="<option value='TipoTrabajos' selected>Tipo Trabajos</option><option value='EntregaParcial'>Entrega Parcial</option><option value='EntregaTotal'>Entrega Total</option>"
+          break;
+        case 'otros':
+          lista+="<option value='-' selected>-</option>"
+          break;
+            
+  }
+    $("#selecc").html(lista);
+}
+
+/*FUNCION PARA MOSTRAR LOS REGISTROS POR ORD. PRODUCCION*/    
+function mostrarRegistroXOt(codigo){
+    
+    var $codigo={'_codigo':codigo}
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarRegistrosTotalXOt.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'No hay registros para esta O/T');
+                $("#registroAnteriores").addClass("d-none")
+            }else{
+                $("#registroAnteriores").removeClass("d-none")
+                generarTablaDetalle(codigo,datos)
+            }
+        }
+    });  
+}
+    
+/*FUNCION PARA GENERAR TABLA DE LOS REGISTROS POR ORD. PRODUCCION*/
+function generarTablaDetalle(ot,datos){
+    
+    $("#encabezadoListado").html("Mensajerias programadas a la O/T "+ot)
+    
+    
+    var tablaListado="";
+    
+    for(var i=0;i<datos.length;i++){                
+        tablaListado+="<tr>\
+            <td style='text-align:center' id="+datos[i].PRODESCODIGO+" onclick='vistaMensajeria(this.id);'><span style='color:#0017FF'><u>*</u></span></td>\
+            <td style='text-align:center' id="+datos[i].PRODESCODIGO+" onclick='vistaDistrito(this.id);'><span style='color:#0017FF'><u>"+datos[i].DISTRNOMBRE+"</u></span></td>\
+            <td style='text-align:center'>"+vProduccion.cambiarTextoTipMensajeria(datos[i].PRODESTIP_MENSAJERIA)+"</td>\
+            <td style='text-align:center'>S/."+datos[i].PRODES_MONTO+"</td>\
+            <td style='text-align:center'>"+datos[i].PRODES_FECHA_DESTINO+"</td>\
+            <td style='text-align:center'>"+vProduccion.cambiarTextoHorario(datos[i].PRODES_HORARIO)+"</td>\
+            <td style='text-align:center'>"+datos[i].PRODES_CONTACTO+"</td>\
+            <td style='text-align:center'>"+datos[i].PRODES_TELEFONO+"</td>\
+        </tr>";
+    }
+    tablaListado+="\</tbody></table>";
+    $("#cuerpoTabla").html(tablaListado);
+}
+    
+/*FUNCION PARA REDIRIGIR A LA VISTA DE DETALLE MENSAJERIA*/
+function vistaMensajeria(id){
+    enviarCodigo=id;
+    DetalleMensajeria(enviarCodigo);
+}
+    
+/*FUNCION PARA MOSTRAR INFORMACION POR COD. ORD. DE PRODUCCION*/
+function mostrarInfoOrdProd(codigo){
+    var mensaje="";
+    var $codigo={'_codigo': codigo}    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarDatosXOt.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                mensaje+="Mensajeria "+ "<span style='color:#136295'>"+datos[0].OPCODIGO+ "</span> " +datos[0].CLIENRAZON_SOCIAL+"</br>";
+                for(var i=0; i<datos.length;i++){
+                    mensaje+="<span style='color: #D13109'>"+datos[i].ITEMCODIGO+" " +datos[i].ITEMNOMBRE+"</span></br>";
+                }
+                $("#encabezadoText").html(mensaje)
+            }
+        }
+    });  
+}  
+
+/*CARGAR PROVINCIA*/
+function mostrarProvincia(opcion){
+    var boxProvincia="";
+    
+    var $pais={
+        '_pais': opcion
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarProvincia.php',
+        type: 'POST',
+        data: $pais,
+        datatype: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxProvincia+="<option value='0' selected>Elegir Provincia</option>";
+            $("#prov").html(boxProvincia);
+        },
+        success: function(datos){
+ 
+            if(datos.response=="0"){
+                boxProvincia+="<option value='0' selected>Elegir Provincia</option>";
+                $("#prov").html(boxProvincia);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxProvincia+="<option value='0' selected>Elegir Provincia</option>";
+                    }
+                    boxProvincia+="<option value='"+datos[i].PROVCODIGO+"'>"+datos[i].PROVNOMBRE+"</option>";
+                }
+                $("#prov").html(boxProvincia);
+            }
+        } 
+    });
+}
+
+/*CARGAR DISTRITO*/
+function mostrarDistrito(opcion){
+    var boxDistrito="";
+    
+    var $provincia={
+        '_provincia': opcion
+    }
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModMaestros/Controlador_Clientes/Controlador_MostrarDistrito.php',
+        type: 'POST',
+        data: $provincia,
+        datatype: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL CARGAR LOS DATOS! Error no identificado");
+            }
+            boxDistrito+="<option value='0' selected>Elegir Distrito</option>";
+            $("#distrito").html(boxDistrito);
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                boxDistrito+="<option value='0' selected>Elegir Distrito</option>";
+                $("#distrito").html(boxDistrito);
+            }else{
+                for(var i=0; i<datos.length;i++){
+                    if(i==0){
+                        boxDistrito+="<option value='0' selected>Elegir Distrito</option>";
+                    }
+                    boxDistrito+="<option value='"+datos[i].DISTRCODIGO+"'>"+datos[i].DISTRNOMBRE+"</option>";
+                }
+                $("#distrito").html(boxDistrito);
+            }
+        } 
+    });
+}
+ 
+/*FUNCION PARA LLENAR SELECT DE HORA INICIAL Y HORA FINAL*/
+function selectHours(){
+    var listado = "";
+    for(var i=0; i<24;i++){
+        if(i>=0 && i<=11){
+            if(i==0){
+                listado+="<option value='0' selected>Seleccione</option>";
+            }else{
+                listado+="<option value='"+i+"00AM'>"+i+":00 AM</option>"
+            }
+        }else{
+            listado+="<option value='"+i+"00PM'>"+i+":00 PM</option>"
+        }
+            
+    }
+    $("#horarioInicial").html(listado);
+    $("#horarioFinal").html(listado);
+}
+  
+/*FUNCION PARA REGISTRAR DESPACHO*/
+function registrarDespacho(){
+    
+    var tipo="";
+    
+    var Hoy = new Date();
+    var now = Hoy.getFullYear() + "-" + (Hoy.getMonth()+1) + "-" + Hoy.getDate() + " " + Hoy.getHours() + ":" + Hoy.getMinutes() + ":" +  Hoy.getSeconds();
+    
+    var estado = 69;
+    
+    if(document.getElementById("despachoMaterial").checked==true){
+        tipo=verificarTipoMensaje("D")
+    }else{
+        tipo=verificarTipoMensaje("M")
+    }
+    
+    var $datos={
+        '_provincia':$("#prov").val(),
+        '_distrito':$("#distrito").val(),
+        '_ordProd':$("#ordProduc").val(),
+        '_personal':personal,
+        '_tipMensajeria':$("#tipMensaje").val(),
+        '_seleccione':$("#selecc").val(),
+        '_otros':$("#otros").val(),
+        '_direccion':$("#direccion").val(),
+        '_descripcion':$("#descripcion").val(),
+        '_comentario':$("#comentario").val(),
+        '_despachoMaterial':document.getElementById("despachoMaterial").checked,
+        '_mensajeriaDocumentos':document.getElementById("mensajeriaDocumentos").checked,
+        '_guia':$("#guia").val(),
+        '_factura':$("#factura").val(),
+        '_monto':$("#monto").val(),
+        '_pesoBruto':$("#pesoBruto").val(),
+        '_numPaq':$("#numPaq").val(),
+        '_fechaDestino':$("#fechaDestino").val(),
+        '_horario':$("#horario").val(),
+        '_horarioInicial':$("#horarioInicial").val(),
+        '_horarioFinal':$("#horarioFinal").val(),
+        '_contactoEntrega':$("#contactoEntrega").val(),
+        '_telefonoContacto':$("#telefonoContacto").val(),
+        '_fechaRegistro': now,
+        '_tipoMensajeria':tipo,
+        '_vehiculo':0,
+        '_mensajero': 0,
+        '_mensajeroInput': " ",
+        '_grupo': " ",
+        '_respuesta': " ",
+        '_costoEstado': 0,
+        '_costoObjeto': 0,
+        '_usuario':USUACODIGO,
+        '_estado': estado,
+        '_accion': 0,
+        '_kmi': 0,
+        '_kmf': 0
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_RegistrarDespacho.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","REGISTRO INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","REGISTRO INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error","REGISTRO DE PERSONAL INCORRECTO! ERROR: "+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","REGISTRO EXITOSO - Acceso!");
+                mostrarRegistroXOt(opcion)
+            }
+        }
+    })
+}
+  
+/*FUNCION PARA ACTUALIZAR REGISTRO DE DESPACHO*/
+function actualizarDespacho(){
+    var $datos={
+        '_codigo':opcion,
+        '_provincia':$("#prov").val(),
+        '_distrito':$("#distrito").val(),
+        '_tipMensajeria':$("#tipMensaje").val(),
+        '_seleccione':$("#selecc").val(),
+        '_otros':$("#otros").val(),
+        '_direccion':$("#direccion").val(),
+        '_descripcion':$("#descripcion").val(),
+        '_comentario':$("#comentario").val(),
+        '_guia':$("#guia").val(),
+        '_factura':$("#factura").val(),
+        '_monto':$("#monto").val(),
+        '_pesoBruto':$("#pesoBruto").val(),
+        '_numPaq':$("#numPaq").val(),
+        '_fechaDestino':$("#fechaDestino").val(),
+        '_horario':$("#horario").val(),
+        '_horarioInicial':$("#horarioInicial").val(),
+        '_horarioFinal':$("#horarioFinal").val(),
+        '_contactoEntrega':$("#contactoEntrega").val(),
+        '_telefonoContacto':$("#telefonoContacto").val(),
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_ActualizarDespacho.php',
+        type: 'POST',
+        data: $datos,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ACTUALIZACION DE DATOS INCORRECTO! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ACTUALIZACION DE DATOS INCORRECTO! Error no identificado.");
+            }
+        },
+        success: function(datos){
+            if(datos.response == 0){
+                mostrarMensaje("error","ACTUALIZACION DE DATOS INCORRECTO! ERROR: "+datos.message);
+            }
+            else{
+                mostrarMensaje("exito","DATOS ACTUALIZADOS - Acceso!");
+            }
+        }
+    })
+    
+}
+
+/*FUNCION PARA VERIFICAR EL TIPO DE MENSAJERIA QUE SE REGISTRARA*/
+function verificarTipoMensaje(tipo){
+    var mayor=0;
+    var variable="";
+    
+        $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarTodoTipoMensajeria.php',
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","Archivos no encontrados");
+            }
+            else{
+                mostrarMensaje("error","Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                variable = tipo + "-1"
+            }else{
+                for (var i=0; i<datos.length;i++){
+                    console.log(datos[i].PRODESTIPO_MENSAJERIA.split("-")[1])
+                    if(i==0){
+                        mayor=parseInt(datos[i].PRODESTIPO_MENSAJERIA.split("-")[1]);
+                    }else{
+                        if(mayor<parseInt(datos[i].PRODESTIPO_MENSAJERIA.split("-")[1])){
+                            mayor=parseInt(datos[i].PRODESTIPO_MENSAJERIA.split("-")[1]);
+                        }
+                    }
+                  }  
+                variable=tipo+"-"+(mayor+1);
+                }
+            }
+        });
+    
+    return variable
+}
+    
+/*FUNCION PARA REDIRIGIR A LA VISTA DETALLE DISTRITO*/
+function vistaDistrito(id){
+    enviarCodigo=id;
+    DetalleDistrito(enviarCodigo);
+}
+    
+/*FUNCION PARA COMPLETAR LOS DATOS AL QUERER ACTUALIZAR ALGUN REGISTRO DE DESPACHO*/
+function completeDataToUpdate(codigoDespacho){
+    var $codigo={
+        '_codigo':codigoDespacho
+    }
+    
+    $.ajax({
+        url: '../CT-BackEnd/Controlador/ModProduccion/Controlador_MostrarInfoXRegDespacho.php',
+        type: 'POST',
+        data: $codigo,
+        dataType: 'json',
+        error: function(error){
+            if(error.status == 401){
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! No se pudo establecer conexion con el servidor");
+            }
+            else{
+                mostrarMensaje("error","ERROR AL GUARDAR LOS DATOS! Error no identificado");
+            }
+        },
+        success: function(datos){
+            if(datos.response=="0"){
+                mostrarMensaje("error",'ERROR: '+datos.message);
+            }else{
+                $("#prov option[value="+document.getElementById("prov").value+"]").attr("selected", false);
+                $("#prov option[value="+datos.PROVCODIGO+"]").attr("selected",true);
+                mostrarDistrito($("#prov option:selected").text());
+                document.getElementById("ordProduc").value = datos.OPCODIGO;
+                $("#tipMensaje option[value="+document.getElementById("tipMensaje").value+"]").attr("selected", false);
+                $("#tipMensaje option[value="+datos.PRODESTIP_MENSAJERIA+"]").attr("selected",true);
+                cambiarValoresSelect(datos.PRODESTIP_MENSAJERIA);
+                $("#selecc option[value="+document.getElementById("selecc").value+"]").attr("selected", false);
+                $("#selecc option[value="+datos.PRODES_SELECCIONE+"]").attr("selected",true);
+                document.getElementById("otros").value=datos.PRODES_OTROS;
+                document.getElementById("direccion").value=datos.PRODES_DIRECCION;
+                document.getElementById("descripcion").value=datos.PRODES_DESCRIPCION;
+                document.getElementById("comentario").value=datos.PRODES_COMENTARIO;
+                if(datos.PRODES_DESPACHO_MATERIAL=="true"){
+                    document.getElementById("despachoMaterial").checked=true;
+                }
+                if(datos.PRODES_MENSAJE_DOCUMENTO=="true"){
+                    document.getElementById("mensajeriaDocumentos").checked=true;
+                }
+                $("#guia option[value="+datos.PRODES_GUIA+"]").attr("selected",true);
+                $("#factura option[value="+datos.PRODES_FACTURA+"]").attr("selected",true);
+                document.getElementById("monto").value=datos.PRODES_MONTO;
+                document.getElementById("pesoBruto").value=datos.PRODES_PESO_BRUTO;
+                document.getElementById("numPaq").value=datos.PRODES_NUM_PAQ;
+                document.getElementById("fechaDestino").value=datos.PRODES_FECHA_DESTINO;
+                $("#horario option[value="+datos.PRODES_HORARIO+"]").attr("selected",true);
+                $("#horarioInicial option[value="+datos.PRODES_HORARIO_INICIO+"]").attr("selected",true);
+                $("#horarioFinal option[value="+datos.PRODES_HORARIO_FINAL+"]").attr("selected",true);
+                document.getElementById("contactoEntrega").value=datos.PRODES_CONTACTO;
+                document.getElementById("telefonoContacto").value=datos.PRODES_TELEFONO;
+                setTimeout(completeRestOfInfo,1000,datos)
+            } 
+        }
+    })
+}
+    
+/*FUNCION PARA COMPLETAR LOS DATOS AL QUERER ACTUALIZAR ALGUN REGISTRO DE DESPACHO(PARTE 2)*/
+function completeRestOfInfo(datos){
+    $("#distrito option[value="+document.getElementById("distrito").value+"]").attr("selected", false);
+    $("#distrito option[value="+datos.codigoDistrito+"]").attr("selected",true);
+}
+    
+</script>
