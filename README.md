@@ -1,7 +1,7 @@
 
 <br />
 
-<div align="center"><strong>Init your next react project in minutes</strong></div>
+<div align="center"><strong>Comprehensive Management System of Grupo Computextos S.A.C.</strong></div>
 <div align="center">A highly scalable with the best practices</div>
 
 <br />
@@ -12,99 +12,52 @@ Comprehensive Management System of Grupo Computextos S.A.C. that allows to conne
 
 It has the following modules:
 
-o	Maestros
-    	Clientes
-        •	Nuevo Cliente
-        •	Actualizar Cliente
-        •	Listado Cliente
-        •	Beneficios Cliente
-            o	Nuevo Cliente c/ Crédito
-            o	Nuevo Cliente c/ Dsctos
-            o	Listado Cliente c/ Crédito
-            o	Listado Cliente c/ Dsctos
-    	Servicios
-        •	Nuevo Servicio
-        •	Actualizar Servicio
-        •	Listar Servicio
-    	Empresas
-    	Maquinas
-    	Bancos
-    	Personal
-        •	Nuevo Personal
-        •	Actualizar Personal
-        •	Listado Personal
-        •	Control de Turnos
-    	Proveedores
-        •	Nuevo Proveedor
-        •	Nuevo Gasto
-        •	Gasto Proyectado
-        •	Nuevo Pagare/Préstamo
-    	Directivas
-    	Políticas
-    	Procedimientos
-    
-o	Presupuesto
-    	Nuevo Presupuesto
-    	Actualizar Presupuesto
-    	Buscar Presupuesto
-    	Listar Presupuesto
-        •	Listar x Intervalo de Fechas
-        •	Listar x Estado
-    	Cambiar Estado del Presupuesto
-    
-o	Orden
-    	Crear Orden
-    	Actualizar Orden
-    	Cambiar Estado de Orden
-    	Reemplazar Orden
-    	Seguimiento Orden
-    	Guías Remisión
-    	Recibos Adicionales
-    
-o	Producción
-    	Seguimiento de Producción
-    	Programar Maquinas
-    	Control Despachos
-        •	Programar Despachos
-        •	Listado Control Despacho
-            o	Listado Despacho
-            o	Listado x Mensajero
-            o	Listado x Solicitante
-            o	Listado Padrones Creados
-        •	Ficha Mensajería
-    
-o	Costos
-    	Control de Insumos
-    	Costos Maquina
-    	Costos Acabados
-    	Costos Tinta
-    	Listado Costos    
-    
-o	Contabilidad
-    	Caja
-        •	Facturación
-        •	Arqueo de caja
-        •	Anulación
-        •	Nota de Debito/Crédito
-        •	Letras
-    	Finanzas
-        •	Reporte en Bancos sin Cancelar a la Fecha
-        •	Reporte en Bancos Cancelados a la Fecha
-        •	Por planilla a la Fecha 
-        •	Ventas
-    
-o	Reportes
-    	Ordenes x Estado
-    	Ordenes x Cliente
-    	Ordenes x Vendedor
-    	Ordenes x Operador
-    	Ordenes x Servicio
-    	Ordenes x Imprimir
-    	Ordenes x Entregar
-    	Ordenes x Cobrar
-    	Comprobantes Pendientes
-    	Listado Notas Debito/Crédito
-    	Listado Cartera de Clientes x Ejecutivo
+<ul>
+    <li>Maestros</li>
+    <ul>
+        <li>Clientes</li>
+        <li>Servicios</li>
+        <li>Empresas</li>
+        <li>Maquinas</li>
+        <li>Bancos</li>
+        <li>Personal</li>
+        <li>Proveedores</li>
+        <li>Directivas</li>
+        <li>Políticas</li>
+        <li>Procedimientos</li>
+    </ul>
+	<li>Presupuesto</li>
+    <ul>
+    	<li>Nuevo Presupuesto</li>
+    	<li>Actualizar Presupuesto</li>
+    	<li>Buscar Presupuesto</li>
+    	<li>Listar Presupuesto</li>
+    	<li>Cambiar Estado del Presupuesto</li>
+    </ul>
+	<li>Orden</li>
+    <ul>
+    	<li>Crear Orden</li>
+    	<li>Actualizar Orden</li>
+    	<li>Cambiar Estado de Orden</li>
+    	<li>Reemplazar Orden</li>
+    	<li>Seguimiento Orden</li>
+    	<li>Guías Remisión</li>
+    	<li>Recibos Adicionales</li>
+    </ul>
+	<li>Producción</li>
+    <ul>
+    	<li>Seguimiento de Producción</li>
+    	<li>Programar Maquinas</li>
+    	<li>Control Despachos</li>
+    </ul>
+	<li>Costos</li>
+	<li>Contabilidad</li>
+    <ul>
+    	<li>Caja</li>
+    	<li>Finanzas</li>
+    </ul>
+	<li>Reportes</li>
+</ul>
 
 ## Features
 
